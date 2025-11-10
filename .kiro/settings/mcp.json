@@ -35,7 +35,8 @@
         "list_dir",
         "get_symbols_overview",
         "read_memory",
-        "read_memory"
+        "read_memory",
+        "search_for_pattern"
       ]
     }
   }
