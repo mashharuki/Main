@@ -7,19 +7,19 @@
   - localStorage管理ユーティリティを実装
   - _Requirements: 1, 3, 8_
 
-- [ ] 1.1 型定義ファイルの作成
+- [x] 1.1 型定義ファイルの作成
   - `pkgs/frontend/lib/wallet/types.ts`を作成
   - `WalletName`, `WalletProvider`, `Cip30WalletApi`等の型を定義
   - エラー型（`WalletError`, `WalletErrorCode`）を定義
   - _Requirements: 1, 3_
 
-- [ ] 1.2 ウォレットプロバイダー設定
+- [x] 1.2 ウォレットプロバイダー設定
   - `pkgs/frontend/lib/wallet/providers.ts`を作成
   - 4つのウォレット（Lace, Nami, Eternl, Flint）の設定を定義
   - アイコンパス、インストールURL、windowキーを設定
   - _Requirements: 1, 8_
 
-- [ ] 1.3 ウォレットAPI実装
+- [x] 1.3 ウォレットAPI実装
   - `pkgs/frontend/lib/wallet/wallet-api.ts`を作成
   - `detectWallets()`関数を実装（インストール済みウォレット検出）
   - `connectWallet()`関数を実装（ウォレット接続）
@@ -27,7 +27,7 @@
   - エラーハンドリングを実装
   - _Requirements: 3, 6, 8_
 
-- [ ] 1.4 localStorage管理
+- [x] 1.4 localStorage管理
   - `pkgs/frontend/lib/wallet/wallet-storage.ts`を作成
   - `saveConnection()`関数を実装（接続情報保存）
   - `loadConnection()`関数を実装（接続情報読み込み）
@@ -40,14 +40,14 @@
   - ページリロード時の自動再接続を実装
   - _Requirements: 2, 3_
 
-- [ ] 2.1 use-walletフックの実装
+- [x] 2.1 use-walletフックの実装
   - `pkgs/frontend/hooks/use-wallet.ts`を作成
   - ウォレット状態（`isConnected`, `walletName`, `address`等）を管理
   - `connect()`, `disconnect()`, `copyAddress()`アクションを実装
   - エラー状態管理を実装
   - _Requirements: 2, 3, 5_
 
-- [ ] 2.2 WalletProvider Contextの実装
+- [x] 2.2 WalletProvider Contextの実装
   - `pkgs/frontend/components/wallet/wallet-provider.tsx`を作成
   - `use-wallet`フックを使用してContextを構築
   - 子コンポーネントに状態とアクションを提供
@@ -60,7 +60,7 @@
   - ウォレット情報ドロップダウンを実装
   - _Requirements: 1, 4, 5, 7_
 
-- [ ] 3.1 WalletButtonコンポーネント
+- [x] 3.1 WalletButtonコンポーネント
   - `pkgs/frontend/components/wallet/wallet-button.tsx`を作成
   - 未接続時: "Connect Wallet"ボタンを表示
   - 接続中: ローディングスピナーを表示
@@ -68,7 +68,7 @@
   - クリックイベントハンドラーを実装
   - _Requirements: 1, 4, 7_
 
-- [ ] 3.2 WalletSelectionModalコンポーネント
+- [x] 3.2 WalletSelectionModalコンポーネント
   - `pkgs/frontend/components/wallet/wallet-modal.tsx`を作成
   - shadcn/ui Dialogコンポーネントを使用
   - 4つのウォレットをリスト表示
@@ -76,7 +76,7 @@
   - "Connect" / "Install"ボタンを実装
   - _Requirements: 1, 3, 6, 7, 8_
 
-- [ ] 3.3 WalletDropdownコンポーネント
+- [x] 3.3 WalletDropdownコンポーネント
   - `pkgs/frontend/components/wallet/wallet-dropdown.tsx`を作成
   - shadcn/ui DropdownMenuコンポーネントを使用
   - 完全なアドレス表示
@@ -90,23 +90,23 @@
   - スタイリングを調整
   - _Requirements: 1, 2, 7_
 
-- [ ] 4.1 layout.tsxの更新
+- [x] 4.1 layout.tsxの更新
   - `pkgs/frontend/app/layout.tsx`を更新
   - `WalletProvider`で子コンポーネントをラップ
   - _Requirements: 2_
 
-- [ ] 4.2 ヘッダーコンポーネントの作成
+- [x] 4.2 ヘッダーコンポーネントの作成
   - `pkgs/frontend/components/header.tsx`を作成（または既存を更新）
   - `WalletButton`をヘッダー右上に配置
   - レスポンシブデザインを実装
   - _Requirements: 1, 7_
 
-- [ ] 4.3 ウォレットアイコンの追加
+- [x] 4.3 ウォレットアイコンの追加
   - `pkgs/frontend/public/wallet-icons/`ディレクトリを作成
   - Lace, Nami, Eternl, FlintのSVGアイコンを追加
   - _Requirements: 1, 7_
 
-- [ ] 4.4 スタイリング調整
+- [x] 4.4 スタイリング調整
   - Midnightブランドカラーを適用
   - アニメーション効果を追加
   - レスポンシブデザインを確認
@@ -143,7 +143,7 @@
   - 開発者向けドキュメントを作成
   - _Requirements: All_
 
-- [ ] 6.1 READMEの更新
+- [x] 6.1 READMEの更新
   - ウォレット接続機能の説明を追加
   - 対応ウォレット一覧を記載
   - スクリーンショットを追加
