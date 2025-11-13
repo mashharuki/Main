@@ -1,3 +1,3 @@
-[submodule "references/helixchain"]
-	path = references/helixchain
+[submodule ".kiro/steering/references/helixchain"]
+	path = .kiro/steering/references/helixchain
 	url = https://github.com/jasonyi33/helixchain.git
