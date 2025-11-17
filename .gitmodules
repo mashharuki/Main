@@ -1,3 +1,6 @@
 [submodule "references/helixchain"]
 	path = references/helixchain
 	url = https://github.com/jasonyi33/helixchain.git
+[submodule "references/midnight-sandbox"]
+	path = references/midnight-sandbox
+	url = https://github.com/foxytanuki/midnight-sandbox.git
