@@ -3,7 +3,7 @@
  * トランザクション検索のためのユーティリティ関数
  */
 
-import type { RpcClient } from "./rpc-client";
+import type { RpcClient } from "../clients/rpc-client";
 
 export interface BlockInfo {
 	hash: string;

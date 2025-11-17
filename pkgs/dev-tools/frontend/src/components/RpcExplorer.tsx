@@ -1,17 +1,17 @@
 import { useState, useMemo } from "react";
-import { RpcClient } from "./rpc-client";
+import { RpcClient } from "../clients/rpc-client";
 import {
 	searchTransactionByHash,
 	searchTransactionsByAccount,
 	type TransactionSearchResult,
-} from "./tx-search";
-import { RPC_METHODS, CATEGORY_NAMES } from "./rpc-methods";
+} from "../utils/tx-search";
+import { RPC_METHODS, CATEGORY_NAMES } from "../config/rpc-methods";
 import {
 	getBlockExplorerUrl,
 	extractBlockHashFromResult,
 	extractBlockNumberFromResult,
-} from "./explorer-utils";
-import "./App.css";
+} from "../utils/explorer-utils";
+import "../App.css";
 
 const DEFAULT_ENDPOINT = "https://rpc.testnet-02.midnight.network/";
 

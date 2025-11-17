@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import type {
 	WalletName,
 	Cip30WalletApi,
-} from "./wallet-types";
-import { WalletError } from "./wallet-types";
+} from "../types/wallet-types";
+import { WalletError } from "../types/wallet-types";
 import {
 	getAvailableWallets,
 	connectWallet,
@@ -14,8 +14,8 @@ import {
 	loadConnection,
 	clearConnection,
 	getErrorMessage,
-} from "./wallet-utils";
-import "./App.css";
+} from "../utils/wallet-utils";
+import "../App.css";
 
 interface WalletStatus {
 	connected: boolean;

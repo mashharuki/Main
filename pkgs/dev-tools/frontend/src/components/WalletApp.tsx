@@ -1,5 +1,5 @@
 import { WalletConnection } from "./WalletConnection";
-import "./App.css";
+import "../App.css";
 
 export function WalletApp() {
 	return (

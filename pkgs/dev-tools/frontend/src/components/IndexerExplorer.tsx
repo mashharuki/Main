@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { GraphQLClient } from "./graphql-client";
-import "./App.css";
+import { GraphQLClient } from "../clients/graphql-client";
+import "../App.css";
 
 const DEFAULT_INDEXER_URL =
 	"https://indexer.testnet-02.midnight.network/api/v1/graphql";

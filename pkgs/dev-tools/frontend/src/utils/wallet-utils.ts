@@ -8,8 +8,8 @@ import type {
 	CardanoWindow,
 	WalletConnection,
 	WalletInfo,
-} from "./wallet-types";
-import { WalletError } from "./wallet-types";
+} from "../types/wallet-types";
+import { WalletError } from "../types/wallet-types";
 
 /**
  * ウォレットの表示名を取得
