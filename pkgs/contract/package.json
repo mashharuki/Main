@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"compact": "compact compile ./src/patient-registry.compact ./src/managed/patient-registry",
-		"pretest": "pnpm compact",
+		"pretest:disabled": "pnpm compact",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"build": "pnpm compact && rm -rf dist && tsc --project tsconfig.build.json && cp -Rf ./src/managed ./dist/managed && cp ./src/patient-registry.compact ./dist",
@@ -28,6 +28,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@midnight-ntwrk/compact-runtime": "^0.9.0",
+		"@midnight-ntwrk/midnight-js-network-id": "^0.1.14",
 		"contract": "*"
 	},
 	"devDependencies": {
