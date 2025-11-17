@@ -1,20 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm frontend run build",
-  "devCommand": "pnpm frontend run dev",
-  "installCommand": "pnpm install",
+  "buildCommand": "cd pkgs/frontend && pnpm build",
+  "devCommand": "cd pkgs/frontend && pnpm dev",
+  "installCommand": "pnpm install --filter=frontend...",
   "framework": "nextjs",
-  "outputDirectory": "./pkgs/frontend/.next",
+  "outputDirectory": "pkgs/frontend/.next",
   "regions": ["hnd1"],
-  "env": {
-    "NEXT_PUBLIC_APP_NAME": "NextMed",
-    "NEXT_PUBLIC_APP_URL": "https://nextmed.vercel.app"
-  },
-  "build": {
-    "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

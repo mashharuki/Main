@@ -1,58 +1,29 @@
-# Dependencies
-node_modules
-.pnp
-.pnp.js
+# Vercel Ignore File
+# モノレポの他のパッケージを除外
 
-# Testing
-coverage
-*.log
+# Contract package
+pkgs/contract
 
-# Build outputs (except frontend)
-pkgs/contract/dist
-pkgs/contract/managed
-pkgs/cli/dist
-pkgs/cli/logs
-pkgs/cli/midnight-level-db
+# CLI package
+pkgs/cli
 
-# IDE
-.vscode
-.idea
-*.swp
-*.swo
-*~
+# Dev tools
+pkgs/dev-tools
 
-# OS
-.DS_Store
-Thumbs.db
+# References
+references
 
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Kiro & Serena
+# Kiro settings
 .kiro
+
+# Serena settings
 .serena
+
+# Documentation
+*.md
+!pkgs/frontend/README.md
 
 # Git
 .git
 .gitignore
-.gitmodules
-
-# Documentation
-docs
-references
-
-# Docker
-*.yml
-Dockerfile
-docker-compose.yml
-
-# Compact contracts
-*.compact
-pkgs/contract/src/managed
-
-# CLI specific
-pkgs/cli/proof-server*.yml
-pkgs/cli/standalone*.yml
-pkgs/cli/deployment-*.json
+.gitattributes
