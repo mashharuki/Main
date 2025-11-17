@@ -96,7 +96,7 @@ export function TransactionHistoryPanel({
 					disabled={searching}
 					className="call-button"
 				>
-					{searching ? "Searching..." : "🔍 Search Transactions"}
+					{searching ? "Searching..." : "Search Transactions"}
 				</button>
 			</div>
 
@@ -116,7 +116,7 @@ export function TransactionHistoryPanel({
 										rel="noopener noreferrer"
 										className="explorer-link-small"
 									>
-										🔗 Explorer
+										Explorer
 									</a>
 								</div>
 								<pre className="result-item-content">

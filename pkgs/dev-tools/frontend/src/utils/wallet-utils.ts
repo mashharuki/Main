@@ -24,6 +24,18 @@ export function getWalletDisplayName(walletName: WalletName): string {
 }
 
 /**
+ * ウォレットアイコンのパスを取得
+ */
+export function getWalletIconPath(walletName: WalletName): string {
+	const icons: Record<WalletName, string> = {
+		lace: "/wallet-icons/lace.png",
+		yoroi: "/wallet-icons/yoroi.png",
+		eternl: "/wallet-icons/eternl.png",
+	};
+	return icons[walletName];
+}
+
+/**
  * インストールされているウォレットを検出
  */
 export function detectWallets(): WalletName[] {
@@ -46,7 +58,15 @@ export function detectWallets(): WalletName[] {
  * ウォレットがインストールされているか確認
  */
 export function isWalletInstalled(walletName: WalletName): boolean {
-	const cardano = (window as CardanoWindow).cardano;
+	const windowObj = window as CardanoWindow;
+	
+	// Midnight Network用のLace Walletをチェック
+	if (walletName === "lace" && windowObj.midnight?.mnLace) {
+		return true;
+	}
+	
+	// CIP-30ウォレットをチェック
+	const cardano = windowObj.cardano;
 	return !!cardano?.[walletName];
 }
 
@@ -54,15 +74,31 @@ export function isWalletInstalled(walletName: WalletName): boolean {
  * 利用可能なウォレット情報を取得
  */
 export function getAvailableWallets(): WalletInfo[] {
-	const cardano = (window as CardanoWindow).cardano;
+	const windowObj = window as CardanoWindow;
+	const cardano = windowObj.cardano;
 	const walletNames: WalletName[] = ["lace", "yoroi", "eternl"];
 
-	return walletNames.map((name) => ({
-		name,
-		displayName: getWalletDisplayName(name),
-		installed: !!cardano?.[name],
-		provider: cardano?.[name],
-	}));
+	return walletNames.map((name) => {
+		let installed = false;
+		let provider: WalletInfo["provider"];
+		
+		// Midnight Network用のLace Walletをチェック
+		if (name === "lace" && windowObj.midnight?.mnLace) {
+			installed = true;
+			// mnLaceは異なるAPI形式なので、providerはundefinedのまま
+		} else if (cardano?.[name]) {
+			installed = true;
+			provider = cardano[name];
+		}
+		
+		return {
+			name,
+			displayName: getWalletDisplayName(name),
+			installed,
+			provider,
+			icon: getWalletIconPath(name),
+		};
+	});
 }
 
 /**
@@ -71,7 +107,18 @@ export function getAvailableWallets(): WalletInfo[] {
 export async function connectWallet(
 	walletName: WalletName,
 ): Promise<Cip30WalletApi> {
-	const cardano = (window as CardanoWindow).cardano;
+	const windowObj = window as CardanoWindow;
+	
+	// Midnight Network用のLace Walletの場合
+	if (walletName === "lace" && windowObj.midnight?.mnLace) {
+		throw new WalletError(
+			"WALLET_NOT_INSTALLED",
+			"Midnight Network Lace Wallet (mnLace) is detected, but this app currently uses CIP-30 API. " +
+			"Midnight Network Lace Wallet uses a different API (window.midnight.mnLace) that is not yet fully supported in this tool.",
+		);
+	}
+	
+	const cardano = windowObj.cardano;
 
 	if (!cardano) {
 		throw new WalletError(

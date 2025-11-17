@@ -75,6 +75,13 @@ export interface CardanoWindow extends Window {
 	cardano?: {
 		[key in WalletName]?: CardanoWalletProvider;
 	};
+	midnight?: {
+		mnLace?: {
+			enable: () => Promise<any>;
+			isEnabled: () => Promise<boolean>;
+			serviceUriConfig: () => Promise<any>;
+		};
+	};
 }
 
 export type WalletErrorCode =
@@ -85,11 +92,13 @@ export type WalletErrorCode =
 	| "UNKNOWN_ERROR";
 
 export class WalletError extends Error {
+	public code: WalletErrorCode;
 	constructor(
-		public code: WalletErrorCode,
+		code: WalletErrorCode,
 		message: string,
 	) {
 		super(message);
+		this.code = code;
 		this.name = "WalletError";
 	}
 }
@@ -105,5 +114,6 @@ export interface WalletInfo {
 	displayName: string;
 	installed: boolean;
 	provider?: CardanoWalletProvider;
+	icon?: string;
 }
 

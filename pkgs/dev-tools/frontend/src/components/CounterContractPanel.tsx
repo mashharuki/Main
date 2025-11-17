@@ -1,5 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Cip30WalletApi, WalletName } from "../types/wallet-types";
+import {
+	deployCounterContract,
+	joinCounterContract,
+	incrementCounter,
+	getCounterValue,
+	checkProofServer,
+	type DeployResult,
+} from "../utils/counter-contract";
 import "../App.css";
 
 interface CounterContractPanelProps {
@@ -10,8 +18,6 @@ interface CounterContractPanelProps {
 
 export function CounterContractPanel({
 	walletApi,
-	walletName,
-	address,
 }: CounterContractPanelProps) {
 	const [contractAddress, setContractAddress] = useState<string>("");
 	const [deploying, setDeploying] = useState(false);
@@ -20,11 +26,27 @@ export function CounterContractPanel({
 	const [viewingState, setViewingState] = useState(false);
 	const [counterValue, setCounterValue] = useState<bigint | null>(null);
 	const [error, setError] = useState<string>("");
-	const [deployResult, setDeployResult] = useState<{
-		contractAddress: string;
-		txId: string;
-		blockHeight: string;
-	} | null>(null);
+	const [deployResult, setDeployResult] = useState<DeployResult | null>(null);
+	const [proofServerStatus, setProofServerStatus] = useState<boolean | null>(
+		null,
+	);
+	const [checkingProofServer, setCheckingProofServer] = useState(false);
+
+	useEffect(() => {
+		checkProofServerStatus();
+	}, []);
+
+	const checkProofServerStatus = async () => {
+		setCheckingProofServer(true);
+		try {
+			const available = await checkProofServer();
+			setProofServerStatus(available);
+		} catch {
+			setProofServerStatus(false);
+		} finally {
+			setCheckingProofServer(false);
+		}
+	};
 
 	const handleDeploy = async () => {
 		setDeploying(true);
@@ -32,18 +54,9 @@ export function CounterContractPanel({
 		setDeployResult(null);
 
 		try {
-			// TODO: Implement contract deployment using Midnight.js
-			// This requires:
-			// 1. Loading the compiled counter contract
-			// 2. Setting up providers (publicDataProvider, proofProvider, etc.)
-			// 3. Calling deployContract with initial private state
-			// 4. Handling the deployment result
-
-			// Placeholder implementation
-			await new Promise((resolve) => setTimeout(resolve, 2000));
-			throw new Error(
-				"Contract deployment is not yet implemented. This feature requires Midnight.js browser integration.",
-			);
+			const result = await deployCounterContract(walletApi);
+			setDeployResult(result);
+			setContractAddress(result.contractAddress);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to deploy contract",
@@ -63,18 +76,8 @@ export function CounterContractPanel({
 		setError("");
 
 		try {
-			// TODO: Implement contract joining using Midnight.js
-			// This requires:
-			// 1. Loading the compiled counter contract
-			// 2. Setting up providers
-			// 3. Calling findDeployedContract with the contract address
-			// 4. Handling the result
-
-			// Placeholder implementation
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			throw new Error(
-				"Contract joining is not yet implemented. This feature requires Midnight.js browser integration.",
-			);
+			await joinCounterContract(walletApi, contractAddress.trim());
+			// Success - contract is now joined
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to join contract",
@@ -93,18 +96,15 @@ export function CounterContractPanel({
 		setIncrementing(true);
 		setError("");
 
-		try {
-			// TODO: Implement increment call using Midnight.js
-			// This requires:
-			// 1. Getting the deployed contract instance
-			// 2. Calling callTx.increment()
-			// 3. Handling the transaction result
-
-			// Placeholder implementation
-			await new Promise((resolve) => setTimeout(resolve, 2000));
-			throw new Error(
-				"Increment is not yet implemented. This feature requires Midnight.js browser integration.",
-			);
+			try {
+				await incrementCounter(
+					walletApi,
+					contractAddress.trim(),
+				);
+				// Refresh counter value after increment
+			setTimeout(() => {
+				handleViewState();
+			}, 2000);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to increment counter",
@@ -125,15 +125,8 @@ export function CounterContractPanel({
 		setCounterValue(null);
 
 		try {
-			// TODO: Implement state query using RPC or Indexer
-			// This can use the RPC client to query contract state
-			// Or use the indexer GraphQL API
-
-			// Placeholder implementation
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			throw new Error(
-				"State viewing is not yet implemented. This feature requires RPC or Indexer integration.",
-			);
+			const value = await getCounterValue(contractAddress.trim());
+			setCounterValue(value);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to view contract state",
@@ -150,6 +143,48 @@ export function CounterContractPanel({
 				Deploy, join, and interact with Counter contracts on Midnight Network.
 				This contract maintains a public counter that can be incremented.
 			</p>
+
+			<div className="params-section">
+				<h3>Proof Server Status</h3>
+				<div className="info-item">
+					<label>Status:</label>
+					<span>
+						{checkingProofServer ? (
+							"Checking..."
+						) : proofServerStatus === null ? (
+							"Unknown"
+						) : proofServerStatus ? (
+							<span style={{ color: "var(--color-success)" }}>
+								Running
+							</span>
+						) : (
+							<span style={{ color: "var(--color-error)" }}>
+								Not Running
+							</span>
+						)}
+					</span>
+					<button
+						type="button"
+						onClick={checkProofServerStatus}
+						disabled={checkingProofServer}
+						className="refresh-button"
+						style={{ marginTop: "0.5rem" }}
+					>
+						{checkingProofServer ? "Checking..." : "Refresh"}
+					</button>
+				</div>
+				{proofServerStatus === false && (
+					<div className="info-box" style={{ marginTop: "0.75rem" }}>
+						<strong>Proof Server is not running.</strong>
+						<br />
+						Start it with:
+						<br />
+						<code>
+							docker run -p 6300:6300 midnightnetwork/proof-server:latest
+						</code>
+					</div>
+				)}
+			</div>
 
 			<div className="params-section">
 				<h3>Contract Address</h3>
@@ -176,7 +211,7 @@ export function CounterContractPanel({
 						disabled={deploying}
 						className="call-button"
 					>
-						{deploying ? "Deploying..." : "🚀 Deploy New Contract"}
+						{deploying ? "Deploying..." : "Deploy New Contract"}
 					</button>
 					<button
 						type="button"
@@ -184,7 +219,7 @@ export function CounterContractPanel({
 						disabled={joining || !contractAddress.trim()}
 						className="call-button"
 					>
-						{joining ? "Joining..." : "🔗 Join Existing Contract"}
+						{joining ? "Joining..." : "Join Existing Contract"}
 					</button>
 					<button
 						type="button"
@@ -192,7 +227,7 @@ export function CounterContractPanel({
 						disabled={incrementing || !contractAddress.trim()}
 						className="call-button"
 					>
-						{incrementing ? "Incrementing..." : "➕ Increment Counter"}
+						{incrementing ? "Incrementing..." : "Increment Counter"}
 					</button>
 					<button
 						type="button"
@@ -200,7 +235,7 @@ export function CounterContractPanel({
 						disabled={viewingState || !contractAddress.trim()}
 						className="call-button"
 					>
-						{viewingState ? "Loading..." : "👁️ View Counter Value"}
+						{viewingState ? "Loading..." : "View Counter Value"}
 					</button>
 				</div>
 			</div>
@@ -225,7 +260,7 @@ export function CounterContractPanel({
 									className="copy-button"
 									title="Copy address"
 								>
-									📋
+									Copy
 								</button>
 							</span>
 						</div>

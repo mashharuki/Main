@@ -76,24 +76,24 @@ export function WalletInfoPanel({
 				<div className="api-methods-list">
 					<div className="api-method-item">
 						<strong>getUsedAddresses()</strong>
-						<span className="method-status">✓ Available</span>
+						<span className="method-status">Available</span>
 					</div>
 					<div className="api-method-item">
 						<strong>getUnusedAddresses()</strong>
-						<span className="method-status">✓ Available</span>
+						<span className="method-status">Available</span>
 					</div>
 					<div className="api-method-item">
 						<strong>getChangeAddress()</strong>
-						<span className="method-status">✓ Available</span>
+						<span className="method-status">Available</span>
 					</div>
 					<div className="api-method-item">
 						<strong>getBalance()</strong>
-						<span className="method-status">✓ Available</span>
+						<span className="method-status">Available</span>
 					</div>
 					<div className="api-method-item">
 						<strong>signData()</strong>
 						<span className="method-status">
-							{walletApi.signData ? "✓ Available" : "✗ Not Available"}
+							{walletApi.signData ? "Available" : "Not Available"}
 						</span>
 					</div>
 				</div>

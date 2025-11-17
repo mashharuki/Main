@@ -61,7 +61,7 @@ export function AddressesPanel({ walletApi }: AddressesPanelProps) {
 						disabled={loading}
 						className="refresh-button"
 					>
-						{loading ? "Loading..." : "🔄 Refresh Addresses"}
+						{loading ? "Loading..." : "Refresh Addresses"}
 					</button>
 				</div>
 			</div>
@@ -81,7 +81,7 @@ export function AddressesPanel({ walletApi }: AddressesPanelProps) {
 								className="copy-button"
 								title="Copy address"
 							>
-								📋
+								Copy
 							</button>
 						</div>
 					</div>
@@ -116,7 +116,7 @@ export function AddressesPanel({ walletApi }: AddressesPanelProps) {
 										className="copy-button"
 										title="Copy address"
 									>
-										📋
+										Copy
 									</button>
 								</div>
 							</div>
@@ -153,7 +153,7 @@ export function AddressesPanel({ walletApi }: AddressesPanelProps) {
 										className="copy-button"
 										title="Copy address"
 									>
-										📋
+										Copy
 									</button>
 								</div>
 							</div>

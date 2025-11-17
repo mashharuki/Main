@@ -372,7 +372,7 @@ export function RpcExplorer() {
 												rel="noopener noreferrer"
 												className="explorer-link"
 											>
-												🔗 Open in Explorer
+												Open in Explorer
 											</a>
 										)}
 									</div>
@@ -465,7 +465,7 @@ export function RpcExplorer() {
 													rel="noopener noreferrer"
 													className="explorer-link"
 												>
-													🔗 Open in Explorer
+													Open in Explorer
 												</a>
 											)}
 									</div>
@@ -563,7 +563,7 @@ export function RpcExplorer() {
 														rel="noopener noreferrer"
 														className="explorer-link-small"
 													>
-														🔗 Explorer
+														Explorer
 													</a>
 												</div>
 												<pre className="result-item-content">

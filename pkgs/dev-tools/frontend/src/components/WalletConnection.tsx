@@ -28,11 +28,13 @@ interface WalletStatus {
 interface WalletConnectionProps {
 	onConnected?: (api: Cip30WalletApi, name: WalletName, address: string) => void;
 	onDisconnected?: () => void;
+	onBalanceUpdate?: (balance: string) => void;
 }
 
 export function WalletConnection({
 	onConnected,
 	onDisconnected,
+	onBalanceUpdate,
 }: WalletConnectionProps) {
 	const [wallets, setWallets] = useState(getAvailableWallets());
 	const [status, setStatus] = useState<WalletStatus>({
@@ -80,6 +82,7 @@ export function WalletConnection({
 
 			saveConnection(walletName, address);
 			onConnected?.(api, walletName, address);
+			onBalanceUpdate?.(balance);
 		} catch (err) {
 			let errorMessage = "Unknown error occurred";
 
@@ -132,6 +135,7 @@ export function WalletConnection({
 				address,
 				balance,
 			}));
+			onBalanceUpdate?.(balance);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to refresh",
@@ -154,15 +158,24 @@ export function WalletConnection({
 					{wallets.map((wallet) => (
 						<div key={wallet.name} className="wallet-item">
 							<div className="wallet-info">
-								<div className="wallet-name">
-									{wallet.displayName}
+								<div className="wallet-header">
+									{wallet.icon && (
+										<img
+											src={wallet.icon}
+											alt={wallet.displayName}
+											className="wallet-icon-small"
+										/>
+									)}
+									<div className="wallet-name">
+										{wallet.displayName}
+									</div>
 								</div>
 								<div
 									className={`wallet-status ${
 										wallet.installed ? "installed" : "not-installed"
 									}`}
 								>
-									{wallet.installed ? "✓ Installed" : "✗ Not Installed"}
+									{wallet.installed ? "Installed" : "Not Installed"}
 								</div>
 							</div>
 							{wallet.installed ? (
@@ -229,7 +242,7 @@ export function WalletConnection({
 									className="copy-button"
 									title="Copy address"
 								>
-									📋
+									Copy
 								</button>
 							</div>
 						</div>
@@ -246,7 +259,7 @@ export function WalletConnection({
 								disabled={refreshing}
 								className="refresh-button"
 							>
-								{refreshing ? "Refreshing..." : "🔄 Refresh"}
+								{refreshing ? "Refreshing..." : "Refresh"}
 							</button>
 							<button
 								type="button"

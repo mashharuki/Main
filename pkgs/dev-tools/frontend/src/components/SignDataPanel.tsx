@@ -97,7 +97,7 @@ export function SignDataPanel({ walletApi, address }: SignDataPanelProps) {
 						disabled={signing || !payload.trim()}
 						className="call-button"
 					>
-						{signing ? "Signing..." : "✍️ Sign Data"}
+						{signing ? "Signing..." : "Sign Data"}
 					</button>
 					<button
 						type="button"
@@ -122,7 +122,7 @@ export function SignDataPanel({ walletApi, address }: SignDataPanelProps) {
 							className="copy-button"
 							title="Copy signature"
 						>
-							📋 Copy
+							Copy
 						</button>
 					</div>
 				</div>
