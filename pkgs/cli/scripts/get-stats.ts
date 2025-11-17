@@ -134,26 +134,26 @@ const displayStats = (stats: RegistrationStats): void => {
   console.log("\n" + "=".repeat(50));
   console.log("   Patient Registry Statistics");
   console.log("=".repeat(50));
-  console.log(`Total Registrations: ${stats.totalCount}`);
+  console.log(`Total Registrations: ${stats.totalCount ?? 'N/A'}`);
   console.log("-".repeat(50));
   console.log("Gender Distribution:");
-  console.log(`  Male:   ${stats.maleCount}`);
-  console.log(`  Female: ${stats.femaleCount}`);
-  console.log(`  Other:  ${stats.otherCount}`);
+  console.log(`  Male:   ${stats.maleCount ?? 'N/A'}`);
+  console.log(`  Female: ${stats.femaleCount ?? 'N/A'}`);
+  console.log(`  Other:  ${stats.otherCount ?? 'N/A'}`);
   console.log("=".repeat(50) + "\n");
 
   if (logger !== undefined) {
     logger.info(
       {
-        totalCount: stats.totalCount.toString(),
-        maleCount: stats.maleCount.toString(),
-        femaleCount: stats.femaleCount.toString(),
-        otherCount: stats.otherCount.toString(),
+        totalCount: stats.totalCount?.toString() ?? 'undefined',
+        maleCount: stats.maleCount?.toString() ?? 'undefined',
+        femaleCount: stats.femaleCount?.toString() ?? 'undefined',
+        otherCount: stats.otherCount?.toString() ?? 'undefined',
       },
       "Statistics retrieved successfully",
     );
   }
-};
+};;
 
 let logger: Logger | undefined;
 

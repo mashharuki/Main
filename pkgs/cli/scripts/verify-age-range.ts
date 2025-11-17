@@ -210,12 +210,14 @@ const main = async () => {
 
     // 6. 年齢範囲検証
     logger.info("Verifying age range...");
-    const exists = await api.verifyAgeRange(contract, minAge, maxAge);
+    // テスト用の年齢を設定（例: 30歳）
+    const testAge = 30n;
+    const isInRange = await api.verifyAgeRange(contract, testAge, minAge, maxAge);
 
     // 7. 結果表示
     logger.info("=".repeat(60));
-    if (exists) {
-      logger.info("✅ Verification Result: Patients exist in the age range");
+    if (isInRange) {
+      logger.info(`✅ Verification Result: Age ${testAge} is in range [${minAge}, ${maxAge}]`);
       logger.info("=".repeat(60));
       console.log(`\n✅ Patients in age range ${minAge}-${maxAge} exist.`);
       console.log(

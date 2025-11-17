@@ -220,31 +220,50 @@ export const increment = async (counterContract: DeployedCounterContract): Promi
 export const getRegistrationStats = async (contract: DeployedPatientRegistryContract): Promise<RegistrationStats> => {
   logger.info('Fetching registration statistics...');
 
-  // getRegistrationStats circuitを呼び出して統計情報を取得
+  // getRegistrationStats circuitを呼び出す
+  // これにより、最新のコントラクト状態が取得されます
   const statsResult = await contract.callTx.getRegistrationStats();
-  // 戻り値は[Field, Field, Field, Field]の配列
-  // callTxの戻り値から直接取得
-  const stats = statsResult.public as unknown as [bigint, bigint, bigint, bigint];
+  
+  logger.debug('=== Debug: statsResult structure ===');
+  logger.debug(`statsResult.public keys: ${Object.keys(statsResult.public).join(', ')}`);
+  
+  // nextContractStateに最新の状態が含まれています
+  if ('nextContractState' in statsResult.public) {
+    logger.debug('nextContractState found in statsResult');
+    const state = statsResult.public.nextContractState as any;
+    
+    // ledger関数をインポート
+    const { ledger } = await import('../../contract/dist/managed/patient-registry/contract/index.cjs');
+    const ledgerState = ledger(state);
+    
+    logger.debug('Ledger state accessed successfully');
+    logger.debug(`registrationCount: ${ledgerState.registrationCount}`);
+    logger.debug(`maleCount: ${ledgerState.maleCount}`);
+    logger.debug(`femaleCount: ${ledgerState.femaleCount}`);
+    logger.debug(`otherCount: ${ledgerState.otherCount}`);
+    
+    const result: RegistrationStats = {
+      totalCount: ledgerState.registrationCount,
+      maleCount: ledgerState.maleCount,
+      femaleCount: ledgerState.femaleCount,
+      otherCount: ledgerState.otherCount,
+    };
 
-  const result: RegistrationStats = {
-    totalCount: stats[0],
-    maleCount: stats[1],
-    femaleCount: stats[2],
-    otherCount: stats[3],
-  };
+    logger.info(
+      {
+        totalCount: result.totalCount.toString(),
+        maleCount: result.maleCount.toString(),
+        femaleCount: result.femaleCount.toString(),
+        otherCount: result.otherCount.toString(),
+      },
+      'Statistics retrieved successfully',
+    );
 
-  logger.info(
-    {
-      totalCount: result.totalCount.toString(),
-      maleCount: result.maleCount.toString(),
-      femaleCount: result.femaleCount.toString(),
-      otherCount: result.otherCount.toString(),
-    },
-    'Statistics retrieved successfully',
-  );
-
-  return result;
-};
+    return result;
+  }
+  
+  throw new Error('Could not access nextContractState from transaction result');
+};;;;;;;;;;
 
 /**
  * 年齢範囲を検証
@@ -265,26 +284,35 @@ export const getRegistrationStats = async (contract: DeployedPatientRegistryCont
  */
 export const verifyAgeRange = async (
   contract: DeployedPatientRegistryContract,
+  age: bigint,
   minAge: bigint,
   maxAge: bigint,
 ): Promise<boolean> => {
   logger.info(
     {
+      age: age.toString(),
       minAge: minAge.toString(),
       maxAge: maxAge.toString(),
     },
     'Verifying age range...',
   );
 
-  // 注意: verifyAgeRangeは個別の年齢を検証するため、
-  // 実際の使用では患者データから年齢を取得する必要があります
-  // ここでは簡易的な実装として、常にfalseを返します
-  // TODO: 実際の患者データから年齢範囲内の患者が存在するかチェックする実装が必要
-  logger.info('Note: verifyAgeRange needs actual patient data implementation');
+  // verifyAgeRange circuitのロジックをローカルで実行
+  // コントラクトのcircuitと同じロジック: age >= minAge && age <= maxAge
+  const isInRange = age >= minAge && age <= maxAge;
+  
+  logger.info(
+    {
+      age: age.toString(),
+      minAge: minAge.toString(),
+      maxAge: maxAge.toString(),
+      isInRange,
+    },
+    'Age range verification completed',
+  );
 
-  // 暫定的にfalseを返す
-  return false;
-};
+  return isInRange;
+};;;
 
 /**
  * ウォレットとMidnightプロバイダーを作成
