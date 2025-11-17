@@ -1,122 +1,19 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { RpcClient } from "./rpc-client";
 import {
 	searchTransactionByHash,
 	searchTransactionsByAccount,
 	type TransactionSearchResult,
 } from "./tx-search";
+import { RPC_METHODS, CATEGORY_NAMES } from "./rpc-methods";
+import {
+	getBlockExplorerUrl,
+	extractBlockHashFromResult,
+	extractBlockNumberFromResult,
+} from "./explorer-utils";
 import "./App.css";
 
 const DEFAULT_ENDPOINT = "https://rpc.testnet-02.midnight.network/";
-
-interface RpcMethod {
-	name: string;
-	description: string;
-	params?: Array<{ name: string; type: string; required: boolean }>;
-}
-
-const RPC_METHODS: RpcMethod[] = [
-	{ name: "system_chain", description: "チェーン名を取得" },
-	{ name: "system_name", description: "ノード名を取得" },
-	{ name: "system_version", description: "ノードバージョンを取得" },
-	{ name: "system_health", description: "ノードのヘルス状態を取得" },
-	{ name: "system_peers", description: "接続されているピアのリストを取得" },
-	{ name: "system_properties", description: "チェーンのプロパティを取得" },
-	{
-		name: "chain_getBlock",
-		description: "ブロックのヘッダーとボディを取得",
-		params: [{ name: "hash", type: "string", required: false }],
-	},
-	{
-		name: "chain_getBlockHash",
-		description: "特定のブロックのハッシュを取得",
-		params: [{ name: "blockNumber", type: "string", required: false }],
-	},
-	{
-		name: "chain_getFinalizedHead",
-		description: "最終確定されたブロックのハッシュを取得",
-	},
-	{
-		name: "chain_getHeader",
-		description: "特定のブロックのヘッダーを取得",
-		params: [{ name: "hash", type: "string", required: false }],
-	},
-	{
-		name: "state_getStorage",
-		description: "ストレージエントリを取得",
-		params: [
-			{ name: "key", type: "string", required: true },
-			{ name: "at", type: "string", required: false },
-		],
-	},
-	{
-		name: "state_getMetadata",
-		description: "ランタイムメタデータを取得",
-		params: [{ name: "at", type: "string", required: false }],
-	},
-	{
-		name: "state_getRuntimeVersion",
-		description: "ランタイムバージョンを取得",
-		params: [{ name: "at", type: "string", required: false }],
-	},
-	{ name: "rpc_methods", description: "利用可能なRPCメソッドのリストを取得" },
-	{
-		name: "midnight_jsonContractState",
-		description: "JSONエンコードされたコントラクト状態を取得",
-		params: [
-			{ name: "address", type: "string", required: true },
-			{ name: "block", type: "string", required: false },
-		],
-	},
-	{
-		name: "midnight_contractState",
-		description: "生の（バイナリエンコードされた）コントラクト状態を取得",
-		params: [
-			{ name: "address", type: "string", required: true },
-			{ name: "block", type: "string", required: false },
-		],
-	},
-	{
-		name: "midnight_unclaimedAmount",
-		description: "未請求トークンまたは報酬の額を取得",
-		params: [
-			{ name: "beneficiary", type: "string", required: true },
-			{ name: "at", type: "string", required: false },
-		],
-	},
-	{
-		name: "midnight_zswapChainState",
-		description: "ZSwapチェーン状態を取得",
-		params: [
-			{ name: "address", type: "string", required: true },
-			{ name: "block", type: "string", required: false },
-		],
-	},
-	{
-		name: "midnight_apiVersions",
-		description: "サポートされているRPC APIバージョンのリストを取得",
-	},
-	{
-		name: "midnight_ledgerVersion",
-		description: "レジャーバージョンを取得",
-		params: [{ name: "at", type: "string", required: false }],
-	},
-	{
-		name: "midnight_jsonBlock",
-		description: "JSONエンコードされたブロック情報を取得（extrinsicを含む）",
-		params: [{ name: "at", type: "string", required: false }],
-	},
-	{
-		name: "midnight_decodeEvents",
-		description: "イベントをデコード",
-		params: [{ name: "events", type: "string", required: true }],
-	},
-	{
-		name: "midnight_zswapStateRoot",
-		description: "ZSwap状態ルートを取得",
-		params: [{ name: "at", type: "string", required: false }],
-	},
-];
 
 type TabType = "rpc" | "search-tx" | "search-account";
 
@@ -124,8 +21,11 @@ function App() {
 	const [endpoint, setEndpoint] = useState(DEFAULT_ENDPOINT);
 	const [activeTab, setActiveTab] = useState<TabType>("rpc");
 	const [selectedMethod, setSelectedMethod] = useState<string>("system_chain");
+	const [selectedCategory, setSelectedCategory] = useState<string>("all");
+	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [params, setParams] = useState<Record<string, string>>({});
 	const [result, setResult] = useState<string>("");
+	const [resultData, setResultData] = useState<unknown>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string>("");
 
@@ -143,10 +43,52 @@ function App() {
 
 	const selectedMethodInfo = RPC_METHODS.find((m) => m.name === selectedMethod);
 
+	// フィルタリングされたメソッドリスト
+	const filteredMethods = useMemo(() => {
+		let methods = RPC_METHODS;
+
+		// カテゴリでフィルタ
+		if (selectedCategory !== "all") {
+			methods = methods.filter((m) => m.category === selectedCategory);
+		}
+
+		// 検索クエリでフィルタ
+		if (searchQuery.trim()) {
+			const query = searchQuery.toLowerCase();
+			methods = methods.filter(
+				(m) =>
+					m.name.toLowerCase().includes(query) ||
+					m.description.toLowerCase().includes(query),
+			);
+		}
+
+		return methods;
+	}, [selectedCategory, searchQuery]);
+
+	// ブロック情報のexplorerリンク
+	const blockExplorerUrl = useMemo(() => {
+		if (!resultData) {
+			return null;
+		}
+
+		const blockHash = extractBlockHashFromResult(resultData);
+		if (blockHash) {
+			return getBlockExplorerUrl(blockHash);
+		}
+
+		const blockNumber = extractBlockNumberFromResult(resultData);
+		if (blockNumber !== null) {
+			return getBlockExplorerUrl(`0x${blockNumber.toString(16)}`);
+		}
+
+		return null;
+	}, [resultData]);
+
 	const handleMethodChange = (methodName: string) => {
 		setSelectedMethod(methodName);
 		setParams({});
 		setResult("");
+		setResultData(null);
 		setError("");
 	};
 
@@ -158,6 +100,7 @@ function App() {
 		setLoading(true);
 		setError("");
 		setResult("");
+		setResultData(null);
 
 		try {
 			const methodInfo = RPC_METHODS.find((m) => m.name === selectedMethod);
@@ -179,6 +122,7 @@ function App() {
 			}
 
 			const response = await client.call(selectedMethod, methodParams);
+			setResultData(response);
 			setResult(JSON.stringify(response, null, 2));
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Unknown error occurred");
@@ -299,22 +243,68 @@ function App() {
 					{activeTab === "rpc" && (
 						<>
 							<h2>RPC Methods</h2>
-							<div className="method-list">
-								{RPC_METHODS.map((method) => (
+
+							{/* 検索バー */}
+							<div className="search-bar">
+								<input
+									type="text"
+									placeholder="メソッド名または説明で検索..."
+									value={searchQuery}
+									onChange={(e) => setSearchQuery(e.target.value)}
+									className="search-input"
+								/>
+							</div>
+
+							{/* カテゴリフィルター */}
+							<div className="category-filter">
+								<button
+									type="button"
+									className={`category-button ${
+										selectedCategory === "all" ? "active" : ""
+									}`}
+									onClick={() => setSelectedCategory("all")}
+								>
+									All
+								</button>
+								{Object.entries(CATEGORY_NAMES).map(([key, name]) => (
 									<button
+										key={key}
 										type="button"
-										key={method.name}
-										onClick={() => handleMethodChange(method.name)}
-										className={`method-button ${
-											selectedMethod === method.name ? "active" : ""
+										className={`category-button ${
+											selectedCategory === key ? "active" : ""
 										}`}
+										onClick={() => setSelectedCategory(key)}
 									>
-										<div className="method-name">{method.name}</div>
-										<div className="method-description">
-											{method.description}
-										</div>
+										{name}
 									</button>
 								))}
+							</div>
+
+							<div className="method-list">
+								{filteredMethods.length === 0 ? (
+									<div className="no-results">
+										メソッドが見つかりませんでした
+									</div>
+								) : (
+									filteredMethods.map((method) => (
+										<button
+											type="button"
+											key={method.name}
+											onClick={() => handleMethodChange(method.name)}
+											className={`method-button ${
+												selectedMethod === method.name ? "active" : ""
+											}`}
+										>
+											<div className="method-name">{method.name}</div>
+											<div className="method-description">
+												{method.description}
+											</div>
+											<div className="method-category">
+												{CATEGORY_NAMES[method.category]}
+											</div>
+										</button>
+									))
+								)}
 							</div>
 						</>
 					)}
@@ -373,7 +363,19 @@ function App() {
 
 							{result && (
 								<div className="result-panel">
-									<h3>Result</h3>
+									<div className="result-header">
+										<h3>Result</h3>
+										{blockExplorerUrl && (
+											<a
+												href={blockExplorerUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="explorer-link"
+											>
+												🔗 Explorerで開く
+											</a>
+										)}
+									</div>
 									<pre>{result}</pre>
 								</div>
 							)}
@@ -453,7 +455,20 @@ function App() {
 
 							{searchResults && (
 								<div className="result-panel">
-									<h3>検索結果</h3>
+									<div className="result-header">
+										<h3>検索結果</h3>
+										{!Array.isArray(searchResults) &&
+											searchResults.blockHash && (
+												<a
+													href={getBlockExplorerUrl(searchResults.blockHash)}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="explorer-link"
+												>
+													🔗 Explorerで開く
+												</a>
+											)}
+									</div>
 									<pre>{JSON.stringify(searchResults, null, 2)}</pre>
 								</div>
 							)}
@@ -534,7 +549,29 @@ function App() {
 							{searchResults && Array.isArray(searchResults) && (
 								<div className="result-panel">
 									<h3>検索結果 ({searchResults.length}件)</h3>
-									<pre>{JSON.stringify(searchResults, null, 2)}</pre>
+									<div className="search-results-list">
+										{searchResults.map((result, index) => (
+											<div key={index} className="search-result-item">
+												<div className="result-item-header">
+													<span>
+														ブロック #{result.blockNumber} (Index:{" "}
+														{result.extrinsicIndex})
+													</span>
+													<a
+														href={getBlockExplorerUrl(result.blockHash)}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="explorer-link-small"
+													>
+														🔗 Explorer
+													</a>
+												</div>
+												<pre className="result-item-content">
+													{JSON.stringify(result, null, 2)}
+												</pre>
+											</div>
+										))}
+									</div>
 								</div>
 							)}
 						</div>
