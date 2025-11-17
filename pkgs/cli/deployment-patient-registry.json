@@ -1,7 +1,7 @@
 {
-  "contractAddress": "02004500ae6a360ddcc1e67f97f532881c7893d4dc84c01eb481af92e9d1be2387a1",
-  "transactionHash": "0000000085626bd1c6ffd8ec41bc7ea709024839d6ff86582058bd5ac19707cbc2f61b85",
-  "deployedAt": "2025-11-17T10:52:04.319Z",
+  "contractAddress": "0200c9067722f2ff5a166955c0ec0a989d36750d587f184c3ce66fd2b5bd929286d7",
+  "transactionHash": "00000000190d924fdf8e747ca07eab9eb54fdbff12ac71e71fb31d7840ad276c3cda11c7",
+  "deployedAt": "2025-11-17T16:47:51.594Z",
   "network": "testnet",
   "deployer": "mn_shield-addr_test1mksxede6e6g85mp68levnatv3eeva0nczhmrgn9n7hgagsd8cvhsxqq78lg9phh6tzvl5efmvzqzxzlc8f4fkpncu3p7gsw7jyl22dryggu2djq9",
   "initialState": {
