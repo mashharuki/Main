@@ -224,6 +224,93 @@ export function IndexerExplorer() {
 		}));
 	};
 
+	// Format decoded JSON for human-readable display
+	const formatDecodedState = (jsonString: string): string => {
+		try {
+			const parsed = JSON.parse(jsonString);
+			return formatDecodedObject(parsed, 0);
+		} catch {
+			// If not valid JSON, return as-is
+			return jsonString;
+		}
+	};
+
+	// Recursively format object, truncating long hex strings
+	const formatDecodedObject = (obj: unknown, indent: number = 0): string => {
+		const indentStr = "  ".repeat(indent);
+		
+		if (obj === null) {
+			return "null";
+		}
+		
+		if (typeof obj === "string") {
+			// Check if it's a hex string (starts with 0x or contains only hex characters)
+			const isHexString = obj.startsWith("0x") || /^[0-9a-fA-F]+$/.test(obj);
+			
+			// Truncate long hex strings (likely witness/proof data)
+			if (isHexString && obj.length > 100) {
+				const preview = obj.startsWith("0x") ? obj.substring(0, 22) : obj.substring(0, 20);
+				const suffix = obj.substring(obj.length - 20);
+				const sizeKB = (obj.length / 2 / 1024).toFixed(2);
+				return `"${preview}...${suffix}" (${obj.length} chars, ~${sizeKB} KB hex data)`;
+			}
+			
+			// Truncate very long non-hex strings
+			if (!isHexString && obj.length > 200) {
+				const preview = obj.substring(0, 50);
+				const suffix = obj.substring(obj.length - 50);
+				return `"${preview}...${suffix}" (${obj.length} chars)`;
+			}
+			
+			return JSON.stringify(obj);
+		}
+		
+		if (typeof obj === "number" || typeof obj === "boolean") {
+			return String(obj);
+		}
+		
+		if (Array.isArray(obj)) {
+			if (obj.length === 0) {
+				return "[]";
+			}
+			const items = obj.map((item, idx) => {
+				const formatted = formatDecodedObject(item, indent + 1);
+				return `${indentStr}  ${idx}: ${formatted}`;
+			});
+			return `[\n${items.join(",\n")}\n${indentStr}]`;
+		}
+		
+		if (typeof obj === "object") {
+			const entries = Object.entries(obj);
+			if (entries.length === 0) {
+				return "{}";
+			}
+			const formatted = entries.map(([key, value]) => {
+				const formattedValue = formatDecodedObject(value, indent + 1);
+				// Add helpful comments for known keys
+				const keyComment = getKeyDescription(key);
+				const comment = keyComment ? ` // ${keyComment}` : "";
+				return `${indentStr}  "${key}": ${formattedValue}${comment}`;
+			});
+			return `{\n${formatted.join(",\n")}\n${indentStr}}`;
+		}
+		
+		return String(obj);
+	};
+
+	// Get human-readable description for known keys
+	const getKeyDescription = (key: string): string => {
+		const descriptions: Record<string, string> = {
+			data: "Contract data (array of state values)",
+			operations: "Contract operations (function calls)",
+			increment: "Increment operation",
+			v2: "Version 2 data (likely contains witness/proof data)",
+			state: "Contract state",
+			chainState: "Chain state",
+		};
+		return descriptions[key] || "";
+	};
+
 	const handleIntrospectSchema = async () => {
 		setSchemaLoading(true);
 		setError("");
@@ -562,8 +649,8 @@ export function IndexerExplorer() {
 										)}
 									</div>
 									{decodedState && !showRawState ? (
-										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "300px", border: "1px solid var(--color-border)" }}>
-											{decodedState}
+										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "400px", border: "1px solid var(--color-border)", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+											{formatDecodedState(decodedState)}
 										</pre>
 									) : (
 										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "150px", wordBreak: "break-all", border: "1px solid var(--color-border)" }}>
@@ -598,8 +685,8 @@ export function IndexerExplorer() {
 										)}
 									</div>
 									{decodedChainState && !showRawChainState ? (
-										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "300px", border: "1px solid var(--color-border)" }}>
-											{decodedChainState}
+										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "400px", border: "1px solid var(--color-border)", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+											{formatDecodedState(decodedChainState)}
 										</pre>
 									) : (
 										<pre style={{ margin: 0, padding: "0.5rem", backgroundColor: "var(--color-surface)", color: "var(--color-text)", borderRadius: "2px", fontSize: "0.75rem", overflow: "auto", maxHeight: "150px", wordBreak: "break-all", border: "1px solid var(--color-border)" }}>
