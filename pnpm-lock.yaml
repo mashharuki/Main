@@ -175,6 +175,27 @@ importers:
 
   pkgs/dev-tools/frontend:
     dependencies:
+      '@midnight-ntwrk/midnight-js-contracts':
+        specifier: 2.0.2
+        version: 2.0.2
+      '@midnight-ntwrk/midnight-js-fetch-zk-config-provider':
+        specifier: 2.0.2
+        version: 2.0.2
+      '@midnight-ntwrk/midnight-js-http-client-proof-provider':
+        specifier: 2.0.2
+        version: 2.0.2
+      '@midnight-ntwrk/midnight-js-indexer-public-data-provider':
+        specifier: 2.0.2
+        version: 2.0.2(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@midnight-ntwrk/midnight-js-network-id':
+        specifier: 2.0.2
+        version: 2.0.2
+      '@midnight-ntwrk/midnight-js-types':
+        specifier: 2.0.2
+        version: 2.0.2
+      '@midnight-ntwrk/midnight-js-utils':
+        specifier: 2.0.2
+        version: 2.0.2
       '@midnight-ntwrk/wallet-sdk-address-format':
         specifier: ^2.0.0
         version: 2.0.0(@midnight-ntwrk/zswap@4.0.0)
@@ -184,6 +205,9 @@ importers:
       bech32:
         specifier: ^2.0.0
         version: 2.0.0
+      contract:
+        specifier: workspace:*
+        version: link:../../contract
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -1128,6 +1152,9 @@ packages:
 
   '@midnight-ntwrk/midnight-js-contracts@2.0.2':
     resolution: {integrity: sha512-L1MPw5cmMq4bA5MQrnq9SWMl2wfmwOS2oK+lLwvtiYGtvd1/JrIXxBZk1759Sf9xTtVxmMdDS4yFLd3US0en2A==}
+
+  '@midnight-ntwrk/midnight-js-fetch-zk-config-provider@2.0.2':
+    resolution: {integrity: sha512-+7zrFkKh6AsxRHXeD0o4Nnhv/SCAnIadwoG+pT1XfD0knaMLu7rjHM/yFtwj6168dJF+McaPdkWaa+TGipRHtQ==}
 
   '@midnight-ntwrk/midnight-js-http-client-proof-provider@2.0.2':
     resolution: {integrity: sha512-zhSZA2zjo+ynzan28JJePReMhyLBVaRgf7hEUj1thVG/1bRuYWDQv/cMqr+x/ZocCDTqbbWdb/6gpHOkO9aWXg==}
@@ -5364,6 +5391,13 @@ snapshots:
       '@midnight-ntwrk/midnight-js-network-id': 2.0.2
       '@midnight-ntwrk/midnight-js-types': 2.0.2
       '@midnight-ntwrk/midnight-js-utils': 2.0.2
+
+  '@midnight-ntwrk/midnight-js-fetch-zk-config-provider@2.0.2':
+    dependencies:
+      '@midnight-ntwrk/midnight-js-types': 2.0.2
+      cross-fetch: 4.1.0
+    transitivePeerDependencies:
+      - encoding
 
   '@midnight-ntwrk/midnight-js-http-client-proof-provider@2.0.2':
     dependencies:
