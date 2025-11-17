@@ -9,27 +9,27 @@ import type { WalletName, WalletProvider } from "./types";
  * ウォレットプロバイダー設定マップ
  */
 export const WALLET_PROVIDERS: Record<WalletName, WalletProvider> = {
-	lace: {
-		name: "lace",
-		displayName: "Lace",
-		icon: "/wallet-icons/lace.png",
-		installUrl: "https://www.lace.io/",
-		windowKey: "lace",
-	},
-	yoroi: {
-		name: "yoroi",
-		displayName: "Yoroi",
-		icon: "/wallet-icons/yoroi.png",
-		installUrl: "https://yoroi-wallet.com/",
-		windowKey: "yoroi",
-	},
-	eternl: {
-		name: "eternl",
-		displayName: "Eternl",
-		icon: "/wallet-icons/eternl.png",
-		installUrl: "https://eternl.io/",
-		windowKey: "eternl",
-	},
+  lace: {
+    name: "lace",
+    displayName: "Lace",
+    icon: "/wallet-icons/lace.png",
+    installUrl: "https://www.lace.io/",
+    windowKey: "lace",
+  },
+  yoroi: {
+    name: "yoroi",
+    displayName: "Yoroi",
+    icon: "/wallet-icons/yoroi.png",
+    installUrl: "https://yoroi-wallet.com/",
+    windowKey: "yoroi",
+  },
+  eternl: {
+    name: "eternl",
+    displayName: "Eternl",
+    icon: "/wallet-icons/eternl.png",
+    installUrl: "https://eternl.io/",
+    windowKey: "eternl",
+  },
 };
 
 /**
@@ -43,7 +43,7 @@ export const SUPPORTED_WALLETS: WalletName[] = ["lace", "yoroi", "eternl"];
  * @returns ウォレットプロバイダー情報
  */
 export function getWalletProvider(walletName: WalletName): WalletProvider {
-	return WALLET_PROVIDERS[walletName];
+  return WALLET_PROVIDERS[walletName];
 }
 
 /**
@@ -51,5 +51,5 @@ export function getWalletProvider(walletName: WalletName): WalletProvider {
  * @returns ウォレットプロバイダー情報の配列
  */
 export function getAllWalletProviders(): WalletProvider[] {
-	return SUPPORTED_WALLETS.map((name) => WALLET_PROVIDERS[name]);
+  return SUPPORTED_WALLETS.map((name) => WALLET_PROVIDERS[name]);
 }

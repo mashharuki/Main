@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { Gender } from "../types";
 import {
-	codeToGender,
-	formatStats,
-	genderToCode,
-	hashCondition,
-	validateAge,
+  codeToGender,
+  formatStats,
+  genderToCode,
+  hashCondition,
+  validateAge,
 } from "../utils";
 
 describe("Patient Registry Utils", () => {

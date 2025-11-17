@@ -18,4 +18,3 @@ export * as PatientRegistry from "./managed/patient-registry/contract/index.cjs"
 export * from "./types";
 export * from "./utils";
 export * from "./witnesses";
-

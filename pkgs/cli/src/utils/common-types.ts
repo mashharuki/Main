@@ -15,28 +15,28 @@
 
 import { Counter, type CounterPrivateState } from "contract";
 import type {
-	ImpureCircuitId,
-	MidnightProviders,
+  ImpureCircuitId,
+  MidnightProviders,
 } from "@midnight-ntwrk/midnight-js-types";
 import type {
-	DeployedContract,
-	FoundContract,
+  DeployedContract,
+  FoundContract,
 } from "@midnight-ntwrk/midnight-js-contracts";
 
 export type CounterCircuits = ImpureCircuitId<
-	Counter.Contract<CounterPrivateState>
+  Counter.Contract<CounterPrivateState>
 >;
 
 export const CounterPrivateStateId = "counterPrivateState";
 
 export type CounterProviders = MidnightProviders<
-	CounterCircuits,
-	typeof CounterPrivateStateId,
-	CounterPrivateState
+  CounterCircuits,
+  typeof CounterPrivateStateId,
+  CounterPrivateState
 >;
 
 export type CounterContract = Counter.Contract<CounterPrivateState>;
 
 export type DeployedCounterContract =
-	| DeployedContract<CounterContract>
-	| FoundContract<CounterContract>;
+  | DeployedContract<CounterContract>
+  | FoundContract<CounterContract>;

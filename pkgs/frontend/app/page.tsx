@@ -10,28 +10,28 @@ import { InstitutionDashboard } from "@/components/institution-dashboard";
 export type UserRole = "patient" | "researcher" | "institution" | null;
 
 export default function Home() {
-	const [showLanding, setShowLanding] = useState(true);
-	const [userRole, setUserRole] = useState<UserRole>(null);
+  const [showLanding, setShowLanding] = useState(true);
+  const [userRole, setUserRole] = useState<UserRole>(null);
 
-	if (showLanding) {
-		return <LandingPage onGetStarted={() => setShowLanding(false)} />;
-	}
+  if (showLanding) {
+    return <LandingPage onGetStarted={() => setShowLanding(false)} />;
+  }
 
-	if (!userRole) {
-		return <LoginScreen onLogin={setUserRole} />;
-	}
+  if (!userRole) {
+    return <LoginScreen onLogin={setUserRole} />;
+  }
 
-	if (userRole === "patient") {
-		return <PatientDashboard onLogout={() => setUserRole(null)} />;
-	}
+  if (userRole === "patient") {
+    return <PatientDashboard onLogout={() => setUserRole(null)} />;
+  }
 
-	if (userRole === "researcher") {
-		return <ResearcherDashboard onLogout={() => setUserRole(null)} />;
-	}
+  if (userRole === "researcher") {
+    return <ResearcherDashboard onLogout={() => setUserRole(null)} />;
+  }
 
-	if (userRole === "institution") {
-		return <InstitutionDashboard onLogout={() => setUserRole(null)} />;
-	}
+  if (userRole === "institution") {
+    return <InstitutionDashboard onLogout={() => setUserRole(null)} />;
+  }
 
-	return null;
+  return null;
 }
