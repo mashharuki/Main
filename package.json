@@ -1,16 +1,16 @@
 {
-  "name": "Main",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.20.0",
-  "scripts": {
-    "cli": "pnpm --filter cli",
+	"name": "Main",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.20.0",
+	"scripts": {
+		"cli": "pnpm --filter cli",
 		"contract": "pnpm --filter contract",
-    "frontend": "pnpm --filter frontend",
+		"frontend": "pnpm --filter frontend",
 		"format": "pnpm exec biome format --write ."
 	},
 	"devDependencies": {

@@ -19,10 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useWalletContext } from "./wallet-provider";
 import type { WalletName } from "@/lib/wallet/types";
 import { getAllWalletProviders } from "@/lib/wallet/providers";
-import {
-	detectWallets,
-	openWalletInstallPage,
-} from "@/lib/wallet/wallet-api";
+import { detectWallets, openWalletInstallPage } from "@/lib/wallet/wallet-api";
 import { cn } from "@/lib/utils";
 
 /**

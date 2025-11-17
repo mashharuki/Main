@@ -14,10 +14,7 @@ const STORAGE_KEY = "nextmed_wallet_connection";
  * @param walletName ウォレット名
  * @param address ウォレットアドレス
  */
-export function saveConnection(
-	walletName: WalletName,
-	address: string,
-): void {
+export function saveConnection(walletName: WalletName, address: string): void {
 	try {
 		const connection: WalletConnection = {
 			walletName,

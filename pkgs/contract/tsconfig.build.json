@@ -14,7 +14,7 @@
 // limitations under the License.
 
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["src/test/**/*.ts"],
-  "compilerOptions": {}
+	"extends": "./tsconfig.json",
+	"exclude": ["src/test/**/*.ts"],
+	"compilerOptions": {}
 }

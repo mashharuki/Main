@@ -121,10 +121,7 @@ export async function connectWallet(
 		const api = await provider.enable();
 
 		if (!api) {
-			throw new WalletError(
-				"CONNECTION_FAILED",
-				"Failed to enable wallet API",
-			);
+			throw new WalletError("CONNECTION_FAILED", "Failed to enable wallet API");
 		}
 
 		return api;
@@ -171,7 +168,10 @@ export async function getAddress(api: Cip30WalletApi): Promise<string> {
 				return usedAddresses[0];
 			}
 		} catch (error) {
-			console.warn("getUsedAddresses failed, trying alternative methods:", error);
+			console.warn(
+				"getUsedAddresses failed, trying alternative methods:",
+				error,
+			);
 		}
 
 		// 方法2: 未使用アドレスを取得

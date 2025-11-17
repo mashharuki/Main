@@ -5,7 +5,11 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import type { WalletName, WalletState, WalletActions } from "@/lib/wallet/types";
+import type {
+	WalletName,
+	WalletState,
+	WalletActions,
+} from "@/lib/wallet/types";
 import { WalletError, ERROR_MESSAGES } from "@/lib/wallet/types";
 import {
 	connectWallet,
