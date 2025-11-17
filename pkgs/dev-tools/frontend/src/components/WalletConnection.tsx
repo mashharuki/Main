@@ -309,7 +309,15 @@ export function WalletConnection({
 						Install a wallet extension (Lace, Yoroi, Eternl, etc.) in your browser
 					</li>
 					<li>
-						Create or import a wallet and obtain testnet tokens (tDUST)
+						Create or import a wallet and obtain testnet tokens (tDUST) from the{" "}
+						<a
+							href="https://midnight.network/test-faucet"
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: "var(--color-primary)", textDecoration: "underline" }}
+						>
+							Midnight Testnet Faucet
+						</a>
 					</li>
 					<li>
 						Click the "Connect" button on this page to connect your wallet

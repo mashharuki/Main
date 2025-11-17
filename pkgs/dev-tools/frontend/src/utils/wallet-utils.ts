@@ -431,16 +431,50 @@ export async function getBalance(api: Cip30WalletApi): Promise<string> {
 
 /**
  * アドレスをフォーマット（短縮表示）
+ * Midnight Networkアドレスのプレフィックス（mn_shield-addr_testなど）を保持
  */
 export function formatAddress(
 	address: string,
 	prefixLength = 6,
-	suffixLength = 4,
+	suffixLength = 8,
 ): string {
 	if (address.length <= prefixLength + suffixLength) {
 		return address;
 	}
 
+	// Midnight Networkアドレスのプレフィックスを検出
+	const midnightPrefixes = [
+		"mn_shield-addr_test",
+		"mn_shield-addr_",
+		"addr_test",
+		"addr_",
+	];
+
+	let meaningfulPrefix = "";
+	let remainingAddress = address;
+
+	// プレフィックスを検出
+	for (const prefix of midnightPrefixes) {
+		if (address.startsWith(prefix)) {
+			meaningfulPrefix = prefix;
+			remainingAddress = address.slice(prefix.length);
+			break;
+		}
+	}
+
+	// プレフィックスが見つかった場合
+	if (meaningfulPrefix) {
+		// 残りのアドレスが短い場合はそのまま返す
+		if (remainingAddress.length <= suffixLength) {
+			return address;
+		}
+		// プレフィックス + 最初の数文字 + ... + 最後の数文字
+		const startChars = remainingAddress.slice(0, 4);
+		const endChars = remainingAddress.slice(-suffixLength);
+		return `${meaningfulPrefix}${startChars}...${endChars}`;
+	}
+
+	// 通常のアドレスの場合（プレフィックスなし）
 	const prefix = address.slice(0, prefixLength);
 	const suffix = address.slice(-suffixLength);
 

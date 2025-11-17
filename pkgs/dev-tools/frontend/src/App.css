@@ -117,6 +117,67 @@ body {
   color: var(--color-text);
 }
 
+.connection-info-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.connection-info-header .info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-direction: row;
+}
+
+.connection-info-header .info-item label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.connection-info-header .info-item span {
+  color: var(--color-text);
+  font-size: 0.875rem;
+}
+
+.connection-info-header .address-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.connection-info-header .address-full {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.connection-info-header .address-short {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  display: inline;
+}
+
+.connection-info-header .balance-display {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.connection-info-header .refresh-button {
+  margin-left: auto;
+}
+
 .endpoint-config {
   margin-top: 0.5rem;
 }
