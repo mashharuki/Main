@@ -5,10 +5,7 @@ import {
 	buildBlockWithTransactionsQuery,
 	buildTransactionsByHashQuery,
 	buildTransactionsByIdentifierQuery,
-	buildContractActionQuery,
 } from "../utils/graphql-queries";
-import { numberToHexEncoded, isValidHexEncoded } from "../utils/hex-utils";
-import { bech32mToHexIdentifier } from "../utils/bech32-utils";
 import { introspectSchema } from "../utils/indexer-schema";
 import "../App.css";
 
@@ -97,9 +94,6 @@ export function IndexerExplorer() {
 
 	// Search states
 	const [searchTxHash, setSearchTxHash] = useState<string>("");
-	const [searchAccount, setSearchAccount] = useState<string>("");
-	const [searchAccountOffset, setSearchAccountOffset] = useState<string>("0");
-	const [searchAccountLimit, setSearchAccountLimit] = useState<string>("100");
 	const [searchResult, setSearchResult] = useState<unknown>(null);
 
 	// Custom query states
@@ -368,244 +362,6 @@ export function IndexerExplorer() {
 		}
 	};
 
-	const handleSearchAccount = async () => {
-		if (!searchAccount.trim()) {
-			setError("Please enter an account address or identifier");
-			return;
-		}
-
-		setLoading(true);
-		setError("");
-		setSearchResult(null);
-
-		try {
-			const searchValue = searchAccount.trim();
-			const limit = parseInt(searchAccountLimit, 10) || 100;
-			
-			// Check if it's a 72-character identifier (transaction identifier)
-			const isIdentifier = /^[0-9a-fA-F]{72}$/.test(searchValue);
-			
-			if (isIdentifier) {
-				// Extract the 64-character data part (positions 8-72)
-				const identifierDataPart = searchValue.slice(8, 72);
-				const identifierHex = `0x${identifierDataPart}`;
-				
-				// Search by identifier using GraphQL query
-				const query = buildTransactionsByIdentifierQuery(identifierHex);
-				const data = await client.query<{ transactions: Transaction[] }>(query);
-				
-				const limitedTransactions = data.transactions.slice(0, limit);
-				setSearchResult(limitedTransactions);
-				setResult(JSON.stringify({ transactions: limitedTransactions }, null, 2));
-				if (limitedTransactions.length === 0) {
-					setError(`No transactions found for identifier: ${searchValue}`);
-				} else {
-					setError(""); // Clear any previous errors
-				}
-				return;
-			}
-			
-			// Check if it's a Bech32m address (starts with mn_shield-addr_)
-			const isBech32mAddress = searchValue.startsWith("mn_shield-addr_");
-			
-			if (isBech32mAddress) {
-				// Try to decode Bech32m address to get coinPublicKey
-				console.log("Attempting to decode Bech32m address:", searchValue.substring(0, 50));
-				const hexIdentifier = bech32mToHexIdentifier(searchValue);
-				console.log("Decoded coinPublicKey:", hexIdentifier);
-				
-				if (hexIdentifier) {
-					// Remove 0x prefix for searching
-					const coinPublicKeyHex = hexIdentifier.startsWith("0x") ? hexIdentifier.slice(2) : hexIdentifier;
-					
-					// Search through transactions and filter by identifiers field
-					// identifiers contain coinPublicKey as part of a 72-character hex string
-					const allTransactions: Transaction[] = [];
-					
-					// Get latest block height first
-					const latestBlockQuery = buildLatestBlockQuery();
-					const latestBlockData = await client.query<{
-						block: {
-							height: number;
-						};
-					}>(latestBlockQuery);
-					
-					const latestHeight = latestBlockData.block.height;
-					const searchRange = Math.min(1000, latestHeight); // Search up to 1000 blocks
-					
-					// Search blocks in parallel batches
-					const batchSize = 20;
-					for (let start = 0; start < searchRange && allTransactions.length < limit; start += batchSize) {
-						const promises = [];
-						for (let i = 0; i < batchSize && (start + i) < searchRange; i++) {
-							const height = latestHeight - (start + i);
-							if (height < 0) break;
-							
-							const blockQuery = buildBlockWithTransactionsQuery(height);
-							promises.push(
-								client.query<{
-									block: {
-										height: number;
-										transactions: Transaction[];
-									};
-								}>(blockQuery).catch(() => null)
-							);
-						}
-						
-						const results = await Promise.all(promises);
-						for (const result of results) {
-							if (result && result.block && result.block.transactions) {
-								// Filter transactions that contain the coinPublicKey in identifiers
-								// identifiers are 72-character hex strings: 8-char prefix + 64-char data
-								// coinPublicKey (64 chars) may be in the data part (positions 8-72)
-								const matchingTransactions = result.block.transactions.filter((tx) => {
-									if (!tx.identifiers || tx.identifiers.length === 0) return false;
-									// Check if any identifier's data part (8-72) matches the coinPublicKey
-									return tx.identifiers.some((id: string) => {
-										if (id.length < 72) return false;
-										// Check if coinPublicKey matches the data part (positions 8-72)
-										const dataPart = id.slice(8, 72).toLowerCase();
-										return dataPart === coinPublicKeyHex.toLowerCase();
-									});
-								});
-								allTransactions.push(...matchingTransactions);
-								if (allTransactions.length >= limit) break;
-							}
-						}
-						
-						if (allTransactions.length >= limit) break;
-					}
-					
-					// Sort by block height (newest first) and limit results
-					const sortedTransactions = allTransactions
-						.sort((a, b) => {
-							const aHeight = a.block?.height ?? 0;
-							const bHeight = b.block?.height ?? 0;
-							return bHeight - aHeight;
-						})
-						.slice(0, limit);
-					
-					setSearchResult(sortedTransactions);
-					setResult(JSON.stringify({ transactions: sortedTransactions }, null, 2));
-					if (sortedTransactions.length === 0) {
-						setError(`No transactions found for Bech32m address. Searched ${searchRange} blocks. The address may not have any transactions.`);
-					} else {
-						setError(""); // Clear any previous errors
-					}
-					return;
-				} else {
-					console.error("Failed to decode Bech32m address, falling back to transaction search");
-					// If decoding fails, search through transactions and filter by identifiers
-					// This is a fallback approach since direct Bech32m decoding may not work
-					const allTransactions: Transaction[] = [];
-					
-					// Get latest block height first
-					const latestBlockQuery = buildLatestBlockQuery();
-					const latestBlockData = await client.query<{
-						block: {
-							height: number;
-						};
-					}>(latestBlockQuery);
-					
-					const latestHeight = latestBlockData.block.height;
-					const searchRange = Math.min(1000, latestHeight); // Search up to 1000 blocks
-					
-					// Search blocks in parallel batches
-					const batchSize = 20;
-					for (let start = 0; start < searchRange && allTransactions.length < limit * 2; start += batchSize) {
-						const promises = [];
-						for (let i = 0; i < batchSize && (start + i) < searchRange; i++) {
-							const height = latestHeight - (start + i);
-							if (height < 0) break;
-							
-							const blockQuery = buildBlockWithTransactionsQuery(height);
-							promises.push(
-								client.query<{
-									block: {
-										height: number;
-										transactions: Transaction[];
-									};
-								}>(blockQuery).catch(() => null)
-							);
-						}
-						
-						const results = await Promise.all(promises);
-						for (const result of results) {
-							if (result && result.block && result.block.transactions) {
-								// Note: We can't directly match Bech32m addresses with identifiers
-								// without proper decoding. This is a limitation of the current implementation.
-								allTransactions.push(...result.block.transactions);
-								if (allTransactions.length >= limit * 2) break;
-							}
-						}
-						
-						if (allTransactions.length >= limit * 2) break;
-					}
-					
-					// Return transactions found (without filtering, as we can't decode Bech32m)
-					const limitedTransactions = allTransactions.slice(0, limit);
-					setSearchResult(limitedTransactions);
-					setResult(JSON.stringify({ 
-						transactions: limitedTransactions,
-						note: "Bech32m address decoding failed. Showing recent transactions. To search by a specific address, convert the Bech32m address to hex identifier using Midnight.js or Wallet SDK, then use that identifier for search."
-					}, null, 2));
-					setError("Warning: Bech32m address decoding is not fully supported. Showing recent transactions. For accurate search, convert the Bech32m address to hex identifier using Midnight.js or Wallet SDK utilities.");
-					return;
-				}
-			}
-			
-			// Try contract address search first (if it looks like a hex address)
-			if (isValidHexEncoded(searchValue)) {
-				try {
-					const contractQuery = buildContractActionQuery(searchValue);
-					const contractData = await client.query<{
-						contractAction: {
-							address: string;
-							state: string;
-							chainState: string;
-							transaction: Transaction;
-						} | null;
-					}>(contractQuery);
-					
-					if (contractData.contractAction) {
-						setSearchResult(contractData.contractAction);
-						setResult(JSON.stringify(contractData, null, 2));
-						return;
-					}
-				} catch (contractErr) {
-					// If contract search fails, fall through to identifier search
-				}
-			}
-			
-			// Fall back to identifier-based query
-			let identifierHex: string;
-			const trimmedOffset = searchAccountOffset.trim();
-			if (trimmedOffset && isValidHexEncoded(trimmedOffset)) {
-				identifierHex = trimmedOffset.startsWith("0x") ? trimmedOffset : `0x${trimmedOffset}`;
-				// Ensure it's 64 hex characters (32 bytes)
-				const hexPart = identifierHex.startsWith("0x") ? identifierHex.slice(2) : identifierHex;
-				if (hexPart.length < 64) {
-					identifierHex = `0x${hexPart.padStart(64, "0")}`;
-				}
-			} else {
-				identifierHex = numberToHexEncoded(trimmedOffset || "0");
-			}
-			
-			const query = buildTransactionsByIdentifierQuery(identifierHex);
-			const data = await client.query<{ transactions: Transaction[] }>(query);
-
-			// Filter by account if needed (this would require checking identifiers or contractActions)
-			const limitedTransactions = data.transactions.slice(0, limit);
-			setSearchResult(limitedTransactions);
-			setResult(JSON.stringify(data, null, 2));
-		} catch (err) {
-			const errorMessage =
-				err instanceof Error ? err.message : "Unknown error occurred";
-			setError(errorMessage);
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	const handleCustomQuery = async () => {
 		if (!customQuery.trim()) {
@@ -823,7 +579,7 @@ export function IndexerExplorer() {
 						<div className="method-panel">
 							<h2>Search</h2>
 							<p className="method-description-text">
-								Search for transactions by hash, identifier, or account address. Identifiers are 72-character hex strings (8-char prefix + 64-char data) found in transaction.identifiers.
+								Search for transactions by hash or identifier. Identifiers are 72-character hex strings found in transaction.identifiers.
 							</p>
 
 							<div className="params-section">
@@ -834,7 +590,7 @@ export function IndexerExplorer() {
 											type="text"
 											value={searchTxHash}
 											onChange={(e) => setSearchTxHash(e.target.value)}
-											placeholder="0x... (64 hex chars) or identifier (72 hex chars)"
+											placeholder="0x... (64 hex chars) or 00000000... (72 hex chars)"
 										/>
 									</label>
 									<small>64-char hash or 72-char identifier from transaction.identifiers</small>
@@ -845,55 +601,7 @@ export function IndexerExplorer() {
 									disabled={loading || !searchTxHash.trim()}
 									className="call-button"
 								>
-									{loading ? "Searching..." : "Search by Hash"}
-								</button>
-
-								<div className="param-input" style={{ marginTop: "2rem" }}>
-									<label>
-										Transaction Identifier (72-char hex)
-										<input
-											type="text"
-											value={searchAccount}
-											onChange={(e) => setSearchAccount(e.target.value)}
-											placeholder="00000000... (72 hex chars)"
-										/>
-									</label>
-									<small>Search by identifier from transaction.identifiers field</small>
-								</div>
-								<div className="param-input">
-									<label>
-										Offset
-										<input
-											type="number"
-											value={searchAccountOffset}
-											onChange={(e) =>
-												setSearchAccountOffset(e.target.value)
-											}
-											placeholder="0"
-											min="0"
-										/>
-									</label>
-								</div>
-								<div className="param-input">
-									<label>
-										Limit
-										<input
-											type="number"
-											value={searchAccountLimit}
-											onChange={(e) => setSearchAccountLimit(e.target.value)}
-											placeholder="100"
-											min="1"
-											max="1000"
-										/>
-									</label>
-								</div>
-								<button
-									type="button"
-									onClick={handleSearchAccount}
-									disabled={loading || !searchAccount.trim()}
-									className="call-button"
-								>
-									{loading ? "Searching..." : "Search by Account"}
+									{loading ? "Searching..." : "Search"}
 								</button>
 							</div>
 
