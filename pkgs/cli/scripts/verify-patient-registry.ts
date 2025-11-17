@@ -2,18 +2,13 @@
 // Copyright (C) 2025 NextMed Team
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Logger } from "pino";
-import { createLogger } from "../src/utils/logger-utils.js";
-import {
-  StandaloneConfig,
-  TestnetLocalConfig,
-  TestnetRemoteConfig,
-  type Config,
-} from "../src/config.js";
-import * as api from "../src/api.js";
-import * as dotenv from "dotenv";
-import * as fsAsync from "node:fs/promises";
-import * as path from "node:path";
+import * as dotenv from 'dotenv';
+import * as fsAsync from 'node:fs/promises';
+import * as path from 'node:path';
+import type { Logger } from 'pino';
+import * as api from '../src/api.js';
+import { type Config, StandaloneConfig, TestnetLocalConfig, TestnetRemoteConfig } from '../src/config.js';
+import { createLogger } from '../src/utils/logger-utils.js';
 
 dotenv.config();
 
@@ -25,11 +20,7 @@ const { NETWORK_ENV_VAR, SEED_ENV_VAR, CACHE_FILE_ENV_VAR } = process.env;
  * デプロイされたコントラクトの動作を確認します。
  */
 
-type SupportedNetwork =
-  | "standalone"
-  | "testnet-local"
-  | "testnet"
-  | "testnet-remote";
+type SupportedNetwork = 'standalone' | 'testnet-local' | 'testnet' | 'testnet-remote';
 
 /**
  * デプロイ情報の型定義
@@ -52,19 +43,17 @@ interface DeploymentInfo {
  * 環境変数からネットワークを解決
  */
 const resolveNetwork = (value: string | undefined): SupportedNetwork => {
-  const normalized = (value ?? "testnet").toLowerCase();
-  if (normalized === "testnet") {
-    return "testnet";
+  const normalized = (value ?? 'testnet').toLowerCase();
+  if (normalized === 'testnet') {
+    return 'testnet';
   }
   switch (normalized) {
-    case "testnet-remote":
-    case "standalone":
-    case "testnet-local":
+    case 'testnet-remote':
+    case 'standalone':
+    case 'testnet-local':
       return normalized;
     default:
-      throw new Error(
-        `Unsupported network '${value}'. Supported: standalone, testnet-local, testnet`,
-      );
+      throw new Error(`Unsupported network '${value}'. Supported: standalone, testnet-local, testnet`);
   }
 };
 
@@ -73,12 +62,12 @@ const resolveNetwork = (value: string | undefined): SupportedNetwork => {
  */
 const buildConfig = (network: SupportedNetwork): Config => {
   switch (network) {
-    case "standalone":
+    case 'standalone':
       return new StandaloneConfig();
-    case "testnet-local":
+    case 'testnet-local':
       return new TestnetLocalConfig();
-    case "testnet":
-    case "testnet-remote":
+    case 'testnet':
+    case 'testnet-remote':
     default:
       return new TestnetRemoteConfig();
   }
@@ -88,10 +77,8 @@ const buildConfig = (network: SupportedNetwork): Config => {
  * ウォレットシードの検証
  */
 const ensureSeed = (seed: string | undefined): string => {
-  if (seed === undefined || seed.trim() === "") {
-    throw new Error(
-      "Wallet seed is required. Set SEED_ENV_VAR environment variable.",
-    );
+  if (seed === undefined || seed.trim() === '') {
+    throw new Error('Wallet seed is required. Set SEED_ENV_VAR environment variable.');
   }
   return seed.trim();
 };
@@ -107,18 +94,14 @@ const defaultCacheName = (seed: string, network: SupportedNetwork): string => {
 /**
  * デプロイ情報をJSONファイルから読み込み
  */
-const loadDeploymentInfo = async (
-  filename: string = "deployment-patient-registry.json",
-): Promise<DeploymentInfo> => {
+const loadDeploymentInfo = async (filename: string = 'deployment-patient-registry.json'): Promise<DeploymentInfo> => {
   const filePath = path.join(process.cwd(), filename);
   try {
-    const content = await fsAsync.readFile(filePath, "utf-8");
+    const content = await fsAsync.readFile(filePath, 'utf-8');
     return JSON.parse(content) as DeploymentInfo;
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      throw new Error(
-        `Deployment info file not found: ${filePath}. Please run deploy script first.`,
-      );
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      throw new Error(`Deployment info file not found: ${filePath}. Please run deploy script first.`);
     }
     throw error;
   }
@@ -127,20 +110,17 @@ const loadDeploymentInfo = async (
 /**
  * リソースのクローズ（best-effort）
  */
-const closeIfPossible = async (
-  resource: unknown,
-  label: string,
-): Promise<void> => {
-  if (resource !== null && typeof resource === "object") {
+const closeIfPossible = async (resource: unknown, label: string): Promise<void> => {
+  if (resource !== null && typeof resource === 'object') {
     const maybeClosable = resource as { close?: () => unknown };
-    if (typeof maybeClosable.close === "function") {
+    if (typeof maybeClosable.close === 'function') {
       try {
         await Promise.resolve(maybeClosable.close());
       } catch (error) {
         if (logger !== undefined) {
           if (error instanceof Error) {
             logger.warn(`Failed to close ${label}: ${error.message}`);
-            logger.debug(error.stack ?? "");
+            logger.debug(error.stack ?? '');
           } else {
             logger.warn(`Failed to close ${label}: ${String(error)}`);
           }
@@ -166,20 +146,18 @@ const main = async () => {
   logger = await createLogger(config.logDir);
   api.setLogger(logger);
 
-  logger.info("=".repeat(60));
-  logger.info("Patient Registry Contract Verification");
-  logger.info("=".repeat(60));
+  logger.info('='.repeat(60));
+  logger.info('Patient Registry Contract Verification');
+  logger.info('='.repeat(60));
   logger.info(`Network: ${network}`);
   logger.info(`Cache file: ${cacheFileName}`);
-  logger.info("=".repeat(60));
+  logger.info('='.repeat(60));
 
-  let wallet:
-    | Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>>
-    | undefined;
+  let wallet: Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>> | undefined;
 
   try {
     // デプロイ情報の読み込み
-    logger.info("Loading deployment info...");
+    logger.info('Loading deployment info...');
     const deploymentInfo = await loadDeploymentInfo();
     logger.info(`Contract Address: ${deploymentInfo.contractAddress}`);
     logger.info(`Deployed At: ${deploymentInfo.deployedAt}`);
@@ -187,85 +165,67 @@ const main = async () => {
 
     // ネットワークの一致確認
     if (deploymentInfo.network !== network) {
-      logger.warn(
-        `Warning: Deployment network (${deploymentInfo.network}) differs from current network (${network})`,
-      );
+      logger.warn(`Warning: Deployment network (${deploymentInfo.network}) differs from current network (${network})`);
     }
 
     // ウォレットの作成
-    logger.info("Building wallet...");
+    logger.info('Building wallet...');
     wallet = await api.buildWalletAndWaitForFunds(config, seed, cacheFileName);
 
     // プロバイダーの設定
-    logger.info("Configuring providers...");
-    const providers = await api.configureProviders(wallet, config);
+    logger.info('Configuring providers...');
+    const providers = await api.configurePatientRegistryProviders(wallet, config);
 
     // コントラクトに接続
-    logger.info("Connecting to contract...");
-    const contract = await api.joinContract(
-      providers,
-      deploymentInfo.contractAddress,
-    );
+    logger.info('Connecting to contract...');
+    const contract = await api.joinPatientRegistryContract(providers, deploymentInfo.contractAddress);
 
     // 初期状態の確認
-    logger.info("Checking initial state...");
-    const initialState = await api.getCounterLedgerState(
-      providers,
-      deploymentInfo.contractAddress,
-    );
-    logger.info(`Initial counter value: ${initialState}`);
-
-    // TODO: Patient Registry固有の検証
-    // 現在はCounterコントラクトの検証を実行
-    logger.warn(
-      "Note: Using Counter contract verification as placeholder. Patient Registry verification will be implemented.",
+    logger.info('Checking initial registration stats...');
+    const initialStats = await api.getRegistrationStats(contract);
+    logger.info(
+      `Initial stats - Total: ${initialStats.totalCount}, Male: ${initialStats.maleCount}, Female: ${initialStats.femaleCount}, Other: ${initialStats.otherCount}`,
     );
 
-    // テスト: incrementを実行
-    logger.info("Testing increment operation...");
-    await api.increment(contract);
+    // テスト: 患者データを登録
+    logger.info('Testing patient registration...');
+    await api.registerPatient(contract, 30n, 0n, 'Diabetes');
+    logger.info('Patient registered successfully');
 
     // 更新後の状態を確認
-    logger.info("Checking updated state...");
-    const updatedState = await api.getCounterLedgerState(
-      providers,
-      deploymentInfo.contractAddress,
+    logger.info('Checking updated registration stats...');
+    const updatedStats = await api.getRegistrationStats(contract);
+    logger.info(
+      `Updated stats - Total: ${updatedStats.totalCount}, Male: ${updatedStats.maleCount}, Female: ${updatedStats.femaleCount}, Other: ${updatedStats.otherCount}`,
     );
-    logger.info(`Updated counter value: ${updatedState}`);
 
     // 検証結果の確認
     if (
-      initialState !== null &&
-      updatedState !== null &&
-      updatedState === initialState + 1n
+      updatedStats.totalCount === initialStats.totalCount + 1n &&
+      updatedStats.maleCount === initialStats.maleCount + 1n
     ) {
-      logger.info("=".repeat(60));
-      logger.info("✅ Verification Successful!");
-      logger.info("=".repeat(60));
-      logger.info(`Initial value: ${initialState}`);
-      logger.info(`Updated value: ${updatedState}`);
-      logger.info(`Increment worked correctly!`);
-      logger.info("=".repeat(60));
+      logger.info('='.repeat(60));
+      logger.info('✅ Verification Successful!');
+      logger.info('='.repeat(60));
+      logger.info(`Initial total count: ${initialStats.totalCount}`);
+      logger.info(`Updated total count: ${updatedStats.totalCount}`);
+      logger.info(`Patient registration worked correctly!`);
+      logger.info('='.repeat(60));
 
-      console.log("\n✅ Contract verification successful!");
+      console.log('\n✅ Contract verification successful!');
       console.log(`Contract is working as expected.`);
     } else {
-      throw new Error(
-        `Verification failed. Initial: ${initialState}, Updated: ${updatedState}`,
-      );
+      throw new Error(`Verification failed. Initial: ${initialStats.totalCount}, Updated: ${updatedStats.totalCount}`);
     }
 
     // プロバイダーのクローズ
-    await closeIfPossible(
-      providers.privateStateProvider,
-      "private state provider",
-    );
+    await closeIfPossible(providers.privateStateProvider, 'private state provider');
   } catch (error) {
-    logger?.error("Verification failed");
+    logger?.error('Verification failed');
     throw error;
   } finally {
     if (wallet !== undefined) {
-      await closeIfPossible(wallet, "wallet");
+      await closeIfPossible(wallet, 'wallet');
     }
   }
 };
@@ -277,12 +237,12 @@ await main().catch((error) => {
   if (logger !== undefined) {
     if (error instanceof Error) {
       logger.error(`Verification failed: ${error.message}`);
-      logger.debug(error.stack ?? "");
+      logger.debug(error.stack ?? '');
     } else {
       logger.error(`Verification failed: ${String(error)}`);
     }
   } else {
-    console.error("❌ Verification failed:", error);
+    console.error('❌ Verification failed:', error);
   }
   process.exitCode = 1;
 });

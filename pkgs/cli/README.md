@@ -17,6 +17,11 @@ NextMedプロジェクトのコマンドラインインターフェース（CLI�
 
 - デプロイ: `pnpm deploy:patient-registry`
 - 検証: `pnpm verify:patient-registry`
+- 患者登録: `pnpm register:patient`
+- 統計取得: `pnpm stats:patient-registry`
+- 年齢範囲検証: `pnpm verify:age-range`
+
+詳細な使用方法は[CLI_USAGE.md](./docs/CLI_USAGE.md)を参照してください。
 
 ## セットアップ
 
@@ -113,6 +118,9 @@ pnpm verify:patient-registry
 
 - `pnpm deploy:patient-registry`: Patient Registryコントラクトをデプロイ
 - `pnpm verify:patient-registry`: デプロイされたコントラクトを検証
+- `pnpm register:patient`: 患者データを登録
+- `pnpm stats:patient-registry`: 登録統計情報を取得
+- `pnpm verify:age-range`: 年齢範囲の患者存在確認
 
 ## ディレクトリ構成
 
@@ -154,10 +162,11 @@ pkgs/cli/
 
 ## 参考資料
 
+- [CLI使用ガイド](./docs/CLI_USAGE.md) - 詳細な使用方法
+- [デプロイ手順書](./docs/DEPLOYMENT.md) - デプロイ手順
 - [Midnight Documentation](https://docs.midnight.network/)
 - [Midnight Testnet Faucet](https://faucet.testnet-02.midnight.network/)
 - [Counter Example](https://github.com/midnight-ntwrk/example-counter)
-- [デプロイ手順書](./DEPLOYMENT.md)
 
 ## ライセンス
 

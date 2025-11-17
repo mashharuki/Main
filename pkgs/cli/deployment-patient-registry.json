@@ -1,9 +1,9 @@
 {
-  "contractAddress": "02004322dcadb3f0b4ae746dd605760da302b17a68f2efef9f9b1ead69a0e7b97cb5",
-  "transactionHash": "00000000b8835dff375f8830c14d5370a79b636712f23f3f4a8129f7eeb48d1aa2b4c9bd",
-  "deployedAt": "2025-11-14T15:19:22.933Z",
-  "network": "testnet",
-  "deployer": "mn_shield-addr_test1mksxede6e6g85mp68levnatv3eeva0nczhmrgn9n7hgagsd8cvhsxqq78lg9phh6tzvl5efmvzqzxzlc8f4fkpncu3p7gsw7jyl22dryggu2djq9",
+  "contractAddress": "0200050a1db4be2ec1a0f369ef8f5f424f88fe912c4eb6674a36e24375b2b48a0c70",
+  "transactionHash": "00000000f4560b88e3370dbb6ab31e97608425205b8e619c0850f6afa8ed424e3f1a2b48",
+  "deployedAt": "2025-11-17T15:59:45.598Z",
+  "network": "testnet-remote",
+  "deployer": "mn_shield-addr_test1j60pvf0u72y45z38hcmqznl99nmmvcggd9m3ns7zeszq9vuxverqxqx9vusaru5xcy9thmflusv6w5qpf4azghfcd7k84ef3mq8hzjg3hvyt3rtf",
   "initialState": {
     "registrationCount": 0,
     "maleCount": 0,

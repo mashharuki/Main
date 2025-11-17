@@ -1,12 +1,9 @@
-// This file is part of NextMed Patient Registry Deployment
+// This file is part of NextMed Patient Registry
 // Copyright (C) 2025 NextMed Team
 // SPDX-License-Identifier: Apache-2.0
 
 import * as dotenv from "dotenv";
-import * as fsAsync from "node:fs/promises";
-import * as path from "node:path";
 import type { Logger } from "pino";
-import * as Rx from "rxjs";
 import * as api from "../src/api.js";
 import {
   type Config,
@@ -14,18 +11,21 @@ import {
   TestnetLocalConfig,
   TestnetRemoteConfig,
 } from "../src/config.js";
+import type { RegistrationStats } from "../src/utils/common-types.js";
 import { createLogger } from "../src/utils/logger-utils.js";
 
 dotenv.config();
 
-const { NETWORK_ENV_VAR, SEED_ENV_VAR, CACHE_FILE_ENV_VAR } = process.env;
+const { NETWORK_ENV_VAR, SEED_ENV_VAR, CONTRACT_ADDRESS, CACHE_FILE_ENV_VAR } =
+  process.env;
 
 /**
- * Patient Registryコントラクトのデプロイスクリプト
+ * 統計情報取得CLIスクリプト
  *
  * 環境変数:
- * - NETWORK_ENV_VAR: デプロイ先ネットワーク (standalone | testnet-local | testnet)
+ * - NETWORK_ENV_VAR: ネットワーク (standalone | testnet-local | testnet)
  * - SEED_ENV_VAR: ウォレットシード（必須）
+ * - CONTRACT_ADDRESS: Patient Registryコントラクトアドレス（必須）
  * - CACHE_FILE_ENV_VAR: ウォレット状態のキャッシュファイル名（オプション）
  */
 
@@ -76,9 +76,21 @@ const buildConfig = (network: SupportedNetwork): Config => {
  */
 const ensureSeed = (seed: string | undefined): string => {
   if (seed === undefined || seed.trim() === "") {
-    throw new Error(`Wallet seed is required. Set ${SEED_ENV_VAR}.`);
+    throw new Error("SEED_ENV_VAR is required. Please set the wallet seed.");
   }
   return seed.trim();
+};
+
+/**
+ * コントラクトアドレスの検証
+ */
+const ensureContractAddress = (address: string | undefined): string => {
+  if (address === undefined || address.trim() === "") {
+    throw new Error(
+      "CONTRACT_ADDRESS is required. Please set the deployed contract address.",
+    );
+  }
+  return address.trim();
 };
 
 /**
@@ -116,37 +128,30 @@ const closeIfPossible = async (
 };
 
 /**
- * デプロイ情報の型定義
+ * 統計情報を見やすくフォーマットして表示
  */
-interface DeploymentInfo {
-  contractAddress: string;
-  transactionHash: string;
-  deployedAt: string;
-  network: string;
-  deployer: string;
-  initialState: {
-    registrationCount: number;
-    maleCount: number;
-    femaleCount: number;
-    otherCount: number;
-  };
-}
+const displayStats = (stats: RegistrationStats): void => {
+  console.log("\n" + "=".repeat(50));
+  console.log("   Patient Registry Statistics");
+  console.log("=".repeat(50));
+  console.log(`Total Registrations: ${stats.totalCount}`);
+  console.log("-".repeat(50));
+  console.log("Gender Distribution:");
+  console.log(`  Male:   ${stats.maleCount}`);
+  console.log(`  Female: ${stats.femaleCount}`);
+  console.log(`  Other:  ${stats.otherCount}`);
+  console.log("=".repeat(50) + "\n");
 
-/**
- * デプロイ情報をJSONファイルに保存
- */
-const saveDeploymentInfo = async (
-  deploymentInfo: DeploymentInfo,
-  filename: string = "deployment-patient-registry.json",
-): Promise<void> => {
-  const filePath = path.join(process.cwd(), filename);
-  await fsAsync.writeFile(
-    filePath,
-    JSON.stringify(deploymentInfo, null, 2),
-    "utf-8",
-  );
   if (logger !== undefined) {
-    logger.info(`Deployment info saved to: ${filePath}`);
+    logger.info(
+      {
+        totalCount: stats.totalCount.toString(),
+        maleCount: stats.maleCount.toString(),
+        femaleCount: stats.femaleCount.toString(),
+        otherCount: stats.otherCount.toString(),
+      },
+      "Statistics retrieved successfully",
+    );
   }
 };
 
@@ -156,84 +161,78 @@ let logger: Logger | undefined;
  * メイン処理
  */
 const main = async () => {
-  // 環境変数から設定を読み込み
+  // 1. 環境変数の検証
   const network = resolveNetwork(NETWORK_ENV_VAR);
   const seed = ensureSeed(SEED_ENV_VAR);
+  const contractAddress = ensureContractAddress(CONTRACT_ADDRESS);
   const cacheFileName = CACHE_FILE_ENV_VAR ?? defaultCacheName(seed, network);
 
-  // 設定とロガーの初期化
+  // 2. 設定とロガーの初期化
   const config = buildConfig(network);
   logger = await createLogger(config.logDir);
   api.setLogger(logger);
 
   logger.info("=".repeat(60));
-  logger.info("Patient Registry Contract Deployment");
+  logger.info("Patient Registry Statistics Retrieval");
   logger.info("=".repeat(60));
   logger.info(`Network: ${network}`);
+  logger.info(`Contract Address: ${contractAddress}`);
   logger.info(`Cache file: ${cacheFileName}`);
   logger.info("=".repeat(60));
 
   let wallet:
     | Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>>
     | undefined;
+  let providers:
+    | Awaited<ReturnType<typeof api.configurePatientRegistryProviders>>
+    | undefined;
 
   try {
-    // ウォレットの作成と資金確認
+    // 3. ウォレット作成
     logger.info("Building wallet and waiting for funds...");
     wallet = await api.buildWalletAndWaitForFunds(config, seed, cacheFileName);
 
-    // プロバイダーの設定
+    // 4. プロバイダー設定
     logger.info("Configuring providers...");
-    const providers = await api.configurePatientRegistryProviders(
-      wallet,
-      config,
+    providers = await api.configurePatientRegistryProviders(wallet, config);
+
+    // 5. コントラクトに接続
+    logger.info("Connecting to Patient Registry contract...");
+    const contract = await api.joinPatientRegistryContract(
+      providers,
+      contractAddress,
     );
 
-    // Patient Registryコントラクトのデプロイ
-    logger.info("Deploying Patient Registry contract...");
+    // 6. 統計情報取得
+    logger.info("Fetching registration statistics...");
+    const stats = await api.getRegistrationStats(contract);
 
-    const patientRegistryContract = await api.deployPatientRegistry(providers);
-    const deployTx = patientRegistryContract.deployTxData.public;
+    // 7. 結果表示
+    displayStats(stats);
 
-    // デプロイ情報の作成
-    const walletState = await Rx.firstValueFrom(wallet.state());
-    const deploymentInfo: DeploymentInfo = {
-      contractAddress: deployTx.contractAddress,
-      transactionHash: deployTx.txId,
-      deployedAt: new Date().toISOString(),
-      network,
-      deployer: walletState.address,
-      initialState: {
-        registrationCount: 0,
-        maleCount: 0,
-        femaleCount: 0,
-        otherCount: 0,
-      },
-    };
-
-    // デプロイ情報の保存
-    await saveDeploymentInfo(deploymentInfo);
-
-    // 成功メッセージ
-    logger.info("=".repeat(60));
-    logger.info("✅ Deployment Successful!");
-    logger.info("=".repeat(60));
-    logger.info(`Contract Address: ${deployTx.contractAddress}`);
-    logger.info(`Transaction Hash: ${deployTx.txId}`);
-    logger.info(`Deployer Address: ${walletState.address}`);
-    logger.info("=".repeat(60));
-
-    console.log("\n✅ Patient Registry contract deployed successfully!");
-    console.log(`Contract Address: ${deployTx.contractAddress}`);
-    console.log(`Transaction Hash: ${deployTx.txId}`);
-    console.log(`\nDeployment info saved to: deployment-patient-registry.json`);
-
+    // 8. 状態保存
     await api.saveState(wallet, cacheFileName);
-    await closeIfPossible(
-      providers.privateStateProvider,
-      "private state provider",
-    );
+  } catch (error) {
+    // エラーハンドリング
+    if (logger !== undefined) {
+      if (error instanceof Error) {
+        logger.error(`Failed to retrieve statistics: ${error.message}`);
+        logger.debug(error.stack ?? "");
+      } else {
+        logger.error(`Failed to retrieve statistics: ${String(error)}`);
+      }
+    } else {
+      console.error("❌ Failed to retrieve statistics:", error);
+    }
+    process.exitCode = 1;
   } finally {
+    // リソースクリーンアップ
+    if (providers !== undefined) {
+      await closeIfPossible(
+        providers.privateStateProvider,
+        "private state provider",
+      );
+    }
     if (wallet !== undefined) {
       await closeIfPossible(wallet, "wallet");
     }
@@ -243,16 +242,4 @@ const main = async () => {
 /**
  * エントリーポイント
  */
-await main().catch((error) => {
-  if (logger !== undefined) {
-    if (error instanceof Error) {
-      logger.error(`Deployment failed: ${error.message}`);
-      logger.debug(error.stack ?? "");
-    } else {
-      logger.error(`Deployment failed: ${String(error)}`);
-    }
-  } else {
-    console.error("❌ Deployment failed:", error);
-  }
-  process.exitCode = 1;
-});
+await main();

@@ -13,15 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import path from "node:path";
 import {
   NetworkId,
   setNetworkId,
 } from "@midnight-ntwrk/midnight-js-network-id";
+import path from "node:path";
 export const currentDir = path.resolve(new URL(import.meta.url).pathname, "..");
 
 export const contractConfig = {
-  privateStateStoreName: "counter-private-state",
+  privateStateStoreName: "patient-registry-private-state",
   zkConfigPath: path.resolve(
     currentDir,
     "..",
@@ -29,7 +29,7 @@ export const contractConfig = {
     "contract",
     "src",
     "managed",
-    "counter",
+    "patient-registry",
   ),
 };
 
