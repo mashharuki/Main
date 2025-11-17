@@ -134,7 +134,7 @@ describe("Patient Registry Contract", () => {
     test("should register a male patient successfully", () => {
       const simulator = new PatientRegistrySimulator();
       const conditionHash = hashCondition("diabetes");
-
+      // 患者のデータを追加
       const ledger = simulator.registerPatient(
         BigInt(30),
         BigInt(0), // MALE
@@ -151,7 +151,7 @@ describe("Patient Registry Contract", () => {
     test("should register a female patient successfully", () => {
       const simulator = new PatientRegistrySimulator();
       const conditionHash = hashCondition("hypertension");
-
+      // 患者のデータを追加
       const ledger = simulator.registerPatient(
         BigInt(45),
         BigInt(1), // FEMALE
@@ -394,6 +394,7 @@ describe("Patient Registry Contract", () => {
 
       // 研究対象: 40-65歳の患者
       const patientAge = BigInt(50);
+      // 正常な範囲内にあることを確認する。
       const isEligible = simulator.verifyAgeRange(
         patientAge,
         BigInt(40),
