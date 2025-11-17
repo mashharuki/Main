@@ -13,18 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
-  DeployedContract,
-  FoundContract,
-} from "@midnight-ntwrk/midnight-js-contracts";
-import type {
-  ImpureCircuitId,
-  MidnightProviders,
-} from "@midnight-ntwrk/midnight-js-types";
-import type {
-  PatientRegistry,
-  PatientRegistryPrivateState,
-} from "../../../contract/dist/index.js";
+import { Counter, type CounterPrivateState, PatientRegistry } from 'contract';
+import type { ImpureCircuitId, MidnightProviders } from '@midnight-ntwrk/midnight-js-types';
+import type { DeployedContract, FoundContract } from '@midnight-ntwrk/midnight-js-contracts';
 
 // ========================================
 // Patient Registry Types
@@ -42,17 +33,23 @@ export type PatientRegistryProviders = MidnightProviders<
   PatientRegistryPrivateState
 >;
 
-export type PatientRegistryContract =
-  PatientRegistry.Contract<PatientRegistryPrivateState>;
+export type DeployedCounterContract = DeployedContract<CounterContract> | FoundContract<CounterContract>;
+
+// Patient Registry types
+export type PatientRegistryPrivateState = Record<string, never>; // Empty object for contracts without private state
+
+export type PatientRegistryCircuits = ImpureCircuitId<PatientRegistry.Contract<PatientRegistryPrivateState>>;
+
+export const PatientRegistryPrivateStateId = 'patientRegistryPrivateState';
+
+export type PatientRegistryProviders = MidnightProviders<
+	PatientRegistryCircuits,
+	typeof PatientRegistryPrivateStateId,
+	PatientRegistryPrivateState
+>;
+
+export type PatientRegistryContract = PatientRegistry.Contract<PatientRegistryPrivateState>;
 
 export type DeployedPatientRegistryContract =
-  | DeployedContract<PatientRegistryContract>
-  | FoundContract<PatientRegistryContract>;
-
-// 統計情報型
-export type RegistrationStats = {
-  totalCount: bigint;
-  maleCount: bigint;
-  femaleCount: bigint;
-  otherCount: bigint;
-};
+	| DeployedContract<PatientRegistryContract>
+	| FoundContract<PatientRegistryContract>;

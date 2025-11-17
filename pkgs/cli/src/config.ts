@@ -33,6 +33,11 @@ export const contractConfig = {
   ),
 };
 
+export const patientRegistryConfig = {
+  privateStateStoreName: 'patient-registry-private-state',
+  zkConfigPath: path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'patient-registry'),
+};
+
 export interface Config {
   readonly logDir: string;
   readonly indexer: string;

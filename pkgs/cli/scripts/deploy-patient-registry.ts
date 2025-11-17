@@ -156,88 +156,79 @@ let logger: Logger | undefined;
  * メイン処理
  */
 const main = async () => {
-  // 環境変数から設定を読み込み
-  const network = resolveNetwork(NETWORK_ENV_VAR);
-  const seed = ensureSeed(SEED_ENV_VAR);
-  const cacheFileName = CACHE_FILE_ENV_VAR ?? defaultCacheName(seed, network);
+	// 環境変数から設定を読み込み
+	const network = resolveNetwork(NETWORK_ENV_VAR);
+	const seed = ensureSeed(SEED_ENV_VAR);
+	const cacheFileName = CACHE_FILE_ENV_VAR ?? defaultCacheName(seed, network);
+	
+	// 設定とロガーの初期化
+	const config = buildConfig(network);
+	logger = await createLogger(config.logDir);
+	api.setLogger(logger);
 
-  // 設定とロガーの初期化
-  const config = buildConfig(network);
-  logger = await createLogger(config.logDir);
-  api.setLogger(logger);
+	logger.info('='.repeat(60));
+	logger.info('Patient Registry Contract Deployment');
+	logger.info('='.repeat(60));
+	logger.info(`Network: ${network}`);
+	logger.info(`Cache file: ${cacheFileName}`);
+	logger.info('='.repeat(60));
 
-  logger.info("=".repeat(60));
-  logger.info("Patient Registry Contract Deployment");
-  logger.info("=".repeat(60));
-  logger.info(`Network: ${network}`);
-  logger.info(`Cache file: ${cacheFileName}`);
-  logger.info("=".repeat(60));
-
-  let wallet:
-    | Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>>
-    | undefined;
-
-  try {
-    // ウォレットの作成と資金確認
-    logger.info("Building wallet and waiting for funds...");
-    wallet = await api.buildWalletAndWaitForFunds(config, seed, cacheFileName);
-
-    // プロバイダーの設定
-    logger.info("Configuring providers...");
-    const providers = await api.configurePatientRegistryProviders(
-      wallet,
-      config,
-    );
-
-    // Patient Registryコントラクトのデプロイ
-    logger.info("Deploying Patient Registry contract...");
-
-    const patientRegistryContract = await api.deployPatientRegistry(providers);
-    const deployTx = patientRegistryContract.deployTxData.public;
-
-    // デプロイ情報の作成
-    const walletState = await Rx.firstValueFrom(wallet.state());
-    const deploymentInfo: DeploymentInfo = {
-      contractAddress: deployTx.contractAddress,
-      transactionHash: deployTx.txId,
-      deployedAt: new Date().toISOString(),
-      network,
-      deployer: walletState.address,
-      initialState: {
-        registrationCount: 0,
-        maleCount: 0,
-        femaleCount: 0,
-        otherCount: 0,
-      },
-    };
-
-    // デプロイ情報の保存
-    await saveDeploymentInfo(deploymentInfo);
-
-    // 成功メッセージ
-    logger.info("=".repeat(60));
-    logger.info("✅ Deployment Successful!");
-    logger.info("=".repeat(60));
-    logger.info(`Contract Address: ${deployTx.contractAddress}`);
-    logger.info(`Transaction Hash: ${deployTx.txId}`);
-    logger.info(`Deployer Address: ${walletState.address}`);
-    logger.info("=".repeat(60));
-
-    console.log("\n✅ Patient Registry contract deployed successfully!");
-    console.log(`Contract Address: ${deployTx.contractAddress}`);
-    console.log(`Transaction Hash: ${deployTx.txId}`);
-    console.log(`\nDeployment info saved to: deployment-patient-registry.json`);
-
-    await api.saveState(wallet, cacheFileName);
-    await closeIfPossible(
-      providers.privateStateProvider,
-      "private state provider",
-    );
-  } finally {
-    if (wallet !== undefined) {
-      await closeIfPossible(wallet, "wallet");
-    }
-  }
+	let wallet: Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>> | undefined;
+	
+	try {
+		// ウォレットの作成と資金確認
+		logger.info('Building wallet and waiting for funds...');
+		wallet = await api.buildWalletAndWaitForFunds(config, seed, cacheFileName);
+		
+		// プロバイダーの設定
+		logger.info('Configuring providers...');
+		const providers = await api.configurePatientRegistryProviders(wallet, config);
+		
+		// Patient Registryコントラクトのデプロイ
+		logger.info('Deploying Patient Registry contract...');
+		const patientRegistryContract = await api.deployPatientRegistry(providers);
+		const deployTx = patientRegistryContract.deployTxData.public;
+		
+		// デプロイ情報の作成
+		const walletState = await Rx.firstValueFrom(wallet.state());
+		const deploymentInfo: DeploymentInfo = {
+			contractAddress: deployTx.contractAddress,
+			transactionHash: deployTx.txId,
+			deployedAt: new Date().toISOString(),
+			network,
+			deployer: walletState.address,
+			initialState: {
+				registrationCount: 0,
+				maleCount: 0,
+				femaleCount: 0,
+				otherCount: 0,
+			},
+		};
+		
+		// デプロイ情報の保存
+		await saveDeploymentInfo(deploymentInfo);
+		
+		// 成功メッセージ
+		logger.info('='.repeat(60));
+		logger.info('✅ Deployment Successful!');
+		logger.info('='.repeat(60));
+		logger.info(`Contract Address: ${deployTx.contractAddress}`);
+		logger.info(`Transaction Hash: ${deployTx.txId}`);
+		logger.info(`Deployer Address: ${walletState.address}`);
+		logger.info('='.repeat(60));
+		
+		console.log('\n✅ Patient Registry contract deployed successfully!');
+		console.log(`Contract Address: ${deployTx.contractAddress}`);
+		console.log(`Transaction Hash: ${deployTx.txId}`);
+		console.log(`\nDeployment info saved to: deployment-patient-registry.json`);
+		
+		await api.saveState(wallet, cacheFileName);
+		await closeIfPossible(providers.privateStateProvider, 'private state provider');
+	} finally {
+		if (wallet !== undefined) {
+			await closeIfPossible(wallet, 'wallet');
+		}
+	}
 };
 
 /**

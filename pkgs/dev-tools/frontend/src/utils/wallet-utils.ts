@@ -1,0 +1,293 @@
+/**
+ * Midnight Wallet統合用のユーティリティ関数
+ */
+
+import type {
+	WalletName,
+	Cip30WalletApi,
+	CardanoWindow,
+	WalletConnection,
+	WalletInfo,
+} from "../types/wallet-types";
+import { WalletError } from "../types/wallet-types";
+
+/**
+ * ウォレットの表示名を取得
+ */
+export function getWalletDisplayName(walletName: WalletName): string {
+	const names: Record<WalletName, string> = {
+		lace: "Lace Wallet",
+		yoroi: "Yoroi",
+		eternl: "Eternl",
+	};
+	return names[walletName];
+}
+
+/**
+ * ウォレットアイコンのパスを取得
+ */
+export function getWalletIconPath(walletName: WalletName): string {
+	const icons: Record<WalletName, string> = {
+		lace: "/wallet-icons/lace.png",
+		yoroi: "/wallet-icons/yoroi.png",
+		eternl: "/wallet-icons/eternl.png",
+	};
+	return icons[walletName];
+}
+
+/**
+ * インストールされているウォレットを検出
+ */
+export function detectWallets(): WalletName[] {
+	const cardano = (window as CardanoWindow).cardano;
+
+	if (!cardano) {
+		return [];
+	}
+
+	const installedWallets: WalletName[] = [];
+
+	if (cardano.lace) installedWallets.push("lace");
+	if (cardano.yoroi) installedWallets.push("yoroi");
+	if (cardano.eternl) installedWallets.push("eternl");
+
+	return installedWallets;
+}
+
+/**
+ * ウォレットがインストールされているか確認
+ */
+export function isWalletInstalled(walletName: WalletName): boolean {
+	const windowObj = window as CardanoWindow;
+	
+	// Midnight Network用のLace Walletをチェック
+	if (walletName === "lace" && windowObj.midnight?.mnLace) {
+		return true;
+	}
+	
+	// CIP-30ウォレットをチェック
+	const cardano = windowObj.cardano;
+	return !!cardano?.[walletName];
+}
+
+/**
+ * 利用可能なウォレット情報を取得
+ */
+export function getAvailableWallets(): WalletInfo[] {
+	const windowObj = window as CardanoWindow;
+	const cardano = windowObj.cardano;
+	const walletNames: WalletName[] = ["lace", "yoroi", "eternl"];
+
+	return walletNames.map((name) => {
+		let installed = false;
+		let provider: WalletInfo["provider"];
+		
+		// Midnight Network用のLace Walletをチェック
+		if (name === "lace" && windowObj.midnight?.mnLace) {
+			installed = true;
+			// mnLaceは異なるAPI形式なので、providerはundefinedのまま
+		} else if (cardano?.[name]) {
+			installed = true;
+			provider = cardano[name];
+		}
+		
+		return {
+			name,
+			displayName: getWalletDisplayName(name),
+			installed,
+			provider,
+			icon: getWalletIconPath(name),
+		};
+	});
+}
+
+/**
+ * ウォレットに接続
+ */
+export async function connectWallet(
+	walletName: WalletName,
+): Promise<Cip30WalletApi> {
+	const windowObj = window as CardanoWindow;
+	
+	// Midnight Network用のLace Walletの場合
+	if (walletName === "lace" && windowObj.midnight?.mnLace) {
+		throw new WalletError(
+			"WALLET_NOT_INSTALLED",
+			"Midnight Network Lace Wallet (mnLace) is detected, but this app currently uses CIP-30 API. " +
+			"Midnight Network Lace Wallet uses a different API (window.midnight.mnLace) that is not yet fully supported in this tool.",
+		);
+	}
+	
+	const cardano = windowObj.cardano;
+
+	if (!cardano) {
+		throw new WalletError(
+			"WALLET_NOT_INSTALLED",
+			"Cardano wallet extension is not installed",
+		);
+	}
+
+	const provider = cardano[walletName];
+
+	if (!provider) {
+		throw new WalletError(
+			"WALLET_NOT_INSTALLED",
+			`${getWalletDisplayName(walletName)} wallet is not installed`,
+		);
+	}
+
+	try {
+		// ウォレットを有効化
+		const api = await provider.enable();
+
+		if (!api) {
+			throw new WalletError(
+				"CONNECTION_FAILED",
+				"Failed to enable wallet API",
+			);
+		}
+
+		return api;
+	} catch (error) {
+		if (error instanceof WalletError) {
+			throw error;
+		}
+
+		// ユーザーが接続を拒否した場合
+		if (
+			error instanceof Error &&
+			(error.message.includes("reject") ||
+				error.message.includes("denied") ||
+				error.message.includes("cancel"))
+		) {
+			throw new WalletError(
+				"CONNECTION_REJECTED",
+				"Connection was rejected by user",
+			);
+		}
+
+		throw new WalletError(
+			"CONNECTION_FAILED",
+			error instanceof Error
+				? error.message
+				: "Failed to connect to wallet",
+		);
+	}
+}
+
+/**
+ * アドレスを取得（複数の方法を試行）
+ */
+export async function getAddress(
+	api: Cip30WalletApi,
+): Promise<string> {
+	// 方法1: 使用済みアドレスを取得
+	try {
+		const usedAddresses = await api.getUsedAddresses();
+		if (usedAddresses && usedAddresses.length > 0) {
+			return usedAddresses[0];
+		}
+	} catch (error) {
+		console.warn("getUsedAddresses failed, trying alternative methods", error);
+	}
+
+	// 方法2: 未使用アドレスを取得
+	try {
+		const unusedAddresses = await api.getUnusedAddresses();
+		if (unusedAddresses && unusedAddresses.length > 0) {
+			return unusedAddresses[0];
+		}
+	} catch (error) {
+		console.warn(
+			"getUnusedAddresses failed, trying change address",
+			error,
+		);
+	}
+
+	// 方法3: お釣りアドレスを取得
+	try {
+		const changeAddress = await api.getChangeAddress();
+		if (changeAddress) {
+			return changeAddress;
+		}
+	} catch (error) {
+		console.warn("getChangeAddress failed", error);
+	}
+
+	throw new Error("No addresses found in wallet");
+}
+
+/**
+ * 残高を取得
+ */
+export async function getBalance(api: Cip30WalletApi): Promise<string> {
+	return await api.getBalance();
+}
+
+/**
+ * アドレスをフォーマット（短縮表示）
+ */
+export function formatAddress(
+	address: string,
+	prefixLength = 6,
+	suffixLength = 4,
+): string {
+	if (address.length <= prefixLength + suffixLength) {
+		return address;
+	}
+
+	const prefix = address.slice(0, prefixLength);
+	const suffix = address.slice(-suffixLength);
+
+	return `${prefix}...${suffix}`;
+}
+
+/**
+ * 接続情報を保存
+ */
+export function saveConnection(
+	walletName: WalletName,
+	address: string,
+): void {
+	const connection: WalletConnection = {
+		walletName,
+		address,
+		connectedAt: Date.now(),
+	};
+	localStorage.setItem("wallet_connection", JSON.stringify(connection));
+}
+
+/**
+ * 保存された接続情報を読み込む
+ */
+export function loadConnection(): WalletConnection | null {
+	try {
+		const saved = localStorage.getItem("wallet_connection");
+		return saved ? JSON.parse(saved) : null;
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * 接続情報をクリア
+ */
+export function clearConnection(): void {
+	localStorage.removeItem("wallet_connection");
+}
+
+/**
+ * エラーメッセージを取得
+ */
+export function getErrorMessage(code: string): string {
+	const messages: Record<string, string> = {
+		WALLET_NOT_INSTALLED: "Wallet is not installed",
+		CONNECTION_REJECTED: "Connection was rejected",
+		CONNECTION_FAILED: "Failed to connect to wallet",
+		NETWORK_ERROR: "Network error occurred",
+		UNKNOWN_ERROR: "An unexpected error occurred",
+	};
+
+	return messages[code] || messages.UNKNOWN_ERROR;
+}
+

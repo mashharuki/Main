@@ -17,6 +17,13 @@ import * as fs from 'node:fs';
 import * as fsAsync from 'node:fs/promises';
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { type ContractAddress } from '@midnight-ntwrk/compact-runtime';
+import {
+	Counter,
+	type CounterPrivateState,
+	witnesses,
+	PatientRegistry,
+} from '../../contract/dist/index.js';
 import { type CoinInfo, nativeToken, Transaction, type TransactionId } from '@midnight-ntwrk/ledger';
 import { deployContract, findDeployedContract } from '@midnight-ntwrk/midnight-js-contracts';
 import { httpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
@@ -43,13 +50,21 @@ import { WebSocket } from 'ws';
 import { PatientRegistry, witnesses as patientRegistryWitnesses } from '../../contract/dist/index.js';
 import { type Config, contractConfig } from './config';
 import {
-  type DeployedPatientRegistryContract,
-  type PatientRegistryCircuits,
+  type CounterContract,
+  type CounterPrivateStateId,
+  type CounterProviders,
+  type DeployedCounterContract,
   type PatientRegistryContract,
-  PatientRegistryPrivateStateId,
+  type PatientRegistryPrivateStateId,
   type PatientRegistryProviders,
-  type RegistrationStats,
+  type DeployedPatientRegistryContract,
 } from './utils/common-types';
+import { type Config, contractConfig, patientRegistryConfig } from './config';
+import { levelPrivateStateProvider } from '@midnight-ntwrk/midnight-js-level-private-state-provider';
+import { assertIsContractAddress, toHex } from '@midnight-ntwrk/midnight-js-utils';
+import { getLedgerNetworkId, getZswapNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
+import * as fsAsync from 'node:fs/promises';
+import * as fs from 'node:fs';
 
 let logger: Logger;
 // Instead of setting globalThis.crypto which is read-only, we'll ensure crypto is available
@@ -72,18 +87,11 @@ export const patientRegistryContractInstance: PatientRegistryContract = new Pati
 // Patient Registry Functions
 // ========================================
 
-/**
- * デプロイ済みのPatient Registryコントラクトに接続
- *
- * @param providers - Midnight.jsプロバイダー群（ウォレット、証明サーバー等）
- * @param contractAddress - 接続先のコントラクトアドレス
- * @returns デプロイ済みコントラクトのインスタンス
- *
- * 既存のコントラクトに接続し、プライベート状態を初期化します。
- * コントラクトの状態を読み取り、トランザクションを実行できるようになります。
- */
-export const joinPatientRegistryContract = async (
-  providers: PatientRegistryProviders,
+// Patient Registry contract instance
+export const patientRegistryContractInstance: PatientRegistryContract = new PatientRegistry.Contract({});
+
+export const joinContract = async (
+  providers: CounterProviders,
   contractAddress: string,
 ): Promise<DeployedPatientRegistryContract> => {
   const patientRegistryContract = await findDeployedContract(providers, {
@@ -136,39 +144,61 @@ const hashCondition = (condition: string): bigint => {
   return BigInt('0x' + hash.substring(0, 16));
 };
 
-/**
- * 患者データを登録
- *
- * @param contract - デプロイ済みのPatient Registryコントラクト
- * @param age - 患者の年齢
- * @param gender - 患者の性別（0: 男性, 1: 女性, 2: その他）
- * @param condition - 患者の症状（文字列）
- * @returns トランザクション完了データ
- *
- * 患者の年齢、性別、症状をブロックチェーンに登録します。
- * 症状データはプライバシー保護のためハッシュ化されます。
- * ゼロ知識証明により、データの正当性を証明しつつ、
- * 個人を特定できる情報は公開されません。
- */
-export const registerPatient = async (
-  contract: DeployedPatientRegistryContract,
-  age: bigint,
-  gender: bigint,
-  condition: string,
-): Promise<FinalizedTxData> => {
-  logger.info(`Registering patient... age=${age.toString()}, gender=${gender.toString()}`);
+// Patient Registry functions
+export const getPatientRegistryLedgerState = async (
+  providers: PatientRegistryProviders,
+  contractAddress: ContractAddress,
+): Promise<PatientRegistry.Ledger | null> => {
+  assertIsContractAddress(contractAddress);
+  logger.info('Checking Patient Registry contract ledger state...');
+  const state = await providers.publicDataProvider
+    .queryContractState(contractAddress)
+    .then((contractState) => (contractState != null ? PatientRegistry.ledger(contractState.data) : null));
+  if (state !== null) {
+    logger.info(
+      `Ledger state: registrationCount=${state.registrationCount}, maleCount=${state.maleCount}, femaleCount=${state.femaleCount}, otherCount=${state.otherCount}`,
+    );
+  } else {
+    logger.info('No ledger state found');
+  }
+  return state;
+};
 
-  // 症状をハッシュ化してプライバシーを保護
-  const conditionHash = hashCondition(condition);
-  logger.info('Condition hashed successfully');
-
-  // registerPatient circuitを呼び出してトランザクションを実行
-  const finalizedTxData = await contract.callTx.registerPatient(age, gender, conditionHash);
-
+export const deployPatientRegistry = async (
+  providers: PatientRegistryProviders,
+): Promise<DeployedPatientRegistryContract> => {
+  logger.info('Deploying Patient Registry contract...');
+  const patientRegistryContract = await deployContract(providers, {
+    contract: patientRegistryContractInstance,
+    privateStateId: 'patientRegistryPrivateState',
+    initialPrivateState: {},
+  });
   logger.info(
-    `Registration transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`,
+    `Deployed Patient Registry contract at address: ${patientRegistryContract.deployTxData.public.contractAddress}`,
   );
+  return patientRegistryContract;
+};
 
+export const joinPatientRegistryContract = async (
+  providers: PatientRegistryProviders,
+  contractAddress: string,
+): Promise<DeployedPatientRegistryContract> => {
+  const patientRegistryContract = await findDeployedContract(providers, {
+    contractAddress,
+    contract: patientRegistryContractInstance,
+    privateStateId: 'patientRegistryPrivateState',
+    initialPrivateState: {},
+  });
+  logger.info(
+    `Joined Patient Registry contract at address: ${patientRegistryContract.deployTxData.public.contractAddress}`,
+  );
+  return patientRegistryContract;
+};
+
+export const increment = async (counterContract: DeployedCounterContract): Promise<FinalizedTxData> => {
+  logger.info('Incrementing...');
+  const finalizedTxData = await counterContract.callTx.increment();
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
   return finalizedTxData.public;
 };
 
@@ -591,14 +621,23 @@ export const configurePatientRegistryProviders = async (
   };
 };
 
-/**
- * ロガーを設定
- *
- * @param _logger - Pinoロガーインスタンス
- *
- * このモジュール全体で使用するロガーを設定します。
- * アプリケーション起動時に一度だけ呼び出してください。
- */
+export const configurePatientRegistryProviders = async (
+  wallet: Wallet & Resource,
+  config: Config,
+): Promise<PatientRegistryProviders> => {
+  const walletAndMidnightProvider = await createWalletAndMidnightProvider(wallet);
+  return {
+    privateStateProvider: levelPrivateStateProvider<typeof PatientRegistryPrivateStateId>({
+      privateStateStoreName: patientRegistryConfig.privateStateStoreName,
+    }),
+    publicDataProvider: indexerPublicDataProvider(config.indexer, config.indexerWS),
+    zkConfigProvider: new NodeZkConfigProvider<'registerPatient'>(patientRegistryConfig.zkConfigPath),
+    proofProvider: httpClientProofProvider(config.proofServer),
+    walletProvider: walletAndMidnightProvider,
+    midnightProvider: walletAndMidnightProvider,
+  };
+};
+
 export function setLogger(_logger: Logger) {
   logger = _logger;
 }
