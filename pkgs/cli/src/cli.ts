@@ -115,14 +115,17 @@ const mainLoop = async (providers: PatientRegistryProviders, rli: Interface): Pr
       }
       case '3': {
         // 年齢範囲を検証
+        const ageStr = await rli.question('検証する年齢を入力してください: ');
+        const age = BigInt(ageStr);
+
         const minAgeStr = await rli.question('最小年齢を入力してください: ');
         const minAge = BigInt(minAgeStr);
 
         const maxAgeStr = await rli.question('最大年齢を入力してください: ');
         const maxAge = BigInt(maxAgeStr);
 
-        const exists = await api.verifyAgeRange(contract, minAge, maxAge);
-        logger.info(`年齢範囲 ${minAge}-${maxAge} の患者: ${exists ? '存在します' : '存在しません'}`);
+        const isInRange = await api.verifyAgeRange(contract, age, minAge, maxAge);
+        logger.info(`年齢 ${age} は範囲 [${minAge}, ${maxAge}] 内: ${isInRange ? 'はい' : 'いいえ'}`);
         break;
       }
       case '4':

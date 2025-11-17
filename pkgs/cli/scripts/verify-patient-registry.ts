@@ -154,6 +154,7 @@ const main = async () => {
   logger.info('='.repeat(60));
 
   let wallet: Awaited<ReturnType<typeof api.buildWalletAndWaitForFunds>> | undefined;
+  let providers: Awaited<ReturnType<typeof api.configurePatientRegistryProviders>> | undefined;
 
   try {
     // デプロイ情報の読み込み
@@ -174,61 +175,161 @@ const main = async () => {
 
     // プロバイダーの設定
     logger.info('Configuring providers...');
-    const providers = await api.configurePatientRegistryProviders(wallet, config);
+    providers = await api.configurePatientRegistryProviders(wallet, config);
 
     // コントラクトに接続
     logger.info('Connecting to contract...');
     const contract = await api.joinPatientRegistryContract(providers, deploymentInfo.contractAddress);
 
-    // 初期状態の確認
-    logger.info('Checking initial registration stats...');
+    // ========================================
+    // テスト1: 初期状態の確認
+    // ========================================
+    logger.info('');
+    logger.info('='.repeat(60));
+    logger.info('Test 1: Checking initial registration stats');
+    logger.info('='.repeat(60));
     const initialStats = await api.getRegistrationStats(contract);
     logger.info(
       `Initial stats - Total: ${initialStats.totalCount}, Male: ${initialStats.maleCount}, Female: ${initialStats.femaleCount}, Other: ${initialStats.otherCount}`,
     );
 
-    // テスト: 患者データを登録
-    logger.info('Testing patient registration...');
+    // ========================================
+    // テスト2: 患者登録機能のテスト
+    // ========================================
+    logger.info('');
+    logger.info('='.repeat(60));
+    logger.info('Test 2: Testing patient registration');
+    logger.info('='.repeat(60));
+    
+    // 男性患者を登録
+    logger.info('Registering male patient (Age: 30, Gender: Male, Condition: Diabetes)...');
     await api.registerPatient(contract, 30n, 0n, 'Diabetes');
-    logger.info('Patient registered successfully');
+    logger.info('✅ Male patient registered successfully');
 
     // 更新後の状態を確認
     logger.info('Checking updated registration stats...');
-    const updatedStats = await api.getRegistrationStats(contract);
+    const afterMaleStats = await api.getRegistrationStats(contract);
     logger.info(
-      `Updated stats - Total: ${updatedStats.totalCount}, Male: ${updatedStats.maleCount}, Female: ${updatedStats.femaleCount}, Other: ${updatedStats.otherCount}`,
+      `After male registration - Total: ${afterMaleStats.totalCount}, Male: ${afterMaleStats.maleCount}, Female: ${afterMaleStats.femaleCount}, Other: ${afterMaleStats.otherCount}`,
     );
 
-    // 検証結果の確認
-    if (
-      updatedStats.totalCount === initialStats.totalCount + 1n &&
-      updatedStats.maleCount === initialStats.maleCount + 1n
-    ) {
-      logger.info('='.repeat(60));
-      logger.info('✅ Verification Successful!');
-      logger.info('='.repeat(60));
-      logger.info(`Initial total count: ${initialStats.totalCount}`);
-      logger.info(`Updated total count: ${updatedStats.totalCount}`);
-      logger.info(`Patient registration worked correctly!`);
-      logger.info('='.repeat(60));
-
-      console.log('\n✅ Contract verification successful!');
-      console.log(`Contract is working as expected.`);
-    } else {
-      throw new Error(`Verification failed. Initial: ${initialStats.totalCount}, Updated: ${updatedStats.totalCount}`);
+    // 検証: 男性カウントが増加したか
+    if (afterMaleStats.totalCount !== initialStats.totalCount + 1n) {
+      throw new Error(`Total count verification failed. Expected: ${initialStats.totalCount + 1n}, Got: ${afterMaleStats.totalCount}`);
     }
+    if (afterMaleStats.maleCount !== initialStats.maleCount + 1n) {
+      throw new Error(`Male count verification failed. Expected: ${initialStats.maleCount + 1n}, Got: ${afterMaleStats.maleCount}`);
+    }
+    logger.info('✅ Male patient registration verified');
 
-    // プロバイダーのクローズ
-    await closeIfPossible(providers.privateStateProvider, 'private state provider');
+    // 女性患者を登録
+    logger.info('');
+    logger.info('Registering female patient (Age: 45, Gender: Female, Condition: Hypertension)...');
+    await api.registerPatient(contract, 45n, 1n, 'Hypertension');
+    logger.info('✅ Female patient registered successfully');
+
+    // 更新後の状態を確認
+    const afterFemaleStats = await api.getRegistrationStats(contract);
+    logger.info(
+      `After female registration - Total: ${afterFemaleStats.totalCount}, Male: ${afterFemaleStats.maleCount}, Female: ${afterFemaleStats.femaleCount}, Other: ${afterFemaleStats.otherCount}`,
+    );
+
+    // 検証: 女性カウントが増加したか
+    if (afterFemaleStats.totalCount !== afterMaleStats.totalCount + 1n) {
+      throw new Error(`Total count verification failed. Expected: ${afterMaleStats.totalCount + 1n}, Got: ${afterFemaleStats.totalCount}`);
+    }
+    if (afterFemaleStats.femaleCount !== afterMaleStats.femaleCount + 1n) {
+      throw new Error(`Female count verification failed. Expected: ${afterMaleStats.femaleCount + 1n}, Got: ${afterFemaleStats.femaleCount}`);
+    }
+    logger.info('✅ Female patient registration verified');
+
+    // ========================================
+    // テスト3: 年齢範囲検証機能のテスト
+    // ========================================
+    logger.info('');
+    logger.info('='.repeat(60));
+    logger.info('Test 3: Testing age range verification');
+    logger.info('='.repeat(60));
+
+    // 年齢範囲内のテスト
+    logger.info('Testing age 30 in range [18, 65]...');
+    const ageInRange = await api.verifyAgeRange(contract, 30n, 18n, 65n);
+    if (!ageInRange) {
+      throw new Error('Age range verification failed: 30 should be in range [18, 65]');
+    }
+    logger.info('✅ Age in range verification passed');
+
+    // 年齢範囲外のテスト（下限）
+    logger.info('Testing age 15 in range [18, 65]...');
+    const ageBelowRange = await api.verifyAgeRange(contract, 15n, 18n, 65n);
+    if (ageBelowRange) {
+      throw new Error('Age range verification failed: 15 should NOT be in range [18, 65]');
+    }
+    logger.info('✅ Age below range verification passed');
+
+    // 年齢範囲外のテスト（上限）
+    logger.info('Testing age 70 in range [18, 65]...');
+    const ageAboveRange = await api.verifyAgeRange(contract, 70n, 18n, 65n);
+    if (ageAboveRange) {
+      throw new Error('Age range verification failed: 70 should NOT be in range [18, 65]');
+    }
+    logger.info('✅ Age above range verification passed');
+
+    // 境界値テスト
+    logger.info('Testing boundary values...');
+    const ageAtLowerBound = await api.verifyAgeRange(contract, 18n, 18n, 65n);
+    const ageAtUpperBound = await api.verifyAgeRange(contract, 65n, 18n, 65n);
+    if (!ageAtLowerBound || !ageAtUpperBound) {
+      throw new Error('Boundary value verification failed');
+    }
+    logger.info('✅ Boundary value verification passed');
+
+    // ========================================
+    // 最終結果の表示
+    // ========================================
+    logger.info('');
+    logger.info('='.repeat(60));
+    logger.info('✅ ALL VERIFICATION TESTS PASSED!');
+    logger.info('='.repeat(60));
+    logger.info('Summary:');
+    logger.info(`  Initial total count: ${initialStats.totalCount}`);
+    logger.info(`  Final total count: ${afterFemaleStats.totalCount}`);
+    logger.info(`  Patients registered: ${afterFemaleStats.totalCount - initialStats.totalCount}`);
+    logger.info(`  Male patients: ${afterFemaleStats.maleCount}`);
+    logger.info(`  Female patients: ${afterFemaleStats.femaleCount}`);
+    logger.info(`  Other patients: ${afterFemaleStats.otherCount}`);
+    logger.info('');
+    logger.info('All contract functions are working correctly!');
+    logger.info('='.repeat(60));
+
+    console.log('\n✅ Contract verification successful!');
+    console.log('All tests passed. Contract is working as expected.');
+
+    // 状態を保存
+    await api.saveState(wallet, cacheFileName);
   } catch (error) {
-    logger?.error('Verification failed');
-    throw error;
+    if (logger !== undefined) {
+      logger.error('❌ Verification failed');
+      if (error instanceof Error) {
+        logger.error(`Error: ${error.message}`);
+        logger.debug(error.stack ?? '');
+      } else {
+        logger.error(`Error: ${String(error)}`);
+      }
+    } else {
+      console.error('❌ Verification failed:', error);
+    }
+    process.exitCode = 1;
   } finally {
+    // リソースのクリーンアップ
+    if (providers !== undefined) {
+      await closeIfPossible(providers.privateStateProvider, 'private state provider');
+    }
     if (wallet !== undefined) {
       await closeIfPossible(wallet, 'wallet');
     }
   }
-};
+};;
 
 /**
  * エントリーポイント

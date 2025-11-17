@@ -74,6 +74,8 @@ a62d9787f7a1   midnightnetwork/proof-server   "/nix/store/qa9fb15p…"   25 seco
 pnpm cli deploy:patient-registry
 ```
 
+デプロイ後に`.env`の`CONTRACT_ADDRESS`の値を更新する必要あり
+
 ## Register Patient Data (via CLI)
 
 ```bash
