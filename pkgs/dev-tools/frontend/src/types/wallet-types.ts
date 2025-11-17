@@ -77,7 +77,7 @@ export interface CardanoWindow extends Window {
 	};
 	midnight?: {
 		mnLace?: {
-			enable: () => Promise<any>;
+			enable: () => Promise<Cip30WalletApi>;
 			isEnabled: () => Promise<boolean>;
 			serviceUriConfig: () => Promise<any>;
 		};
