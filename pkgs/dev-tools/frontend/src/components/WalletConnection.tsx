@@ -25,7 +25,15 @@ interface WalletStatus {
 	api: Cip30WalletApi | null;
 }
 
-export function WalletConnection() {
+interface WalletConnectionProps {
+	onConnected?: (api: Cip30WalletApi, name: WalletName, address: string) => void;
+	onDisconnected?: () => void;
+}
+
+export function WalletConnection({
+	onConnected,
+	onDisconnected,
+}: WalletConnectionProps) {
 	const [wallets, setWallets] = useState(getAvailableWallets());
 	const [status, setStatus] = useState<WalletStatus>({
 		connected: false,
@@ -71,6 +79,7 @@ export function WalletConnection() {
 			});
 
 			saveConnection(walletName, address);
+			onConnected?.(api, walletName, address);
 		} catch (err) {
 			let errorMessage = "Unknown error occurred";
 
@@ -103,6 +112,7 @@ export function WalletConnection() {
 		});
 		clearConnection();
 		setError("");
+		onDisconnected?.();
 	};
 
 	const handleRefresh = async () => {

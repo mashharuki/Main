@@ -1023,11 +1023,11 @@ export function IndexerExplorer() {
 															{showRawJson[tx.hash] ? "Show Formatted JSON" : "Show Raw JSON"}
 														</button>
 														{showRawJson[tx.hash] ? (
-															<pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+															<pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", minHeight: "400px", maxHeight: "800px", overflow: "auto", padding: "0.75rem", backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "2px" }}>
 																{JSON.stringify(tx, null, 2)}
 															</pre>
 														) : (
-															<div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", monospace', fontSize: "0.875rem", lineHeight: "1.5" }}>
+															<div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", monospace', fontSize: "0.875rem", lineHeight: "1.5", minHeight: "400px", maxHeight: "800px", overflow: "auto", padding: "0.75rem", backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "2px" }}>
 																{formatDecodedObject(tx)}
 															</div>
 														)}
@@ -1107,11 +1107,11 @@ export function IndexerExplorer() {
 											{showRawJson.search ? "Show Formatted JSON" : "Show Raw JSON"}
 										</button>
 										{showRawJson.search ? (
-											<pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+											<pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", minHeight: "400px", maxHeight: "800px", overflow: "auto", padding: "0.75rem", backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "2px" }}>
 												{JSON.stringify(searchResult, null, 2)}
 											</pre>
 										) : (
-											<div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", monospace', fontSize: "0.875rem", lineHeight: "1.5" }}>
+											<div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", monospace', fontSize: "0.875rem", lineHeight: "1.5", minHeight: "400px", maxHeight: "800px", overflow: "auto", padding: "0.75rem", backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "2px" }}>
 												{formatDecodedObject(searchResult)}
 											</div>
 										)}
