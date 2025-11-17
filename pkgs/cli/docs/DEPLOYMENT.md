@@ -296,20 +296,28 @@ DEBUG='*' pnpm deploy:patient-registry
    - `deployment-patient-registry.json`を安全な場所にバックアップ
    - コントラクトアドレスを記録
 
-2. **フロントエンドの設定**
+2. **CLIツールの使用**
+   - [CLI_USAGE.md](./CLI_USAGE.md)を参照して、患者登録や統計取得を実行
+   - 以下のコマンドが使用可能です：
+     - `pnpm register:patient` - 患者データの登録
+     - `pnpm stats:patient-registry` - 統計情報の取得
+     - `pnpm verify:age-range` - 年齢範囲の検証
+
+3. **フロントエンドの設定**
    - コントラクトアドレスをフロントエンドの設定に追加
    - 環境変数を更新
 
-3. **監視の設定**
+4. **監視の設定**
    - コントラクトの状態を定期的に確認
    - トランザクション履歴を監視
 
-4. **ドキュメントの更新**
+5. **ドキュメントの更新**
    - デプロイ情報をチームと共有
    - 運用手順書を作成
 
 ## 参考資料
 
+- [CLI使用ガイド](./CLI_USAGE.md) - CLIツールの詳細な使用方法
 - [Midnight Documentation](https://docs.midnight.network/)
 - [Midnight Testnet Faucet](https://faucet.testnet-02.midnight.network/)
 - [Midnight Explorer](https://explorer.testnet-02.midnight.network/)

@@ -17,13 +17,21 @@ import { Counter, type CounterPrivateState, PatientRegistry } from 'contract';
 import type { ImpureCircuitId, MidnightProviders } from '@midnight-ntwrk/midnight-js-types';
 import type { DeployedContract, FoundContract } from '@midnight-ntwrk/midnight-js-contracts';
 
-export type CounterCircuits = ImpureCircuitId<Counter.Contract<CounterPrivateState>>;
+// ========================================
+// Patient Registry Types
+// ========================================
 
-export const CounterPrivateStateId = 'counterPrivateState';
+export type PatientRegistryCircuits = ImpureCircuitId<
+  PatientRegistry.Contract<PatientRegistryPrivateState>
+>;
 
-export type CounterProviders = MidnightProviders<CounterCircuits, typeof CounterPrivateStateId, CounterPrivateState>;
+export const PatientRegistryPrivateStateId = "patientRegistryPrivateState";
 
-export type CounterContract = Counter.Contract<CounterPrivateState>;
+export type PatientRegistryProviders = MidnightProviders<
+  PatientRegistryCircuits,
+  typeof PatientRegistryPrivateStateId,
+  PatientRegistryPrivateState
+>;
 
 export type DeployedCounterContract = DeployedContract<CounterContract> | FoundContract<CounterContract>;
 

@@ -17,10 +17,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start-testnet-remote": "npm run build && npm run testnet-remote",
     "start-testnet-remote-ps": "npm run build && npm run testnet-remote-ps",
-    "deploy": "TS_NODE_TRANSPILE_ONLY=true node --experimental-specifier-resolution=node --loader ts-node/esm scripts/deploy.ts",
-    "increment": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/increment.ts",
     "deploy:patient-registry": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/deploy-patient-registry.ts",
     "verify:patient-registry": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/verify-patient-registry.ts",
+    "register:patient": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/register-patient.ts",
+    "stats:patient-registry": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/get-stats.ts",
+    "verify:age-range": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/verify-age-range.ts",
     "verify-wallet": "TS_NODE_TRANSPILE_ONLY=true node --experimental-specifier-resolution=node --loader ts-node/esm scripts/verify-wallet-derivation.ts"
   },
   "dependencies": {

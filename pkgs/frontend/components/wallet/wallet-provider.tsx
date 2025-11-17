@@ -18,7 +18,7 @@ const WalletContext = createContext<WalletContextType | null>(null);
  * WalletProvider Props
  */
 interface WalletProviderProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 /**
@@ -26,11 +26,11 @@ interface WalletProviderProps {
  * アプリケーションのルートでラップして使用
  */
 export function WalletProvider({ children }: WalletProviderProps) {
-	const wallet = useWallet();
+  const wallet = useWallet();
 
-	return (
-		<WalletContext.Provider value={wallet}>{children}</WalletContext.Provider>
-	);
+  return (
+    <WalletContext.Provider value={wallet}>{children}</WalletContext.Provider>
+  );
 }
 
 /**
@@ -39,11 +39,11 @@ export function WalletProvider({ children }: WalletProviderProps) {
  * @throws Error WalletProvider外で使用された場合
  */
 export function useWalletContext(): WalletContextType {
-	const context = useContext(WalletContext);
+  const context = useContext(WalletContext);
 
-	if (!context) {
-		throw new Error("useWalletContext must be used within WalletProvider");
-	}
+  if (!context) {
+    throw new Error("useWalletContext must be used within WalletProvider");
+  }
 
-	return context;
+  return context;
 }

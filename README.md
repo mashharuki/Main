@@ -33,14 +33,61 @@ git submodule update --init --recursive
 pnpm dev
 ```
 
-## Build
+## Contract Build
 
 ```bash
-pnpm build
+pnpm contract compact:all
 ```
 
-## Start Production Server
+## Contract Test
 
 ```bash
-pnpm start
+pnpm contract test
+```
+
+## Contract's CLI Build
+
+```bash
+pnpm cli build
+```
+
+## Testnet ZKProof Server Start
+
+```bash
+docker run -p 6300:6300 midnightnetwork/proof-server -- 'midnight-proof-server --network testnet'
+```
+
+```bash
+docker ps
+```
+
+localhost:6300でサーバーが起動していればOK
+
+```bash
+CONTAINER ID   IMAGE                          COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+a62d9787f7a1   midnightnetwork/proof-server   "/nix/store/qa9fb15p…"   25 seconds ago   Up 24 seconds   0.0.0.0:6300->6300/tcp, [::]:6300->6300/tcp   flamboyant_roentgen
+```
+
+## Contarct Deploy (via CLI)
+
+```bash
+pnpm cli deploy:patient-registry
+```
+
+## Register Patient Data (via CLI)
+
+```bash
+pnpm cli run register:patient
+```
+
+## Check Status of Patient Data (via CLI)
+
+```bash
+pnpm cli run stats:patient-registry
+```
+
+## Verify Patient Data (via CLI)
+
+```bash
+pnpm cli run verify:age-range
 ```

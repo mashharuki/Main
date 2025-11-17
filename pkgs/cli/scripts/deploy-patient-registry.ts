@@ -2,147 +2,152 @@
 // Copyright (C) 2025 NextMed Team
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Logger } from 'pino';
-import { createLogger } from '../src/utils/logger-utils.js';
+import * as dotenv from "dotenv";
+import * as fsAsync from "node:fs/promises";
+import * as path from "node:path";
+import type { Logger } from "pino";
+import * as Rx from "rxjs";
+import * as api from "../src/api.js";
 import {
-	StandaloneConfig,
-	TestnetLocalConfig,
-	TestnetRemoteConfig,
-	type Config,
-} from '../src/config.js';
-import * as api from '../src/api.js';
-import * as dotenv from 'dotenv';
-import * as fsAsync from 'node:fs/promises';
-import * as path from 'node:path';
-import * as Rx from 'rxjs';
+  type Config,
+  StandaloneConfig,
+  TestnetLocalConfig,
+  TestnetRemoteConfig,
+} from "../src/config.js";
+import { createLogger } from "../src/utils/logger-utils.js";
 
 dotenv.config();
 
-const {
-    NETWORK_ENV_VAR,
-    SEED_ENV_VAR,
-    CACHE_FILE_ENV_VAR,
-} = process.env;
+const { NETWORK_ENV_VAR, SEED_ENV_VAR, CACHE_FILE_ENV_VAR } = process.env;
 
 /**
  * Patient Registryコントラクトのデプロイスクリプト
- * 
+ *
  * 環境変数:
  * - NETWORK_ENV_VAR: デプロイ先ネットワーク (standalone | testnet-local | testnet)
  * - SEED_ENV_VAR: ウォレットシード（必須）
  * - CACHE_FILE_ENV_VAR: ウォレット状態のキャッシュファイル名（オプション）
  */
 
-type SupportedNetwork = 'standalone' | 'testnet-local' | 'testnet' | 'testnet-remote';
+type SupportedNetwork =
+  | "standalone"
+  | "testnet-local"
+  | "testnet"
+  | "testnet-remote";
 
 /**
  * 環境変数からネットワークを解決
  */
 const resolveNetwork = (value: string | undefined): SupportedNetwork => {
-	const normalized = (value ?? 'testnet').toLowerCase();
-	if (normalized === 'testnet') {
-		return 'testnet';
-	}
-	switch (normalized) {
-		case 'testnet-remote':
-		case 'standalone':
-		case 'testnet-local':
-			return normalized;
-		default:
-			throw new Error(`Unsupported network '${value}'. Supported: standalone, testnet-local, testnet`);
-	}
+  const normalized = (value ?? "testnet").toLowerCase();
+  if (normalized === "testnet") {
+    return "testnet";
+  }
+  switch (normalized) {
+    case "testnet-remote":
+    case "standalone":
+    case "testnet-local":
+      return normalized;
+    default:
+      throw new Error(
+        `Unsupported network '${value}'. Supported: standalone, testnet-local, testnet`,
+      );
+  }
 };
 
 /**
  * ネットワークに応じた設定を構築
  */
 const buildConfig = (network: SupportedNetwork): Config => {
-	switch (network) {
-		case 'standalone':
-			return new StandaloneConfig();
-		case 'testnet-local':
-			return new TestnetLocalConfig();
-		case 'testnet':
-		case 'testnet-remote':
-		default:
-			return new TestnetRemoteConfig();
-	}
+  switch (network) {
+    case "standalone":
+      return new StandaloneConfig();
+    case "testnet-local":
+      return new TestnetLocalConfig();
+    case "testnet":
+    case "testnet-remote":
+    default:
+      return new TestnetRemoteConfig();
+  }
 };
 
 /**
  * ウォレットシードの検証
  */
 const ensureSeed = (seed: string | undefined): string => {
-	if (seed === undefined || seed.trim() === '') {
-		throw new Error(`Wallet seed is required. Set ${SEED_ENV_VAR}.`);
-	}
-	return seed.trim();
+  if (seed === undefined || seed.trim() === "") {
+    throw new Error(`Wallet seed is required. Set ${SEED_ENV_VAR}.`);
+  }
+  return seed.trim();
 };
 
 /**
  * デフォルトのキャッシュファイル名を生成
  */
 const defaultCacheName = (seed: string, network: SupportedNetwork): string => {
-	const prefix = seed.substring(0, 8);
-	return `${prefix}-patient-registry-${network}.state`;
+  const prefix = seed.substring(0, 8);
+  return `${prefix}-patient-registry-${network}.state`;
 };
 
 /**
  * リソースのクローズ（best-effort）
  */
-const closeIfPossible = async (resource: unknown, label: string): Promise<void> => {
-	if (resource !== null && typeof resource === 'object') {
-		const maybeClosable = resource as { close?: () => unknown };
-		if (typeof maybeClosable.close === 'function') {
-			try {
-				await Promise.resolve(maybeClosable.close());
-			} catch (error) {
-				if (logger !== undefined) {
-					if (error instanceof Error) {
-						logger.warn(`Failed to close ${label}: ${error.message}`);
-						logger.debug(error.stack ?? '');
-					} else {
-						logger.warn(`Failed to close ${label}: ${String(error)}`);
-					}
-				}
-			}
-		}
-	}
+const closeIfPossible = async (
+  resource: unknown,
+  label: string,
+): Promise<void> => {
+  if (resource !== null && typeof resource === "object") {
+    const maybeClosable = resource as { close?: () => unknown };
+    if (typeof maybeClosable.close === "function") {
+      try {
+        await Promise.resolve(maybeClosable.close());
+      } catch (error) {
+        if (logger !== undefined) {
+          if (error instanceof Error) {
+            logger.warn(`Failed to close ${label}: ${error.message}`);
+            logger.debug(error.stack ?? "");
+          } else {
+            logger.warn(`Failed to close ${label}: ${String(error)}`);
+          }
+        }
+      }
+    }
+  }
 };
 
 /**
  * デプロイ情報の型定義
  */
 interface DeploymentInfo {
-	contractAddress: string;
-	transactionHash: string;
-	deployedAt: string;
-	network: string;
-	deployer: string;
-	initialState: {
-		registrationCount: number;
-		maleCount: number;
-		femaleCount: number;
-		otherCount: number;
-	};
+  contractAddress: string;
+  transactionHash: string;
+  deployedAt: string;
+  network: string;
+  deployer: string;
+  initialState: {
+    registrationCount: number;
+    maleCount: number;
+    femaleCount: number;
+    otherCount: number;
+  };
 }
 
 /**
  * デプロイ情報をJSONファイルに保存
  */
 const saveDeploymentInfo = async (
-	deploymentInfo: DeploymentInfo,
-	filename: string = 'deployment-patient-registry.json'
+  deploymentInfo: DeploymentInfo,
+  filename: string = "deployment-patient-registry.json",
 ): Promise<void> => {
-	const filePath = path.join(process.cwd(), filename);
-	await fsAsync.writeFile(
-		filePath,
-		JSON.stringify(deploymentInfo, null, 2),
-		'utf-8'
-	);
-	if (logger !== undefined) {
-		logger.info(`Deployment info saved to: ${filePath}`);
-	}
+  const filePath = path.join(process.cwd(), filename);
+  await fsAsync.writeFile(
+    filePath,
+    JSON.stringify(deploymentInfo, null, 2),
+    "utf-8",
+  );
+  if (logger !== undefined) {
+    logger.info(`Deployment info saved to: ${filePath}`);
+  }
 };
 
 let logger: Logger | undefined;
@@ -230,15 +235,15 @@ const main = async () => {
  * エントリーポイント
  */
 await main().catch((error) => {
-	if (logger !== undefined) {
-		if (error instanceof Error) {
-			logger.error(`Deployment failed: ${error.message}`);
-			logger.debug(error.stack ?? '');
-		} else {
-			logger.error(`Deployment failed: ${String(error)}`);
-		}
-	} else {
-		console.error('❌ Deployment failed:', error);
-	}
-	process.exitCode = 1;
+  if (logger !== undefined) {
+    if (error instanceof Error) {
+      logger.error(`Deployment failed: ${error.message}`);
+      logger.debug(error.stack ?? "");
+    } else {
+      logger.error(`Deployment failed: ${String(error)}`);
+    }
+  } else {
+    console.error("❌ Deployment failed:", error);
+  }
+  process.exitCode = 1;
 });

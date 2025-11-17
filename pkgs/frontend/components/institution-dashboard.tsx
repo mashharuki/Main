@@ -1,44 +1,62 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Shield, Upload, LogOut, CheckCircle2, Clock, FileText, Activity, Coins, TrendingUp } from "lucide-react"
-import { WalletButton } from "@/components/wallet/wallet-button"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Shield,
+  Upload,
+  LogOut,
+  CheckCircle2,
+  Clock,
+  FileText,
+  Activity,
+  Coins,
+  TrendingUp,
+} from "lucide-react";
+import { WalletButton } from "@/components/wallet/wallet-button";
 
 interface InstitutionDashboardProps {
-  onLogout: () => void
+  onLogout: () => void;
 }
 
 export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
-  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "processing" | "complete">("idle")
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [earnedTokens, setEarnedTokens] = useState(0)
-  const [totalTokens, setTotalTokens] = useState(1250)
+  const [uploadStatus, setUploadStatus] = useState<
+    "idle" | "uploading" | "processing" | "complete"
+  >("idle");
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [earnedTokens, setEarnedTokens] = useState(0);
+  const [totalTokens, setTotalTokens] = useState(1250);
 
   const handleFileUpload = () => {
-    setUploadStatus("uploading")
-    setUploadProgress(0)
-    const tokensForUpload = 150
+    setUploadStatus("uploading");
+    setUploadProgress(0);
+    const tokensForUpload = 150;
 
     const uploadInterval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(uploadInterval)
-          setUploadStatus("processing")
+          clearInterval(uploadInterval);
+          setUploadStatus("processing");
           setTimeout(() => {
-            setUploadStatus("complete")
-            setEarnedTokens(tokensForUpload)
-            setTotalTokens((prev) => prev + tokensForUpload)
-          }, 2000)
-          return 100
+            setUploadStatus("complete");
+            setEarnedTokens(tokensForUpload);
+            setTotalTokens((prev) => prev + tokensForUpload);
+          }, 2000);
+          return 100;
         }
-        return prev + 25
-      })
-    }, 500)
-  }
+        return prev + 25;
+      });
+    }, 500);
+  };
 
   const uploadHistory = [
     {
@@ -65,16 +83,40 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
       status: "complete",
       tokens: 200,
     },
-  ]
+  ];
 
   const syncLogs = [
-    { time: "10:47", action: "50 new records fetched from EHR", status: "info" },
-    { time: "10:47", action: "Processing: Masking PII with Midnight ZK...", status: "processing" },
-    { time: "10:48", action: "Complete. 50 records securely added.", status: "success" },
-    { time: "10:45", action: "32 new records fetched from EHR", status: "info" },
-    { time: "10:45", action: "Processing: Masking PII with Midnight ZK...", status: "processing" },
-    { time: "10:46", action: "Complete. 32 records securely added.", status: "success" },
-  ]
+    {
+      time: "10:47",
+      action: "50 new records fetched from EHR",
+      status: "info",
+    },
+    {
+      time: "10:47",
+      action: "Processing: Masking PII with Midnight ZK...",
+      status: "processing",
+    },
+    {
+      time: "10:48",
+      action: "Complete. 50 records securely added.",
+      status: "success",
+    },
+    {
+      time: "10:45",
+      action: "32 new records fetched from EHR",
+      status: "info",
+    },
+    {
+      time: "10:45",
+      action: "Processing: Masking PII with Midnight ZK...",
+      status: "processing",
+    },
+    {
+      time: "10:46",
+      action: "Complete. 32 records securely added.",
+      status: "success",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
@@ -85,7 +127,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
             <span className="text-2xl font-bold">NextMed</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">Company Portal</span>
+            <span className="text-sm text-muted-foreground">
+              Company Portal
+            </span>
             <WalletButton />
             <Button variant="ghost" size="sm" onClick={onLogout}>
               <LogOut className="h-4 w-4 mr-2" />
@@ -97,9 +141,12 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-balance">Company Dashboard</h1>
+          <h1 className="text-4xl font-bold mb-2 text-balance">
+            Company Dashboard
+          </h1>
           <p className="text-muted-foreground text-lg">
-            Securely upload and integrate medical records with ZK privacy protection
+            Securely upload and integrate medical records with ZK privacy
+            protection
           </p>
         </div>
 
@@ -109,14 +156,21 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               <Coins className="h-5 w-5 text-success" />
               Contribution Rewards
             </CardTitle>
-            <CardDescription>Earn NEXT tokens for contributing medical data to the NextMed network</CardDescription>
+            <CardDescription>
+              Earn NEXT tokens for contributing medical data to the NextMed
+              network
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Total NEXT Tokens Earned</p>
+                <p className="text-sm text-muted-foreground">
+                  Total NEXT Tokens Earned
+                </p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-success">{totalTokens}</span>
+                  <span className="text-4xl font-bold text-success">
+                    {totalTokens}
+                  </span>
                   <span className="text-lg text-muted-foreground">NEXT</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -158,7 +212,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <Upload className="h-5 w-5 text-primary" />
                   Data Uploader
                 </CardTitle>
-                <CardDescription>Upload medical records for secure processing and anonymization</CardDescription>
+                <CardDescription>
+                  Upload medical records for secure processing and anonymization
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 bg-gradient-to-br from-primary/5 to-success/5 rounded-lg border border-primary/20 mb-4">
@@ -168,22 +224,35 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                         <Coins className="h-5 w-5 text-success" />
                       </div>
                       <div>
-                        <p className="font-semibold">Earn NEXT Tokens with Every Upload</p>
-                        <p className="text-sm text-muted-foreground">~1 NEXT per record • Instant processing</p>
+                        <p className="font-semibold">
+                          Earn NEXT Tokens with Every Upload
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          ~1 NEXT per record • Instant processing
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-success">+150</p>
-                      <p className="text-xs text-muted-foreground">estimated NEXT</p>
+                      <p className="text-xs text-muted-foreground">
+                        estimated NEXT
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-primary/50 transition-colors cursor-pointer">
                   <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-lg font-medium mb-2">Drag & Drop Files Here</p>
-                  <p className="text-sm text-muted-foreground mb-4">or click to select files (CSV, JSON)</p>
-                  <Button onClick={handleFileUpload} disabled={uploadStatus !== "idle"}>
+                  <p className="text-lg font-medium mb-2">
+                    Drag & Drop Files Here
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    or click to select files (CSV, JSON)
+                  </p>
+                  <Button
+                    onClick={handleFileUpload}
+                    disabled={uploadStatus !== "idle"}
+                  >
                     Select File
                   </Button>
                 </div>
@@ -193,10 +262,15 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <FileText className="h-4 w-4 text-primary" />
-                        <span className="text-sm font-medium">patient_records_demo.csv</span>
+                        <span className="text-sm font-medium">
+                          patient_records_demo.csv
+                        </span>
                       </div>
                       {uploadStatus === "complete" && (
-                        <Badge variant="secondary" className="bg-success/10 text-success">
+                        <Badge
+                          variant="secondary"
+                          className="bg-success/10 text-success"
+                        >
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Complete
                         </Badge>
@@ -207,8 +281,12 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       <>
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Uploading...</span>
-                            <span className="font-medium">{uploadProgress}%</span>
+                            <span className="text-muted-foreground">
+                              Uploading...
+                            </span>
+                            <span className="font-medium">
+                              {uploadProgress}%
+                            </span>
                           </div>
                           <div className="h-2 bg-muted rounded-full overflow-hidden">
                             <div
@@ -223,7 +301,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                     {uploadStatus === "processing" && (
                       <div className="flex items-center gap-2 text-sm">
                         <div className="h-4 w-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                        <span className="font-medium text-primary">Processing: Masking PII with Midnight ZK...</span>
+                        <span className="font-medium text-primary">
+                          Processing: Masking PII with Midnight ZK...
+                        </span>
                       </div>
                     )}
 
@@ -231,19 +311,26 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-sm text-success">
                           <CheckCircle2 className="h-4 w-4" />
-                          <span className="font-medium">Complete. 150 records securely processed</span>
+                          <span className="font-medium">
+                            Complete. 150 records securely processed
+                          </span>
                         </div>
                         <div className="p-4 bg-success/10 border border-success/20 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium">NEXT Tokens Earned</span>
+                            <span className="text-sm font-medium">
+                              NEXT Tokens Earned
+                            </span>
                             <div className="flex items-center gap-1">
                               <Coins className="h-4 w-4 text-success" />
-                              <span className="text-xl font-bold text-success">+{earnedTokens} NEXT</span>
+                              <span className="text-xl font-bold text-success">
+                                +{earnedTokens} NEXT
+                              </span>
                             </div>
                           </div>
                           <p className="text-xs text-muted-foreground leading-relaxed">
                             <Shield className="h-3 w-3 inline mr-1 text-success" />
-                            All PII has been masked using Midnight's ZK technology. Records are now available for
+                            All PII has been masked using Midnight's ZK
+                            technology. Records are now available for
                             confidential analysis.
                           </p>
                         </div>
@@ -260,16 +347,23 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <Clock className="h-5 w-5 text-secondary" />
                   Upload History
                 </CardTitle>
-                <CardDescription>Recent file uploads and processing status</CardDescription>
+                <CardDescription>
+                  Recent file uploads and processing status
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {uploadHistory.map((upload) => (
-                    <div key={upload.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                    <div
+                      key={upload.id}
+                      className="flex items-center justify-between p-4 bg-muted/30 rounded-lg"
+                    >
                       <div className="flex items-center gap-3">
                         <FileText className="h-5 w-5 text-primary" />
                         <div>
-                          <p className="font-medium text-sm">{upload.filename}</p>
+                          <p className="font-medium text-sm">
+                            {upload.filename}
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {upload.date} • {upload.records} records
                           </p>
@@ -277,9 +371,14 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="text-right">
-                          <p className="text-sm font-semibold text-success">+{upload.tokens} NEXT</p>
+                          <p className="text-sm font-semibold text-success">
+                            +{upload.tokens} NEXT
+                          </p>
                         </div>
-                        <Badge variant="secondary" className="bg-success/10 text-success">
+                        <Badge
+                          variant="secondary"
+                          className="bg-success/10 text-success"
+                        >
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Complete
                         </Badge>
@@ -298,7 +397,10 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <Activity className="h-5 w-5 text-primary" />
                   EHR System Integration
                 </CardTitle>
-                <CardDescription>Automated synchronization with your Electronic Health Records system</CardDescription>
+                <CardDescription>
+                  Automated synchronization with your Electronic Health Records
+                  system
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="p-6 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg border">
@@ -309,10 +411,15 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       </div>
                       <div>
                         <p className="font-semibold text-lg">Sakura Net EHR</p>
-                        <p className="text-sm text-muted-foreground">Enterprise Edition</p>
+                        <p className="text-sm text-muted-foreground">
+                          Enterprise Edition
+                        </p>
                       </div>
                     </div>
-                    <Badge variant="secondary" className="bg-success/10 text-success">
+                    <Badge
+                      variant="secondary"
+                      className="bg-success/10 text-success"
+                    >
                       <CheckCircle2 className="h-3 w-3 mr-1" />
                       Connected
                     </Badge>
@@ -320,19 +427,29 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Connection Status</p>
-                      <p className="font-semibold text-success">Active & Synchronizing</p>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Connection Status
+                      </p>
+                      <p className="font-semibold text-success">
+                        Active & Synchronizing
+                      </p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Last Sync</p>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Last Sync
+                      </p>
                       <p className="font-semibold">02 Nov 2025, 10:48:12</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Records Processed Today</p>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Records Processed Today
+                      </p>
                       <p className="text-2xl font-bold text-primary">320</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">NEXT Tokens Earned Today</p>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        NEXT Tokens Earned Today
+                      </p>
                       <p className="text-2xl font-bold text-success">+320</p>
                     </div>
                   </div>
@@ -342,9 +459,12 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <div className="flex items-start gap-2">
                     <Shield className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      <strong className="text-foreground">Security Assurance:</strong> Data from your EHR is only
-                      integrated after all PII (Name, Address) is completely masked. NextMed never stores raw patient
-                      personal data.
+                      <strong className="text-foreground">
+                        Security Assurance:
+                      </strong>{" "}
+                      Data from your EHR is only integrated after all PII (Name,
+                      Address) is completely masked. NextMed never stores raw
+                      patient personal data.
                     </p>
                   </div>
                 </div>
@@ -357,7 +477,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <Clock className="h-5 w-5 text-secondary" />
                   Real-Time Masking Log
                 </CardTitle>
-                <CardDescription>Live feed of automated data processing</CardDescription>
+                <CardDescription>
+                  Live feed of automated data processing
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 font-mono text-xs">
@@ -366,7 +488,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       key={index}
                       className="flex items-start gap-3 p-3 bg-muted/30 rounded hover:bg-muted/50 transition-colors"
                     >
-                      <span className="text-muted-foreground shrink-0">[{log.time}]</span>
+                      <span className="text-muted-foreground shrink-0">
+                        [{log.time}]
+                      </span>
                       <span
                         className={
                           log.status === "success"
@@ -387,5 +511,5 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
         </Tabs>
       </main>
     </div>
-  )
+  );
 }

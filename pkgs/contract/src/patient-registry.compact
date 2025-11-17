@@ -1,72 +1,136 @@
-pragma language_version 0.18.0;
+// Compactコンパイラのバージョン指定
+pragma language_version >= 0.16.0;
+// Midnight標準ライブラリのインポート
 import CompactStandardLibrary;
 
-// Gender enumeration
+// 性別を表す列挙型
+// 患者の性別を3つのカテゴリで管理
 enum Gender {
-	MALE,
-	FEMALE,
-	OTHER
+	MALE,    // 男性
+	FEMALE,  // 女性
+	OTHER    // その他
 }
 
-// Registration state enumeration
+// 登録状態を表す列挙型
+// 患者データの登録プロセスの進行状況を管理
 enum RegistrationState {
-	UNREGISTERED,
-	REGISTERED,
-	VERIFIED
+	UNREGISTERED,  // 未登録
+	REGISTERED,    // 登録済み
+	VERIFIED       // 検証済み
 }
 
-// Public ledger data - registration counters
+// ========================================
+// パブリックレジャー（公開台帳）データ
+// ========================================
+// これらのデータはブロックチェーン上に公開されますが、
+// 個人を特定できる情報は含まれません（統計情報のみ）
+
+// 総登録患者数のカウンター
 export ledger registrationCount: Field;
+
+// 年齢グループ別のカウンター（将来の拡張用）
 export ledger ageGroupCount: Field;
-export ledger maleCount: Field;
-export ledger femaleCount: Field;
-export ledger otherCount: Field;
+
+// 性別ごとのカウンター
+export ledger maleCount: Field;    // 男性患者数
+export ledger femaleCount: Field;  // 女性患者数
+export ledger otherCount: Field;   // その他の性別患者数
+
+// 現在の登録状態
 export ledger state: RegistrationState;
 
-// Constructor - initialize all counters to 0
+// ========================================
+// コンストラクタ
+// ========================================
+// コントラクトのデプロイ時に一度だけ実行される初期化処理
+// すべてのカウンターを0に、状態を未登録に設定
 constructor() {
-	registrationCount = 0;
-	ageGroupCount = 0;
-	maleCount = 0;
-	femaleCount = 0;
-	otherCount = 0;
-	state = RegistrationState.UNREGISTERED;
+	registrationCount = 0;  // 総登録数を0で初期化
+	ageGroupCount = 0;      // 年齢グループカウンターを0で初期化
+	maleCount = 0;          // 男性カウンターを0で初期化
+	femaleCount = 0;        // 女性カウンターを0で初期化
+	otherCount = 0;         // その他カウンターを0で初期化
+	state = RegistrationState.UNREGISTERED;  // 初期状態を未登録に設定
 }
 
-// Register patient circuit
+// ========================================
+// 患者登録サーキット（メイン機能）
+// ========================================
+// 新しい患者データを登録し、統計情報を更新する
+// 
+// パラメータ:
+//   age: 患者の年齢（0-150歳の範囲で検証）
+//   gender_code: 性別コード（0=男性, 1=女性, 2=その他）
+//   condition_hash: 症例データのハッシュ値（プライバシー保護のため）
+// 
+// 戻り値:
+//   Boolean: 登録が成功した場合はtrue
 export circuit registerPatient(
 	age: Uint<64>,
 	gender_code: Uint<64>,
 	condition_hash: Field
 ): Boolean {
-	// Age validation (0-150 years)
+	// 年齢の妥当性チェック（0-150歳の範囲内であることを確認）
+	// この範囲外の値が渡された場合、トランザクションは失敗する
 	assert(age <= (150 as Uint<64>), "Age must be between 0 and 150");
 
-	// Increment registration counter
+	// 総登録患者数を1増やす
 	registrationCount = registrationCount + (1 as Field);
 
-	// Update gender counters (disclose gender_code for statistics)
+	// 性別ごとのカウンターを更新
+	// disclose()を使用して性別コードを公開（統計情報として必要なため）
+	// 注意: 個人を特定できる情報は含まれていない
 	const disclosed_gender = disclose(gender_code);
 	if (disclosed_gender == (0 as Uint<64>)) {
+		// 性別コードが0の場合、男性カウンターを増やす
 		maleCount = maleCount + (1 as Field);
 	} else if (disclosed_gender == (1 as Uint<64>)) {
+		// 性別コードが1の場合、女性カウンターを増やす
 		femaleCount = femaleCount + (1 as Field);
 	} else {
+		// それ以外の場合、その他カウンターを増やす
 		otherCount = otherCount + (1 as Field);
 	}
 
-	// Update state
+	// 登録状態を「登録済み」に更新
 	state = RegistrationState.REGISTERED;
 
+	// 登録成功を示すtrueを返す
 	return true;
 }
 
-// Get registration statistics
+// ========================================
+// 登録統計情報取得サーキット
+// ========================================
+// 現在の患者登録統計情報を取得する
+// 
+// 戻り値:
+//   [Field, Field, Field, Field]: 
+//     [0] 総登録患者数
+//     [1] 男性患者数
+//     [2] 女性患者数
+//     [3] その他の性別患者数
 export circuit getRegistrationStats(): [Field, Field, Field, Field] {
 	return [registrationCount, maleCount, femaleCount, otherCount];
 }
 
-// Verify age range
+// ========================================
+// 年齢範囲検証サーキット
+// ========================================
+// 指定された年齢が特定の範囲内にあるかを検証する
+// ゼロ知識証明により、実際の年齢を公開せずに範囲内であることを証明できる
+// 
+// パラメータ:
+//   age: 検証対象の年齢
+//   min_age: 最小年齢（この値以上である必要がある）
+//   max_age: 最大年齢（この値以下である必要がある）
+// 
+// 戻り値:
+//   Boolean: 年齢が指定範囲内の場合はtrue、範囲外の場合はfalse
+// 
+// 使用例:
+//   - 特定の年齢層を対象とした研究への適格性確認
+//   - 年齢制限のある医療サービスへのアクセス制御
 export circuit verifyAgeRange(
 	age: Uint<64>,
 	min_age: Uint<64>,

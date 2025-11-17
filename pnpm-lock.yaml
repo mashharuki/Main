@@ -127,8 +127,11 @@ importers:
   pkgs/contract:
     dependencies:
       '@midnight-ntwrk/compact-runtime':
-        specifier: ^0.9.0
-        version: 0.9.0
+        specifier: ^0.8.1
+        version: 0.8.1
+      '@midnight-ntwrk/midnight-js-network-id':
+        specifier: ^0.1.14
+        version: 0.1.15
       contract:
         specifier: '*'
         version: 0.1.2
@@ -1144,6 +1147,9 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
+  '@midnight-ntwrk/compact-runtime@0.8.1':
+    resolution: {integrity: sha512-ZXG/iprEqTCxQC/P1oETGOR5CnsoemPsfb17eSANPRsm+11AcIOP0Tp8KJipN+GbycgxOA+fAVwLFqA1hDCgbw==}
+
   '@midnight-ntwrk/compact-runtime@0.9.0':
     resolution: {integrity: sha512-Dsms+SWRWlaTIay4SO7ITxTJvo8lgEKkMss+dQnIZDnEoCEO5lHTSj4TckBAvyYSWm4KElN3tir/MVm5hHgfDA==}
 
@@ -1164,6 +1170,9 @@ packages:
 
   '@midnight-ntwrk/midnight-js-level-private-state-provider@2.0.2':
     resolution: {integrity: sha512-lI/E5Fs4gVJ9LN4DEYbrssoz2YdWgfiIl6ZpQsc4o7QUCGAzKaK5hAPiQ5dgeL3G2eFbLWVxwpJFq9O5/oJyAg==}
+
+  '@midnight-ntwrk/midnight-js-network-id@0.1.15':
+    resolution: {integrity: sha512-hCFGr3klcD7Qp7UDs2WO/kQEUnbdC7BNjiIQTEM6SO/AsUasx/j59lNtUkh9a9Jdz4In6FMUA0oZ3XzP6d/ANA==}
 
   '@midnight-ntwrk/midnight-js-network-id@2.0.2':
     resolution: {integrity: sha512-ogBBC5Ox2B2QZo4XxXYr3AxwgUeC4LEmLasLInjMk0p0m//8iI6NmH4/5f0pEOxDtGSuA+piuSonxuQMLM6GUg==}
@@ -5378,6 +5387,12 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
+  '@midnight-ntwrk/compact-runtime@0.8.1':
+    dependencies:
+      '@midnight-ntwrk/onchain-runtime': 0.3.0
+      '@types/object-inspect': 1.13.0
+      object-inspect: 1.13.4
+
   '@midnight-ntwrk/compact-runtime@0.9.0':
     dependencies:
       '@midnight-ntwrk/onchain-runtime': 0.3.0
@@ -5445,6 +5460,8 @@ snapshots:
       level: 9.0.0
       lodash: 4.17.21
       superjson: 2.2.5
+
+  '@midnight-ntwrk/midnight-js-network-id@0.1.15': {}
 
   '@midnight-ntwrk/midnight-js-network-id@2.0.2': {}
 

@@ -2,8 +2,8 @@
  * Utility functions for Patient Registry Contract
  */
 
-import { Gender } from "./types";
 import { createHash } from "crypto";
+import { Gender } from "./types";
 
 /**
  * Validate age is within acceptable range (0-150 years)
@@ -11,7 +11,7 @@ import { createHash } from "crypto";
  * @returns true if valid, false otherwise
  */
 export function validateAge(age: number): boolean {
-	return age >= 0 && age <= 150;
+  return age >= 0 && age <= 150;
 }
 
 /**
@@ -20,7 +20,7 @@ export function validateAge(age: number): boolean {
  * @returns Numeric code (0=MALE, 1=FEMALE, 2=OTHER)
  */
 export function genderToCode(gender: Gender): bigint {
-	return BigInt(gender);
+  return BigInt(gender);
 }
 
 /**
@@ -29,25 +29,29 @@ export function genderToCode(gender: Gender): bigint {
  * @returns Gender enum value
  */
 export function codeToGender(code: bigint): Gender {
-	const numCode = Number(code);
-	if (numCode === 0) return Gender.MALE;
-	if (numCode === 1) return Gender.FEMALE;
-	return Gender.OTHER;
+  const numCode = Number(code);
+  if (numCode === 0) return Gender.MALE;
+  if (numCode === 1) return Gender.FEMALE;
+  return Gender.OTHER;
 }
 
 /**
  * Hash condition data to Field value
  * @param condition - Condition string to hash
- * @returns Field value as bigint
+ * @returns Field value as bigint (within Field range)
  */
 export function hashCondition(condition: string): bigint {
-	const hash = createHash("sha256").update(condition).digest();
-	// Convert first 32 bytes to bigint (Field compatible)
-	let result = BigInt(0);
-	for (let i = 0; i < Math.min(hash.length, 32); i++) {
-		result = (result << BigInt(8)) | BigInt(hash[i]);
-	}
-	return result;
+  const hash = createHash("sha256").update(condition).digest();
+  // Convert first 32 bytes to bigint
+  let result = BigInt(0);
+  for (let i = 0; i < Math.min(hash.length, 32); i++) {
+    result = (result << BigInt(8)) | BigInt(hash[i]);
+  }
+  // Midnightの最大Field値でモジュロ演算を行い、範囲内に収める
+  const MAX_FIELD = BigInt(
+    "52435875175126190479447740508185965837690552500527637822603658699938581184512",
+  );
+  return result % MAX_FIELD;
 }
 
 /**
@@ -56,15 +60,15 @@ export function hashCondition(condition: string): bigint {
  * @returns Formatted object
  */
 export function formatStats(stats: [bigint, bigint, bigint, bigint]): {
-	total: number;
-	male: number;
-	female: number;
-	other: number;
+  total: number;
+  male: number;
+  female: number;
+  other: number;
 } {
-	return {
-		total: Number(stats[0]),
-		male: Number(stats[1]),
-		female: Number(stats[2]),
-		other: Number(stats[3]),
-	};
+  return {
+    total: Number(stats[0]),
+    male: Number(stats[1]),
+    female: Number(stats[2]),
+    other: Number(stats[3]),
+  };
 }

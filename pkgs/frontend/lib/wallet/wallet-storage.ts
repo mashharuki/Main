@@ -14,21 +14,18 @@ const STORAGE_KEY = "nextmed_wallet_connection";
  * @param walletName ウォレット名
  * @param address ウォレットアドレス
  */
-export function saveConnection(
-	walletName: WalletName,
-	address: string,
-): void {
-	try {
-		const connection: WalletConnection = {
-			walletName,
-			address,
-			connectedAt: Date.now(),
-		};
+export function saveConnection(walletName: WalletName, address: string): void {
+  try {
+    const connection: WalletConnection = {
+      walletName,
+      address,
+      connectedAt: Date.now(),
+    };
 
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(connection));
-	} catch (error) {
-		console.error("Failed to save wallet connection:", error);
-	}
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(connection));
+  } catch (error) {
+    console.error("Failed to save wallet connection:", error);
+  }
 }
 
 /**
@@ -36,43 +33,43 @@ export function saveConnection(
  * @returns ウォレット接続情報（存在しない場合はnull）
  */
 export function loadConnection(): WalletConnection | null {
-	try {
-		const stored = localStorage.getItem(STORAGE_KEY);
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
 
-		if (!stored) {
-			return null;
-		}
+    if (!stored) {
+      return null;
+    }
 
-		const connection = JSON.parse(stored) as WalletConnection;
+    const connection = JSON.parse(stored) as WalletConnection;
 
-		// 基本的なバリデーション
-		if (
-			!connection.walletName ||
-			!connection.address ||
-			!connection.connectedAt
-		) {
-			console.warn("Invalid wallet connection data in localStorage");
-			clearConnection();
-			return null;
-		}
+    // 基本的なバリデーション
+    if (
+      !connection.walletName ||
+      !connection.address ||
+      !connection.connectedAt
+    ) {
+      console.warn("Invalid wallet connection data in localStorage");
+      clearConnection();
+      return null;
+    }
 
-		return connection;
-	} catch (error) {
-		console.error("Failed to load wallet connection:", error);
-		clearConnection();
-		return null;
-	}
+    return connection;
+  } catch (error) {
+    console.error("Failed to load wallet connection:", error);
+    clearConnection();
+    return null;
+  }
 }
 
 /**
  * ウォレット接続情報を削除
  */
 export function clearConnection(): void {
-	try {
-		localStorage.removeItem(STORAGE_KEY);
-	} catch (error) {
-		console.error("Failed to clear wallet connection:", error);
-	}
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    console.error("Failed to clear wallet connection:", error);
+  }
 }
 
 /**
@@ -80,10 +77,10 @@ export function clearConnection(): void {
  * @returns 接続情報の存在
  */
 export function hasConnection(): boolean {
-	try {
-		return localStorage.getItem(STORAGE_KEY) !== null;
-	} catch (error) {
-		console.error("Failed to check wallet connection:", error);
-		return false;
-	}
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== null;
+  } catch (error) {
+    console.error("Failed to check wallet connection:", error);
+    return false;
+  }
 }
