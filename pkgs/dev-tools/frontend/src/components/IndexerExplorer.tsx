@@ -1,26 +1,35 @@
 import { useState } from "react";
 import { GraphQLClient } from "../clients/graphql-client";
+import {
+	buildLatestBlockWithParentsQuery,
+	buildTransactionsByHashQuery,
+	buildTransactionsByIdentifierQuery,
+	MAX_PARENT_CHAIN_DEPTH,
+} from "../utils/graphql-queries";
+import { numberToHexEncoded, isValidHexEncoded } from "../utils/hex-utils";
+import { introspectSchema } from "../utils/indexer-schema";
 import "../App.css";
 
 const DEFAULT_INDEXER_URL =
 	"https://indexer.testnet-02.midnight.network/api/v1/graphql";
 
-type TabType = "blocks" | "transactions" | "search" | "custom";
+type TabType = "blocks" | "transactions" | "search" | "custom" | "schema";
 
 interface Block {
-	number: number;
+	height: number;
 	hash: string;
 	timestamp?: string;
-	transactionCount?: number;
+	protocolVersion?: string;
+	author?: string;
 }
 
 interface Transaction {
-	id: string;
 	hash: string;
-	blockNumber: number;
+	blockNumber?: number;
+	blockHeight?: number;
 	extrinsicIndex?: number;
 	block?: {
-		number: number;
+		height: number;
 		hash: string;
 	};
 }
@@ -37,25 +46,74 @@ export function IndexerExplorer() {
 	const [blocksResult, setBlocksResult] = useState<Block[] | null>(null);
 
 	// Transactions query states
+	const [txOffset, setTxOffset] = useState<string>("0"); // identifier (string)
 	const [txLimit, setTxLimit] = useState<string>("10");
 	const [txResult, setTxResult] = useState<Transaction[] | null>(null);
 
 	// Search states
 	const [searchTxHash, setSearchTxHash] = useState<string>("");
 	const [searchAccount, setSearchAccount] = useState<string>("");
+	const [searchAccountOffset, setSearchAccountOffset] = useState<string>("0");
+	const [searchAccountLimit, setSearchAccountLimit] = useState<string>("100");
 	const [searchResult, setSearchResult] = useState<unknown>(null);
 
 	// Custom query states
 	const [customQuery, setCustomQuery] = useState<string>(
 		`query {
-  blocks(limit: 5) {
+  blocks(offset: 0, limit: 5) {
     number
     hash
   }
 }`,
 	);
 
+	// Schema introspection states
+	const [schemaResult, setSchemaResult] = useState<string>("");
+	const [schemaLoading, setSchemaLoading] = useState(false);
+
 	const client = new GraphQLClient({ endpoint: indexerUrl, timeout: 30000 });
+
+	const handleIntrospectSchema = async () => {
+		setSchemaLoading(true);
+		setError("");
+		setSchemaResult("");
+
+		try {
+			const schema = await introspectSchema(client);
+			setSchemaResult(JSON.stringify(schema, null, 2));
+		} catch (err) {
+			const errorMessage =
+				err instanceof Error ? err.message : "Unknown error occurred";
+			setError(errorMessage);
+		} finally {
+			setSchemaLoading(false);
+		}
+	};
+
+	// Helper function to extract blocks from parent chain recursively
+	const extractBlocksFromParentChain = (
+		block: any,
+		blocksMap: Map<number, Block>,
+	): void => {
+		if (!block) {
+			return;
+		}
+
+		blocksMap.set(block.height, {
+			height: block.height,
+			hash: block.hash,
+			timestamp: block.timestamp
+				? new Date(block.timestamp).toISOString()
+				: undefined,
+			protocolVersion: block.protocolVersion?.toString(),
+			author: block.author,
+		});
+
+		// Recursively process parent blocks
+		if (block.parent) {
+			extractBlocksFromParentChain(block.parent, blocksMap);
+		}
+	};
 
 	const handleQueryBlocks = async () => {
 		setLoading(true);
@@ -63,19 +121,36 @@ export function IndexerExplorer() {
 		setBlocksResult(null);
 
 		try {
-			const limit = parseInt(blocksLimit, 10) || 10;
-			const data = await client.query<{ blocks: Block[] }>(`
-        query {
-          blocks(limit: ${limit}) {
-            number
-            hash
-            timestamp
-            transactionCount
-          }
-        }
-      `);
+			let limit = parseInt(blocksLimit, 10) || 10;
+			
+			// Cap limit at maximum recursion depth
+			if (limit > MAX_PARENT_CHAIN_DEPTH) {
+				limit = MAX_PARENT_CHAIN_DEPTH;
+				setBlocksLimit(MAX_PARENT_CHAIN_DEPTH.toString());
+			}
+			
+			// Get latest block with parent chain to get multiple blocks
+			const query = buildLatestBlockWithParentsQuery(limit);
+			const data = await client.query<{
+				block: {
+					hash: string;
+					height: number;
+					timestamp: number;
+					protocolVersion: number;
+					author?: string;
+					parent?: any;
+				};
+			}>(query);
 
-			setBlocksResult(data.blocks);
+			// Extract blocks from the chain (latest block + parent chain)
+			const blocksMap = new Map<number, Block>();
+			extractBlocksFromParentChain(data.block, blocksMap);
+
+			const uniqueBlocks = Array.from(blocksMap.values())
+				.sort((a, b) => b.height - a.height)
+				.slice(0, limit);
+
+			setBlocksResult(uniqueBlocks);
 			setResult(JSON.stringify(data, null, 2));
 		} catch (err) {
 			const errorMessage =
@@ -92,23 +167,28 @@ export function IndexerExplorer() {
 		setTxResult(null);
 
 		try {
+			// offset is required and uses identifier (hex-encoded)
+			// Convert to hex if it's a number, otherwise use as-is if already hex
+			let identifierHex: string;
+			const trimmedOffset = txOffset.trim();
+			if (trimmedOffset && isValidHexEncoded(trimmedOffset)) {
+				identifierHex = trimmedOffset.startsWith("0x") ? trimmedOffset : `0x${trimmedOffset}`;
+				// Ensure it's 64 hex characters (32 bytes)
+				const hexPart = identifierHex.startsWith("0x") ? identifierHex.slice(2) : identifierHex;
+				if (hexPart.length < 64) {
+					identifierHex = `0x${hexPart.padStart(64, "0")}`;
+				}
+			} else {
+				identifierHex = numberToHexEncoded(trimmedOffset || "0");
+			}
+			
 			const limit = parseInt(txLimit, 10) || 10;
-			const data = await client.query<{ transactions: Transaction[] }>(`
-        query {
-          transactions(limit: ${limit}) {
-            id
-            hash
-            blockNumber
-            extrinsicIndex
-            block {
-              number
-              hash
-            }
-          }
-        }
-      `);
+			const query = buildTransactionsByIdentifierQuery(identifierHex);
+			const data = await client.query<{ transactions: Transaction[] }>(query);
 
-			setTxResult(data.transactions);
+			// Limit results client-side since the API doesn't support limit parameter
+			const limitedTransactions = data.transactions.slice(0, limit);
+			setTxResult(limitedTransactions);
 			setResult(JSON.stringify(data, null, 2));
 		} catch (err) {
 			const errorMessage =
@@ -130,23 +210,16 @@ export function IndexerExplorer() {
 		setSearchResult(null);
 
 		try {
-			const data = await client.query<{ transaction: Transaction }>(`
-        query {
-          transaction(hash: "${searchTxHash}") {
-            id
-            hash
-            blockNumber
-            extrinsicIndex
-            block {
-              number
-              hash
-            }
-          }
-        }
-      `);
+			const query = buildTransactionsByHashQuery(searchTxHash);
+			const data = await client.query<{ transactions: Transaction[] }>(query);
 
-			setSearchResult(data.transaction);
-			setResult(JSON.stringify(data, null, 2));
+			// transactions returns a list, get the first one
+			if (data.transactions && data.transactions.length > 0) {
+				setSearchResult(data.transactions[0]);
+				setResult(JSON.stringify(data, null, 2));
+			} else {
+				setError("Transaction not found");
+			}
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error ? err.message : "Unknown error occurred";
@@ -158,7 +231,7 @@ export function IndexerExplorer() {
 
 	const handleSearchAccount = async () => {
 		if (!searchAccount.trim()) {
-			setError("Please enter an account address");
+			setError("Please enter an account address or identifier");
 			return;
 		}
 
@@ -167,25 +240,29 @@ export function IndexerExplorer() {
 		setSearchResult(null);
 
 		try {
-			const data = await client.query<{ transactions: Transaction[] }>(`
-        query {
-          transactions(
-            filter: { account: "${searchAccount}" }
-            limit: 100
-          ) {
-            id
-            hash
-            blockNumber
-            extrinsicIndex
-            block {
-              number
-              hash
-            }
-          }
-        }
-      `);
+			// Note: The schema doesn't have a direct account filter
+			// We'll use identifier-based query for now
+			// In practice, you might need to use contractAction query for account-specific data
+			let identifierHex: string;
+			const trimmedOffset = searchAccountOffset.trim();
+			if (trimmedOffset && isValidHexEncoded(trimmedOffset)) {
+				identifierHex = trimmedOffset.startsWith("0x") ? trimmedOffset : `0x${trimmedOffset}`;
+				// Ensure it's 64 hex characters (32 bytes)
+				const hexPart = identifierHex.startsWith("0x") ? identifierHex.slice(2) : identifierHex;
+				if (hexPart.length < 64) {
+					identifierHex = `0x${hexPart.padStart(64, "0")}`;
+				}
+			} else {
+				identifierHex = numberToHexEncoded(trimmedOffset || "0");
+			}
+			
+			const limit = parseInt(searchAccountLimit, 10) || 100;
+			const query = buildTransactionsByIdentifierQuery(identifierHex);
+			const data = await client.query<{ transactions: Transaction[] }>(query);
 
-			setSearchResult(data.transactions);
+			// Filter by account if needed (this would require checking identifiers or contractActions)
+			const limitedTransactions = data.transactions.slice(0, limit);
+			setSearchResult(limitedTransactions);
 			setResult(JSON.stringify(data, null, 2));
 		} catch (err) {
 			const errorMessage =
@@ -269,6 +346,13 @@ export function IndexerExplorer() {
 						>
 							Custom Query
 						</button>
+						<button
+							type="button"
+							className={`tab-button ${activeTab === "schema" ? "active" : ""}`}
+							onClick={() => setActiveTab("schema")}
+						>
+							Schema
+						</button>
 					</div>
 				</div>
 
@@ -277,7 +361,7 @@ export function IndexerExplorer() {
 						<div className="method-panel">
 							<h2>Query Blocks</h2>
 							<p className="method-description-text">
-								Query recent blocks from the indexer.
+								Query blocks from the indexer. Gets the latest block and follows the parent chain to retrieve multiple blocks.
 							</p>
 
 							<div className="params-section">
@@ -287,11 +371,17 @@ export function IndexerExplorer() {
 										<input
 											type="number"
 											value={blocksLimit}
-											onChange={(e) => setBlocksLimit(e.target.value)}
+											onChange={(e) => {
+												const value = parseInt(e.target.value, 10);
+												if (!isNaN(value) && value >= 1 && value <= MAX_PARENT_CHAIN_DEPTH) {
+													setBlocksLimit(e.target.value);
+												}
+											}}
 											placeholder="10"
 											min="1"
-											max="1000"
+											max={MAX_PARENT_CHAIN_DEPTH}
 										/>
+										<small>Number of blocks to return (max: {MAX_PARENT_CHAIN_DEPTH} due to GraphQL recursion limit)</small>
 									</label>
 								</div>
 							</div>
@@ -319,7 +409,7 @@ export function IndexerExplorer() {
 										{blocksResult.map((block, index) => (
 											<div key={index} className="search-result-item">
 												<div className="result-item-header">
-													<span>Block #{block.number}</span>
+													<span>Block #{block.height}</span>
 												</div>
 												<pre className="result-item-content">
 													{JSON.stringify(block, null, 2)}
@@ -336,13 +426,25 @@ export function IndexerExplorer() {
 						<div className="method-panel">
 							<h2>Query Transactions</h2>
 							<p className="method-description-text">
-								Query recent transactions from the indexer.
+								Query transactions from the indexer. Offset identifier (hex-encoded, 32 bytes) is required. You can enter a number (will be converted to hex) or a hex string.
 							</p>
 
 							<div className="params-section">
 								<div className="param-input">
 									<label>
-										Limit
+										Offset Identifier <span className="required">*</span>
+										<input
+											type="text"
+											value={txOffset}
+											onChange={(e) => setTxOffset(e.target.value)}
+											placeholder="0x0000000000000000000000000000000000000000000000000000000000000000"
+										/>
+										<small>Hex-encoded identifier (32 bytes, e.g., 0x0000...0000) or number (will be converted to hex)</small>
+									</label>
+								</div>
+								<div className="param-input">
+									<label>
+										Limit (client-side)
 										<input
 											type="number"
 											value={txLimit}
@@ -351,6 +453,7 @@ export function IndexerExplorer() {
 											min="1"
 											max="1000"
 										/>
+										<small>Note: API doesn't support limit, we limit client-side</small>
 									</label>
 								</div>
 							</div>
@@ -379,7 +482,13 @@ export function IndexerExplorer() {
 											<div key={index} className="search-result-item">
 												<div className="result-item-header">
 													<span>
-														Block #{tx.blockNumber} (Index: {tx.extrinsicIndex})
+														Block #
+														{tx.block?.height ??
+															tx.blockNumber ??
+															tx.blockHeight ??
+															"unknown"}
+														{tx.extrinsicIndex !== undefined &&
+															` (Index: ${tx.extrinsicIndex})`}
 													</span>
 												</div>
 												<pre className="result-item-content">
@@ -432,6 +541,33 @@ export function IndexerExplorer() {
 										/>
 									</label>
 								</div>
+								<div className="param-input">
+									<label>
+										Offset
+										<input
+											type="number"
+											value={searchAccountOffset}
+											onChange={(e) =>
+												setSearchAccountOffset(e.target.value)
+											}
+											placeholder="0"
+											min="0"
+										/>
+									</label>
+								</div>
+								<div className="param-input">
+									<label>
+										Limit
+										<input
+											type="number"
+											value={searchAccountLimit}
+											onChange={(e) => setSearchAccountLimit(e.target.value)}
+											placeholder="100"
+											min="1"
+											max="1000"
+										/>
+									</label>
+								</div>
 								<button
 									type="button"
 									onClick={handleSearchAccount}
@@ -452,7 +588,7 @@ export function IndexerExplorer() {
 							{searchResult && (
 								<div className="result-panel">
 									<h3>Search Results</h3>
-									<pre>{JSON.stringify(searchResult, null, 2)}</pre>
+									<pre>{String(JSON.stringify(searchResult, null, 2))}</pre>
 								</div>
 							)}
 						</div>
@@ -513,9 +649,40 @@ export function IndexerExplorer() {
 							)}
 						</div>
 					)}
+
+					{activeTab === "schema" && (
+						<div className="method-panel">
+							<h2>GraphQL Schema Introspection</h2>
+							<p className="method-description-text">
+								Introspect the GraphQL schema to understand available fields and types.
+							</p>
+
+							<button
+								type="button"
+								onClick={handleIntrospectSchema}
+								disabled={schemaLoading}
+								className="call-button"
+							>
+								{schemaLoading ? "Introspecting..." : "Introspect Schema"}
+							</button>
+
+							{error && (
+								<div className="error-panel">
+									<h3>Error</h3>
+									<pre>{error}</pre>
+								</div>
+							)}
+
+							{schemaResult && (
+								<div className="result-panel">
+									<h3>Schema</h3>
+									<pre>{schemaResult}</pre>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 			</main>
 		</div>
 	);
 }
-

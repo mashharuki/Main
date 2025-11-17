@@ -9,8 +9,8 @@
 	--color-text-muted: #999999;
 
 	/* Accent Colors */
-	--color-primary: #0066cc;
-	--color-primary-hover: #0052a3;
+	--color-primary: #0000FE;
+	--color-primary-hover: #0000CB;
 	--color-secondary: #00cc66;
 	--color-secondary-hover: #00b359;
 
@@ -152,6 +152,7 @@ body {
 
 .tabs {
 	display: flex;
+	flex-direction: column;
 	gap: 0.25rem;
 	margin-bottom: 0.75rem;
 	padding-bottom: 0.5rem;
@@ -167,6 +168,9 @@ body {
 	font-size: 0.875rem;
 	border-radius: 2px;
 	transition: background-color 0.15s, color 0.15s;
+	text-align: left;
+	width: 100%;
+	white-space: nowrap;
 }
 
 .tab-button:hover {
@@ -208,7 +212,7 @@ body {
 }
 
 .method-button.active {
-	background-color: rgba(0, 102, 204, 0.05);
+	background-color: rgba(0, 0, 254, 0.05);
 	border-color: var(--color-primary);
 }
 

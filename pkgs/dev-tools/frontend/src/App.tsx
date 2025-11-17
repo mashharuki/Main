@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TOOLS, getToolById, getDefaultTool, type ToolConfig } from "./tools-config";
+import { TOOLS, getToolById, getDefaultTool, type ToolConfig } from "./config/tools-config";
 import "./App.css";
 
 function App() {
