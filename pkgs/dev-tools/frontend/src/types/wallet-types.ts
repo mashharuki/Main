@@ -77,7 +77,7 @@ export interface CardanoWindow extends Window {
 	};
 	midnight?: {
 		mnLace?: {
-			enable: () => Promise<any>;
+			enable: () => Promise<Cip30WalletApi>;
 			isEnabled: () => Promise<boolean>;
 			serviceUriConfig: () => Promise<any>;
 		};
@@ -115,5 +115,6 @@ export interface WalletInfo {
 	installed: boolean;
 	provider?: CardanoWalletProvider;
 	icon?: string;
+	isMidnightNative?: boolean; // Midnight Network専用APIを使用しているかどうか
 }
 

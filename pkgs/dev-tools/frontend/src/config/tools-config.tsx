@@ -42,16 +42,16 @@ export const TOOLS: ToolConfig[] = [
 		component: RpcExplorer,
 	},
 	{
-		id: "wallet",
-		name: "Wallet Connection",
-		description: "Connect and verify Midnight Network compatible wallets",
-		component: WalletApp,
-	},
-	{
 		id: "indexer",
 		name: "Indexer Explorer",
 		description: "Query and explore blockchain data using the public indexer GraphQL API",
 		component: IndexerExplorer,
+	},
+	{
+		id: "wallet",
+		name: "Wallet Connection",
+		description: "Test and verify Midnight Network compatible wallet connections",
+		component: WalletApp,
 	},
 	// To add a new tool, add its configuration here
 	// {

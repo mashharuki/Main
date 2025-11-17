@@ -156,7 +156,14 @@ export function WalletConnection({
 				<h3>Available Wallets</h3>
 				<div className="wallet-list">
 					{wallets.map((wallet) => (
-						<div key={wallet.name} className="wallet-item">
+						<div 
+							key={wallet.name} 
+							className="wallet-item"
+							style={{
+								opacity: wallet.installed && !wallet.isMidnightNative ? 0.7 : 1,
+								filter: wallet.installed && !wallet.isMidnightNative ? "grayscale(0.15)" : "none",
+							}}
+						>
 							<div className="wallet-info">
 								<div className="wallet-header">
 									{wallet.icon && (
@@ -177,6 +184,21 @@ export function WalletConnection({
 								>
 									{wallet.installed ? "Installed" : "Not Installed"}
 								</div>
+								{wallet.installed && !wallet.isMidnightNative && (
+									<div className="wallet-warning" style={{
+										marginTop: "0.5rem",
+										padding: "0.5rem",
+										backgroundColor: "rgba(255, 165, 0, 0.1)",
+										border: "1px solid rgba(255, 165, 0, 0.3)",
+										borderRadius: "4px",
+										fontSize: "0.75rem",
+										color: "var(--color-text-secondary, #666)",
+										width: "fit-content",
+										display: "inline-block",
+									}}>
+										Not yet supported on Midnight Network. Cardano connection pattern kept for future compatibility.
+									</div>
+								)}
 							</div>
 							{wallet.installed ? (
 								<button
@@ -287,7 +309,15 @@ export function WalletConnection({
 						Install a wallet extension (Lace, Yoroi, Eternl, etc.) in your browser
 					</li>
 					<li>
-						Create or import a wallet and obtain testnet tokens (tDUST)
+						Create or import a wallet and obtain testnet tokens (tDUST) from the{" "}
+						<a
+							href="https://midnight.network/test-faucet"
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: "var(--color-primary)", textDecoration: "underline" }}
+						>
+							Midnight Testnet Faucet
+						</a>
 					</li>
 					<li>
 						Click the "Connect" button on this page to connect your wallet
