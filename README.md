@@ -36,7 +36,13 @@ pnpm dev
 ## Contract Build
 
 ```bash
-pnpm contract compact
+pnpm contract compact:all
+```
+
+## Contract Test
+
+```bash
+pnpm contract test
 ```
 
 ## Start Production Server
