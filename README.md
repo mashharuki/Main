@@ -1,4 +1,4 @@
-# 🏥 NextMed
+# 🏥 NextMed 🏥
 
 > **Next-Generation Medical Data Platform - Patient Data Sovereignty and the Future of AI Healthcare with Zero-Knowledge Proofs**
 
