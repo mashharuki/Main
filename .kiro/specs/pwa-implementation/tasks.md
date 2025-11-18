@@ -1,7 +1,6 @@
 # PWA実装 - タスクリスト
 
-## 1. プロジェクトセットアップとPWA基盤構築
-
+- [-] 1. プロジェクトセットアップとPWA基盤構築
 - [ ] 1.1 next-pwaライブラリのインストールと設定
   - next-pwaとworkboxをインストール
   - next.config.mjsにPWA設定を追加
@@ -34,8 +33,7 @@
   - **Property 1: Service Worker登録の自動実行**
   - **Validates: Requirements 2.1**
 
-## 2. Service Workerとキャッシング戦略の実装
-
+- [ ] 2. Service Workerとキャッシング戦略の実装
 - [ ] 2.1 Workboxキャッシング戦略の設定
   - next.config.mjsにruntimeCaching設定を追加
   - 静的アセット用のCacheFirst戦略を設定
@@ -63,8 +61,7 @@
   - **Property 8: オフライン時のキャッシュフォールバック**
   - **Validates: Requirements 3.3**
 
-## 3. オフライン対応の実装
-
+- [ ] 3. オフライン対応の実装
 - [ ] 3.1 オフラインフォールバックページの作成
   - app/offline/page.tsxを作成
   - オフライン状態を示すUIを実装
@@ -88,8 +85,7 @@
   - **Validates: Requirements 4.4**
 
 
-## 4. PWAコンテキストとユーティリティの実装
-
+- [ ] 4. PWAコンテキストとユーティリティの実装
 - [ ] 4.1 PWAコンテキストの作成
   - lib/pwa/pwa-context.tsxを作成
   - isOnline, isInstallable, isInstalled, isUpdateAvailable状態を管理
@@ -112,7 +108,7 @@
   - キャッシュキー生成関数のテスト
   - _Requirements: 2.1, 3.1_
 
-## 5. インストールプロンプトの実装
+- [ ] 5. インストールプロンプトの実装
 
 - [ ] 5.1 インストールプロンプトコンポーネントの作成
   - components/pwa/install-prompt.tsxを作成
@@ -153,7 +149,7 @@
   - **Property 16: インストール完了時の確認表示**
   - **Validates: Requirements 5.5**
 
-## 6. Service Worker更新通知の実装
+- [ ] 6. Service Worker更新通知の実装
 
 - [ ] 6.1 更新通知バナーコンポーネントの作成
   - components/pwa/update-banner.tsxを作成
@@ -194,7 +190,7 @@
   - **Validates: Requirements 6.5**
 
 
-## 7. パフォーマンス最適化
+- [ ] 7. パフォーマンス最適化
 
 - [ ] 7.1 重要リソースのプリロード設定
   - layout.tsxにpreloadリンクを追加
@@ -231,7 +227,7 @@
   - **Property 23: 画像の遅延読み込みとWebP使用**
   - **Validates: Requirements 7.3**
 
-## 8. オフラインデータ同期の実装
+- [ ] 8. オフラインデータ同期の実装
 
 - [ ] 8.1 IndexedDBユーティリティの作成
   - lib/pwa/indexed-db.tsを作成
@@ -277,7 +273,7 @@
   - **Property 28: 同期ステータスの表示**
   - **Validates: Requirements 8.5**
 
-## 9. プッシュ通知の基盤実装
+- [ ] 9. プッシュ通知の基盤実装
 
 - [ ] 9.1 プッシュ通知購読機能
   - lib/pwa/push-notifications.tsを作成
@@ -321,7 +317,7 @@
   - **Validates: Requirements 9.4**
 
 
-## 10. iOS対応の最適化
+- [ ] 10. iOS対応の最適化
 
 - [ ] 10.1 iOS用メタタグの追加
   - apple-touch-iconメタタグを追加
@@ -340,7 +336,7 @@
   - 正しい値が設定されているか確認
   - _Requirements: 11.1, 11.2, 11.3, 11.5_
 
-## 11. デバッグとモニタリング
+- [ ] 11. デバッグとモニタリング
 
 - [ ] 11.1 Service Workerロギングの実装
   - install, activate, fetchイベントでログ出力
@@ -376,8 +372,7 @@
 - [ ]* 11.7 プロパティテスト: パフォーマンスメトリクスの収集
   - **Property 41: パフォーマンスメトリクスの収集**
   - **Validates: Requirements 12.4**
-
-## 12. PWA品質検証とテスト
+- [ ] 12. PWA品質検証とテスト
 
 - [ ] 12.1 Lighthouse PWA監査の実行
   - Lighthouse CIをセットアップ
@@ -428,7 +423,7 @@
   - **Property 37: Core Web Vitalsの達成**
   - **Validates: Requirements 10.5**
 
-## 13. 最終チェックポイント
+- [ ] 13. 最終チェックポイント
 
 - [ ] 13.1 すべてのテストが通過することを確認
   - ユニットテストを実行
