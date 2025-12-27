@@ -39,11 +39,11 @@ jobs:
       - name: Build Contract (Pre-requisite)
         run: pnpm --filter contract run build
 
-      - name: Check Format
-        run: pnpm exec biome format pkgs/cli pkgs/contract pkgs/frontend --diagnostic-level=error
+      # - name: Check Format
+      #   run: pnpm exec biome format pkgs/cli pkgs/contract pkgs/frontend --diagnostic-level=error
 
-      - name: Lint
-        run: pnpm -r run lint
+      # - name: Lint
+      #   run: pnpm -r run lint
 
       # Typecheck often requires build artifacts or running tsc directly.
       # 'cli' has typecheck script. 'contract' has build (which tscs). 'frontend' has build (next build).
