@@ -18,6 +18,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   mode: "node",
   test: {
+    setupFiles: ["./vitest.setup.ts"],
     deps: {
       interopDefault: true,
       inline: [/@midnight-ntwrk\/.*/],

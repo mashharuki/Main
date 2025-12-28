@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18 # Recommend LTS or match project requirement
+          node-version: 23 # Recommend LTS or match project requirement
           cache: 'pnpm'
 
       - name: Install dependencies
