@@ -18,7 +18,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -LsSf https://github.com/midnightntwrk/compact/releases/latest/download/compact-installer.sh | sh
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           # Install the specific version required by the contract package
-          compact install 0.21.0
+          $HOME/.local/bin/compact install 0.21.0
         shell: bash
 
       - name: Install pnpm
