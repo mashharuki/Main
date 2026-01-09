@@ -13,6 +13,8 @@ import {
   Upload,
 } from "lucide-react";
 import { useState } from "react";
+import { Card } from "@/components/design/card";
+import { Chart } from "@/components/design/chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import type { UserRole } from "@/app/page";
+import { Card } from "@/components/design/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -132,9 +133,8 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             )}
             <Button
               type="submit"
-              variant="accent"
+              variant="default"
               size="lg"
-              glow={true}
               className="w-full touch-manipulation"
             >
               Login
