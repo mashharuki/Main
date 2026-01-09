@@ -12,10 +12,10 @@ import {
   Zap,
 } from "lucide-react";
 import React, { useEffect, useRef } from "react";
+import { ParticleBackground } from "@/components/design/background";
+import { Button } from "@/components/design/button";
 import { Card } from "@/components/design/card";
 import { Heading } from "@/components/design/heading";
-import { Button } from "@/components/design/button";
-import { ParticleBackground } from "@/components/design/background";
 import { Badge } from "@/components/ui/badge";
 
 interface LandingPageProps {
@@ -129,11 +129,7 @@ export const LandingPage = React.memo(function LandingPage({
           className="text-center mb-20 sm:mb-24 space-y-6 opacity-0"
           aria-labelledby="hero-heading"
         >
-          <Badge
-            variant="secondary"
-            className="mb-4"
-            role="status"
-          >
+          <Badge variant="secondary" className="mb-4" role="status">
             Powered by Midnight ZK Technology
           </Badge>
           <h1
@@ -337,10 +333,7 @@ export const LandingPage = React.memo(function LandingPage({
           className="opacity-0"
           aria-labelledby="technology-heading"
         >
-          <Card
-            variant="default"
-            className="p-8 lg:p-10 mb-20 sm:mb-24"
-          >
+          <Card variant="default" className="p-8 lg:p-10 mb-20 sm:mb-24">
             <div className="text-center mb-10">
               <h2
                 id="technology-heading"
@@ -378,9 +371,7 @@ export const LandingPage = React.memo(function LandingPage({
                 >
                   <Shield className="h-6 w-6 text-emerald-700" />
                 </div>
-                <h3 className="font-semibold text-slate-900">
-                  ZK Proofs
-                </h3>
+                <h3 className="font-semibold text-slate-900">ZK Proofs</h3>
                 <p className="text-sm text-slate-600">
                   Verify data without revealing content
                 </p>

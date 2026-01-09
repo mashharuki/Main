@@ -20,8 +20,8 @@ export function GlassCardDemo() {
               Default Glass Card
             </h3>
             <p className="text-gray-300">
-              This is a default glass card with backdrop-blur-md and bg-slate-100
-              transparency.
+              This is a default glass card with backdrop-blur-md and
+              bg-slate-100 transparency.
             </p>
           </GlassCard>
         </div>

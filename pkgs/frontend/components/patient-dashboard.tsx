@@ -38,9 +38,14 @@ export const PatientDashboard = React.memo(function PatientDashboard({
 }: PatientDashboardProps) {
   // Use shared Midnight wallet context
   const midnightWallet = useMidnightWalletContext();
-  
+
   // Use Patient Registry contract hook
-  const { register: registerPatient, isSubmitting: isRegistering, error: registrationError, clearError } = usePatientRegistry();
+  const {
+    register: registerPatient,
+    isSubmitting: isRegistering,
+    error: registrationError,
+    clearError,
+  } = usePatientRegistry();
 
   const [dataConsent, setDataConsent] = useState(true);
   const [uploadStatus, setUploadStatus] = useState<
@@ -204,7 +209,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
         setUploadStatus("error");
       }
     },
-    [walletConnected, registerPatient, clearError]
+    [walletConnected, registerPatient, clearError],
   );
 
   const handleFileSelect = React.useCallback(
@@ -568,8 +573,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   <div className="flex items-center gap-2 text-sm">
                     <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
                     <span className="font-medium text-blue-600">
-                      {isRegistering 
-                        ? "Submitting to blockchain via Midnight ZK..." 
+                      {isRegistering
+                        ? "Submitting to blockchain via Midnight ZK..."
                         : "Preparing ZK proof..."}
                     </span>
                   </div>
@@ -583,20 +588,25 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     <div className="flex items-center gap-2 text-sm text-emerald-600">
                       <CheckCircle2 className="h-4 w-4" />
                       <span className="font-medium">
-                        Registration complete! Your data is now on the blockchain.
+                        Registration complete! Your data is now on the
+                        blockchain.
                       </span>
                     </div>
                     {lastTxHash && (
                       <div className="p-3 bg-emerald-500/5 border border-emerald-400/20 rounded-lg">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400">Transaction Hash:</span>
+                          <span className="text-xs text-gray-400">
+                            Transaction Hash:
+                          </span>
                           <a
                             href={getTxUrl(lastTxHash)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 transition-colors"
                           >
-                            <span className="font-mono text-xs">{formatTxHash(lastTxHash)}</span>
+                            <span className="font-mono text-xs">
+                              {formatTxHash(lastTxHash)}
+                            </span>
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         </div>
@@ -630,16 +640,16 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   >
                     <div className="flex items-center gap-2 text-sm text-red-400">
                       <Shield className="h-4 w-4" />
-                      <span className="font-medium">
-                        Registration failed
-                      </span>
+                      <span className="font-medium">Registration failed</span>
                     </div>
                     <div className="p-3 bg-red-500/10 border border-red-400/20 rounded-lg">
                       <p className="text-sm text-red-300 mb-2">
-                        {registrationError || "An error occurred during blockchain registration."}
+                        {registrationError ||
+                          "An error occurred during blockchain registration."}
                       </p>
                       <p className="text-xs text-gray-400">
-                        Make sure the proof server is running and you have sufficient testnet funds.
+                        Make sure the proof server is running and you have
+                        sufficient testnet funds.
                       </p>
                     </div>
                     <Button

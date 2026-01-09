@@ -9,35 +9,32 @@ import { cn } from "@/lib/utils";
  * Clean, professional text styling with emphasis options
  * Design: Notion-inspired typography without gradient effects
  */
-const headingTextVariants = cva(
-  "inline-block font-semibold tracking-tight",
-  {
-    variants: {
-      variant: {
-        default: "text-slate-900",
-        primary: "text-slate-900",
-        secondary: "text-slate-700",
-        accent: "text-blue-600",
-        muted: "text-slate-500",
-      },
-      weight: {
-        normal: "font-normal",
-        medium: "font-medium",
-        semibold: "font-semibold",
-        bold: "font-bold",
-      },
-      animate: {
-        true: "",
-        false: "",
-      },
+const headingTextVariants = cva("inline-block font-semibold tracking-tight", {
+  variants: {
+    variant: {
+      default: "text-slate-900",
+      primary: "text-slate-900",
+      secondary: "text-slate-700",
+      accent: "text-blue-600",
+      muted: "text-slate-500",
     },
-    defaultVariants: {
-      variant: "default",
-      weight: "semibold",
-      animate: false,
+    weight: {
+      normal: "font-normal",
+      medium: "font-medium",
+      semibold: "font-semibold",
+      bold: "font-bold",
+    },
+    animate: {
+      true: "",
+      false: "",
     },
   },
-);
+  defaultVariants: {
+    variant: "default",
+    weight: "semibold",
+    animate: false,
+  },
+});
 
 export interface GradientTextProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "ref">,

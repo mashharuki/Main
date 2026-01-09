@@ -16,26 +16,10 @@ const modalVariants = cva(
   {
     variants: {
       variant: {
-        default: [
-          "bg-white",
-          "border-slate-200",
-          "shadow-xl",
-        ],
-        primary: [
-          "bg-white",
-          "border-slate-200",
-          "shadow-xl",
-        ],
-        secondary: [
-          "bg-white",
-          "border-slate-200",
-          "shadow-xl",
-        ],
-        accent: [
-          "bg-white",
-          "border-blue-200",
-          "shadow-xl",
-        ],
+        default: ["bg-white", "border-slate-200", "shadow-xl"],
+        primary: ["bg-white", "border-slate-200", "shadow-xl"],
+        secondary: ["bg-white", "border-slate-200", "shadow-xl"],
+        accent: ["bg-white", "border-blue-200", "shadow-xl"],
       },
       glow: {
         true: "shadow-2xl",
@@ -150,7 +134,10 @@ function GlassModalHeader({
   return (
     <div
       data-slot="glass-modal-header"
-      className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)}
+      className={cn(
+        "flex flex-col gap-1.5 text-center sm:text-left",
+        className,
+      )}
       {...props}
     />
   );
@@ -179,7 +166,10 @@ function GlassModalTitle({
   return (
     <DialogPrimitive.Title
       data-slot="glass-modal-title"
-      className={cn("text-lg leading-none font-semibold text-slate-900", className)}
+      className={cn(
+        "text-lg leading-none font-semibold text-slate-900",
+        className,
+      )}
       {...props}
     />
   );

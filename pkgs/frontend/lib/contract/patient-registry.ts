@@ -12,7 +12,10 @@ import { findDeployedContract } from "@midnight-ntwrk/midnight-js-contracts";
 import { FetchZkConfigProvider } from "@midnight-ntwrk/midnight-js-fetch-zk-config-provider";
 import { httpClientProofProvider } from "@midnight-ntwrk/midnight-js-http-client-proof-provider";
 import { indexerPublicDataProvider } from "@midnight-ntwrk/midnight-js-indexer-public-data-provider";
-import { NetworkId, setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
+import {
+  NetworkId,
+  setNetworkId,
+} from "@midnight-ntwrk/midnight-js-network-id";
 import { getServiceConfig, getWalletState } from "../wallet/midnight-wallet";
 import { browserPrivateStateProvider } from "./browser-private-state-provider";
 import {
@@ -67,13 +70,18 @@ const ZK_CONFIG_BASE_URL = "/contract/patient-registry";
  * @param walletApi - Connected DApp Connector wallet API
  * @returns Configured providers for contract operations
  */
-export async function configureBrowserProviders(walletApi: DAppConnectorWalletAPI) {
+export async function configureBrowserProviders(
+  walletApi: DAppConnectorWalletAPI,
+) {
   const serviceConfig = await getServiceConfig(walletApi);
   // walletState is available for future use if needed for coinPublicKey, encryptionPublicKey
   // const walletState = await getWalletState(walletApi);
 
-  const indexerWsUrl = serviceConfig.indexerWS ?? 
-    serviceConfig.indexer.replace("https://", "wss://").replace("/graphql", "/graphql/ws");
+  const indexerWsUrl =
+    serviceConfig.indexerWS ??
+    serviceConfig.indexer
+      .replace("https://", "wss://")
+      .replace("/graphql", "/graphql/ws");
 
   return {
     // Use type assertion to bypass strict type checking - browser environment differs from Node.js
@@ -81,7 +89,10 @@ export async function configureBrowserProviders(walletApi: DAppConnectorWalletAP
       privateStateStoreName: "patient-registry-state",
     }) as any,
     // Use type assertion to call indexerPublicDataProvider with (url, wsUrl) arguments
-    publicDataProvider: (indexerPublicDataProvider as any)(serviceConfig.indexer, indexerWsUrl),
+    publicDataProvider: (indexerPublicDataProvider as any)(
+      serviceConfig.indexer,
+      indexerWsUrl,
+    ),
     // FetchZkConfigProvider takes (circuitName, baseUrl) in some versions
     zkConfigProvider: new (FetchZkConfigProvider as any)(
       "registerPatient",
@@ -109,7 +120,7 @@ export async function joinPatientRegistry(
   contractAddress: string = PATIENT_REGISTRY_ADDRESS,
 ) {
   console.log("Joining Patient Registry contract at:", contractAddress);
-  
+
   const providers = await configureBrowserProviders(walletApi);
 
   // Note: For browser use, we create a minimal contract instance
@@ -128,7 +139,10 @@ export async function joinPatientRegistry(
     initialPrivateState: {},
   });
 
-  console.log("Successfully joined contract:", deployedContract.deployTxData?.public?.contractAddress);
+  console.log(
+    "Successfully joined contract:",
+    deployedContract.deployTxData?.public?.contractAddress,
+  );
   return deployedContract;
 }
 
@@ -342,18 +356,21 @@ export async function registerPatient(
     };
   } catch (error) {
     console.error("Patient registration failed:", error);
-    
+
     // Provide helpful error messages
     if (error instanceof Error) {
       if (error.message.includes("proof")) {
         throw new Error(
           "Failed to generate proof. Make sure the proof server is running: " +
-          "docker run -p 6300:6300 midnightnetwork/proof-server:latest"
+            "docker run -p 6300:6300 midnightnetwork/proof-server:latest",
         );
       }
-      if (error.message.includes("balance") || error.message.includes("insufficient")) {
+      if (
+        error.message.includes("balance") ||
+        error.message.includes("insufficient")
+      ) {
         throw new Error(
-          "Insufficient funds. Please ensure your wallet has testnet tDUST tokens."
+          "Insufficient funds. Please ensure your wallet has testnet tDUST tokens.",
         );
       }
       throw new Error(`Registration failed: ${error.message}`);

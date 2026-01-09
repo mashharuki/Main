@@ -1,5 +1,6 @@
 "use client";
 
+import { NeonButton } from "./button";
 import {
   GlassModal,
   GlassModalContent,
@@ -9,7 +10,6 @@ import {
   GlassModalTitle,
   GlassModalTrigger,
 } from "./modal";
-import { NeonButton } from "./button";
 
 export function GlassModalDemo() {
   return (

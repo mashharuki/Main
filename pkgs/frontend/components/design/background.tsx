@@ -15,7 +15,7 @@ export interface ParticleBackgroundProps {
  * SubtleBackground Component
  * Replaces particle animation with subtle, professional background
  * Design: Clean SaaS aesthetic - no animated particles
- * 
+ *
  * This component now renders a subtle gradient or pattern instead of particles.
  * Keeps the same props interface for backwards compatibility.
  */

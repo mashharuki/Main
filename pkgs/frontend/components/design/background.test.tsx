@@ -4,7 +4,7 @@ import { ParticleBackground } from "./background";
 
 /**
  * SubtleBackground Component Tests
- * 
+ *
  * The ParticleBackground component has been redesigned to render a static
  * gradient background instead of animated canvas particles.
  * These tests verify the new clean implementation.
@@ -37,15 +37,21 @@ describe("ParticleBackground", () => {
   // Props compatibility tests (props are accepted but may be ignored in clean design)
   describe("Props Compatibility", () => {
     it("accepts particleCount prop without error", () => {
-      expect(() => render(<ParticleBackground particleCount={100} />)).not.toThrow();
+      expect(() =>
+        render(<ParticleBackground particleCount={100} />),
+      ).not.toThrow();
     });
 
     it("accepts particleColor prop without error", () => {
-      expect(() => render(<ParticleBackground particleColor="#ff0000" />)).not.toThrow();
+      expect(() =>
+        render(<ParticleBackground particleColor="#ff0000" />),
+      ).not.toThrow();
     });
 
     it("accepts particleSize prop without error", () => {
-      expect(() => render(<ParticleBackground particleSize={5} />)).not.toThrow();
+      expect(() =>
+        render(<ParticleBackground particleSize={5} />),
+      ).not.toThrow();
     });
 
     it("accepts speed prop without error", () => {
@@ -53,7 +59,9 @@ describe("ParticleBackground", () => {
     });
 
     it("accepts interactive prop without error", () => {
-      expect(() => render(<ParticleBackground interactive={false} />)).not.toThrow();
+      expect(() =>
+        render(<ParticleBackground interactive={false} />),
+      ).not.toThrow();
     });
   });
 

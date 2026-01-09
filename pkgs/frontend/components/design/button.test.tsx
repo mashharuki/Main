@@ -96,7 +96,9 @@ describe("NeonButton", () => {
   // Pulse animation tests (removed in clean design)
   describe("Pulse Animation (Deprecated)", () => {
     it("pulse prop is accepted without error", () => {
-      expect(() => render(<NeonButton pulse={true}>Button</NeonButton>)).not.toThrow();
+      expect(() =>
+        render(<NeonButton pulse={true}>Button</NeonButton>),
+      ).not.toThrow();
     });
 
     it("pulse=false does not add animation classes", () => {

@@ -169,9 +169,12 @@
      ------------------------------------------------------------------------- */
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
 
   /* -------------------------------------------------------------------------
      Legacy Variables (for shadcn/ui compatibility)
@@ -209,8 +212,12 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family:
+    "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1;
   line-height: 1.6;
 }
 
@@ -218,19 +225,39 @@ body {
    Typography - Clean hierarchy
    ============================================================================ */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--foreground);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
 
-h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
-h2 { font-size: 1.875rem; font-weight: 600; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
-h5 { font-size: 1.125rem; }
-h6 { font-size: 1rem; }
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1.125rem;
+}
+h6 {
+  font-size: 1rem;
+}
 
 p {
   color: rgb(var(--slate-600));
@@ -340,7 +367,9 @@ button:disabled,
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 200ms ease, border-color 200ms ease;
+  transition:
+    box-shadow 200ms ease,
+    border-color 200ms ease;
 }
 
 .card:hover {
@@ -426,7 +455,11 @@ button:disabled,
    ============================================================================ */
 
 .gradient-bg-subtle {
-  background: linear-gradient(135deg, rgb(var(--slate-50)) 0%, rgb(var(--slate-100)) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--slate-50)) 0%,
+    rgb(var(--slate-100)) 100%
+  );
 }
 
 .text-foreground {
@@ -442,8 +475,12 @@ button:disabled,
    ============================================================================ */
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fade-up {
@@ -662,10 +699,18 @@ button:disabled,
 }
 
 /* Container max-width options */
-.container-sm { max-width: 640px; }
-.container-md { max-width: 768px; }
-.container-lg { max-width: 1024px; }
-.container-xl { max-width: 1280px; }
+.container-sm {
+  max-width: 640px;
+}
+.container-md {
+  max-width: 768px;
+}
+.container-lg {
+  max-width: 1024px;
+}
+.container-xl {
+  max-width: 1280px;
+}
 
 /* ============================================================================
    Component-Specific Overrides
@@ -699,7 +744,8 @@ th {
   font-size: 0.875rem;
 }
 
-td, th {
+td,
+th {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
 }

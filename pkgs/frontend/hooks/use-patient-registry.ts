@@ -5,13 +5,13 @@
  *
  * Provides a simple interface for registering patients on the blockchain
  * using the connected Midnight wallet.
- * 
+ *
  * NOTE: Due to Next.js Turbopack compatibility issues with Midnight.js packages
  * (WebSocket export issues with isomorphic-ws), the actual contract calls are
  * temporarily disabled. The infrastructure is ready for when the packages work.
  */
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useMidnightWalletContext } from "@/components/wallet/midnight-wallet-provider";
 
 // Only import types (these don't cause SSR issues)
@@ -23,7 +23,7 @@ export interface UsePatientRegistryReturn {
   register: (
     age: number,
     gender: "male" | "female" | "other",
-    condition: string
+    condition: string,
   ) => Promise<RegistrationResult | null>;
   /** Whether a registration is currently in progress */
   isSubmitting: boolean;
@@ -63,7 +63,7 @@ export function usePatientRegistry(): UsePatientRegistryReturn {
     async (
       age: number,
       gender: "male" | "female" | "other",
-      condition: string
+      condition: string,
     ): Promise<RegistrationResult | null> => {
       if (!walletApi || !isConnected) {
         setError("Wallet not connected. Please connect your wallet first.");
@@ -83,34 +83,37 @@ export function usePatientRegistry(): UsePatientRegistryReturn {
               : GenderCode.OTHER;
 
         console.log("Registering patient:", { age, genderCode, condition });
-        
+
         // TEMPORARY: Due to Next.js Turbopack + Midnight.js WebSocket compatibility issues,
         // we simulate a successful transaction. The contract integration code is fully
         // implemented in lib/contract/patient-registry.ts and will work when:
         // 1. Running with webpack instead of turbopack (next dev --turbo=false)
         // 2. Or when isomorphic-ws compatibility is resolved
-        
+
         // Simulate a blockchain transaction delay
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        
+
         // Generate a mock transaction hash
         const mockTxHash = `0x${Date.now().toString(16)}${Math.random().toString(16).slice(2, 10)}`;
-        
-        console.log("Simulated registration complete. In production, this would call:");
-        console.log("  registerPatient(walletApi, { age, genderCode, conditionHash })");
-        
+
+        console.log(
+          "Simulated registration complete. In production, this would call:",
+        );
+        console.log(
+          "  registerPatient(walletApi, { age, genderCode, conditionHash })",
+        );
+
         return {
           txId: mockTxHash,
           blockHeight: Math.floor(Date.now() / 1000),
           success: true,
         };
-        
+
         // --- REAL IMPLEMENTATION (uncomment when Turbopack issue is resolved) ---
         // const { registerPatient, hashCondition } = await import("@/lib/contract/patient-registry");
         // const conditionHash = await hashCondition(condition);
         // const params = { age, genderCode, conditionHash };
         // return await registerPatient(walletApi, params);
-        
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Registration failed";
@@ -121,7 +124,7 @@ export function usePatientRegistry(): UsePatientRegistryReturn {
         setIsSubmitting(false);
       }
     },
-    [walletApi, isConnected]
+    [walletApi, isConnected],
   );
 
   return {

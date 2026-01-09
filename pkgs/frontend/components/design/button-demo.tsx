@@ -65,7 +65,9 @@ export function NeonButtonDemo() {
 
         {/* Pulse Animation */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-slate-900">Pulse Animation</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">
+            Pulse Animation
+          </h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" pulse>
               Pulsing Primary
@@ -99,7 +101,9 @@ export function NeonButtonDemo() {
 
         {/* Disabled State */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-slate-900">Disabled State</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">
+            Disabled State
+          </h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" disabled>
               Disabled Primary
@@ -176,7 +180,9 @@ export function NeonButtonDemo() {
 
         {/* Usage Example */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-slate-900">Usage Example</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">
+            Usage Example
+          </h2>
           <div className="bg-slate-100 rounded-lg p-6 border border-slate-200">
             <pre className="text-sm text-slate-600 overflow-x-auto">
               <code>{`import { NeonButton } from "@/components/design/button";

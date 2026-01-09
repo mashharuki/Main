@@ -56,9 +56,9 @@ export interface CyberChartProps {
  * Clean color palette (Dune-inspired)
  */
 const DEFAULT_COLORS = {
-  primary: "#18181b",   // Slate 900
+  primary: "#18181b", // Slate 900
   secondary: "#3b82f6", // Blue 500
-  accent: "#22c55e",    // Green 500
+  accent: "#22c55e", // Green 500
 };
 
 /**
@@ -158,7 +158,12 @@ const CleanLineChart = React.memo<
       <LineChart data={data}>
         <ChartGradients colors={colors} />
         {showGrid && <CartesianGrid {...GRID_STYLE} />}
-        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <XAxis
+          dataKey={xAxisKey}
+          {...AXIS_STYLE}
+          tickLine={false}
+          axisLine={false}
+        />
         <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
@@ -197,7 +202,12 @@ const CleanBarChart = React.memo<
       <BarChart data={data}>
         {gradient && <ChartGradients colors={colors} />}
         {showGrid && <CartesianGrid {...GRID_STYLE} />}
-        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <XAxis
+          dataKey={xAxisKey}
+          {...AXIS_STYLE}
+          tickLine={false}
+          axisLine={false}
+        />
         <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
@@ -232,7 +242,12 @@ const CleanAreaChart = React.memo<
       <AreaChart data={data}>
         <ChartGradients colors={colors} />
         {showGrid && <CartesianGrid {...GRID_STYLE} />}
-        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <XAxis
+          dataKey={xAxisKey}
+          {...AXIS_STYLE}
+          tickLine={false}
+          axisLine={false}
+        />
         <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
@@ -263,7 +278,13 @@ const CleanPieChart = React.memo<
     showTooltip = true,
     animate = true,
   }) => {
-    const COLORS = [colors.primary, colors.secondary, colors.accent, "#94a3b8", "#f59e0b"];
+    const COLORS = [
+      colors.primary,
+      colors.secondary,
+      colors.accent,
+      "#94a3b8",
+      "#f59e0b",
+    ];
 
     return (
       <PieChart>

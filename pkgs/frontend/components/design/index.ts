@@ -4,72 +4,67 @@
  * Inspired by Notion, Stripe, and Dune Analytics
  */
 
-// Chart component
-export { CyberChart, type CyberChartProps } from "./chart";
-// Alias for clean naming
-export { CyberChart as Chart } from "./chart";
-
-// Card component
-export {
-  GlassCard,
-  type GlassCardProps,
-  glassCardVariants,
-} from "./card";
-// Alias for clean naming
-export { GlassCard as Card, glassCardVariants as cardVariants } from "./card";
-
-// Modal component
-export {
-  GlassModal,
-  GlassModalClose,
-  GlassModalContent,
-  type GlassModalContentProps,
-  GlassModalDescription,
-  GlassModalFooter,
-  GlassModalHeader,
-  GlassModalOverlay,
-  GlassModalPortal,
-  GlassModalTitle,
-  GlassModalTrigger,
-  glassModalVariants,
-} from "./modal";
-// Aliases for clean naming
-export {
-  GlassModal as Modal,
-  GlassModalClose as ModalClose,
-  GlassModalContent as ModalContent,
-  GlassModalDescription as ModalDescription,
-  GlassModalFooter as ModalFooter,
-  GlassModalHeader as ModalHeader,
-  GlassModalOverlay as ModalOverlay,
-  GlassModalPortal as ModalPortal,
-  GlassModalTitle as ModalTitle,
-  GlassModalTrigger as ModalTrigger,
-  glassModalVariants as modalVariants,
-} from "./modal";
-
-// Heading/Text component
-export {
-  GradientText,
-  type GradientTextProps,
-  gradientTextVariants,
-} from "./heading";
-// Alias for clean naming
-export { GradientText as Heading, gradientTextVariants as headingVariants } from "./heading";
-
-// Button component
-export {
-  NeonButton,
-  type NeonButtonProps,
-  neonButtonVariants,
-} from "./button";
-// Alias for clean naming
-export { NeonButton as PrimaryButton, neonButtonVariants as buttonVariants } from "./button";
-
 // Background component
+// Alias for clean naming
 export {
   ParticleBackground,
+  ParticleBackground as SubtleBackground,
   type ParticleBackgroundProps,
 } from "./background";
+// Button component
 // Alias for clean naming
-export { ParticleBackground as SubtleBackground } from "./background";
+export {
+  NeonButton,
+  NeonButton as PrimaryButton,
+  type NeonButtonProps,
+  neonButtonVariants,
+  neonButtonVariants as buttonVariants,
+} from "./button";
+// Card component
+// Alias for clean naming
+export {
+  GlassCard,
+  GlassCard as Card,
+  type GlassCardProps,
+  glassCardVariants,
+  glassCardVariants as cardVariants,
+} from "./card";
+// Chart component
+// Alias for clean naming
+export { CyberChart, CyberChart as Chart, type CyberChartProps } from "./chart";
+// Heading/Text component
+// Alias for clean naming
+export {
+  GradientText,
+  GradientText as Heading,
+  type GradientTextProps,
+  gradientTextVariants,
+  gradientTextVariants as headingVariants,
+} from "./heading";
+// Modal component
+// Aliases for clean naming
+export {
+  GlassModal,
+  GlassModal as Modal,
+  GlassModalClose,
+  GlassModalClose as ModalClose,
+  GlassModalContent,
+  GlassModalContent as ModalContent,
+  type GlassModalContentProps,
+  GlassModalDescription,
+  GlassModalDescription as ModalDescription,
+  GlassModalFooter,
+  GlassModalFooter as ModalFooter,
+  GlassModalHeader,
+  GlassModalHeader as ModalHeader,
+  GlassModalOverlay,
+  GlassModalOverlay as ModalOverlay,
+  GlassModalPortal,
+  GlassModalPortal as ModalPortal,
+  GlassModalTitle,
+  GlassModalTitle as ModalTitle,
+  GlassModalTrigger,
+  GlassModalTrigger as ModalTrigger,
+  glassModalVariants,
+  glassModalVariants as modalVariants,
+} from "./modal";

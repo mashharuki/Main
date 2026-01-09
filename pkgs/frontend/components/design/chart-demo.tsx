@@ -1,7 +1,7 @@
 "use client";
 
-import { CyberChart } from "./chart";
 import { GlassCard } from "./card";
+import { CyberChart } from "./chart";
 
 /**
  * CyberChart デモコンポーネント

@@ -107,7 +107,10 @@ export function browserPrivateStateProvider<T extends string>(
      * Clear all private state
      */
     async clear(): Promise<void> {
-      if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      if (
+        typeof window === "undefined" ||
+        typeof localStorage === "undefined"
+      ) {
         return;
       }
       localStorage.removeItem(storageKey);
@@ -117,7 +120,10 @@ export function browserPrivateStateProvider<T extends string>(
      * Store a signing key
      */
     async setSigningKey(id: T, key: Uint8Array): Promise<void> {
-      if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      if (
+        typeof window === "undefined" ||
+        typeof localStorage === "undefined"
+      ) {
         throw new Error("localStorage is not available");
       }
       const keyStorageKey = `${signingKeyPrefix}_${id}`;
@@ -129,7 +135,10 @@ export function browserPrivateStateProvider<T extends string>(
      * Retrieve a signing key
      */
     async getSigningKey(id: T): Promise<Uint8Array | null> {
-      if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      if (
+        typeof window === "undefined" ||
+        typeof localStorage === "undefined"
+      ) {
         return null;
       }
       const keyStorageKey = `${signingKeyPrefix}_${id}`;
@@ -149,7 +158,10 @@ export function browserPrivateStateProvider<T extends string>(
      * Remove a signing key
      */
     async removeSigningKey(id: T): Promise<void> {
-      if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      if (
+        typeof window === "undefined" ||
+        typeof localStorage === "undefined"
+      ) {
         return;
       }
       const keyStorageKey = `${signingKeyPrefix}_${id}`;
@@ -160,7 +172,10 @@ export function browserPrivateStateProvider<T extends string>(
      * Clear all signing keys
      */
     async clearSigningKeys(): Promise<void> {
-      if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      if (
+        typeof window === "undefined" ||
+        typeof localStorage === "undefined"
+      ) {
         return;
       }
       const keysToRemove: string[] = [];

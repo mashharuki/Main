@@ -241,9 +241,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                 <Search className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
               )}
             </div>
-            <p className="text-xs sm:text-sm text-slate-600 mb-1">
-              EHR Status
-            </p>
+            <p className="text-xs sm:text-sm text-slate-600 mb-1">EHR Status</p>
             <p className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
               {selectedEHR ? "Connected" : "Not Connected"}
             </p>
@@ -432,9 +430,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       <>
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-slate-600">
-                              Uploading...
-                            </span>
+                            <span className="text-slate-600">Uploading...</span>
                             <span className="font-medium text-slate-900">
                               {uploadProgress}%
                             </span>
@@ -646,9 +642,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-slate-600 mb-1">
-                          Last Sync
-                        </p>
+                        <p className="text-sm text-slate-600 mb-1">Last Sync</p>
                         <p className="font-semibold text-slate-900">Just now</p>
                       </div>
                       <div>

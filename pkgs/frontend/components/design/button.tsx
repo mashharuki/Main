@@ -181,4 +181,8 @@ const NeonButton = React.forwardRef<HTMLButtonElement, NeonButtonProps>(
 
 NeonButton.displayName = "NeonButton";
 
-export { NeonButton, NeonButton as Button, buttonVariants as neonButtonVariants };
+export {
+  NeonButton,
+  NeonButton as Button,
+  buttonVariants as neonButtonVariants,
+};

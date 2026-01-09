@@ -42,16 +42,8 @@ const cardVariants = cva(
           "hover:shadow-md",
           "hover:border-blue-300",
         ],
-        muted: [
-          "bg-slate-50",
-          "border-transparent",
-          "hover:bg-slate-100",
-        ],
-        outline: [
-          "bg-white",
-          "border-slate-200",
-          "hover:bg-slate-50",
-        ],
+        muted: ["bg-slate-50", "border-transparent", "hover:bg-slate-100"],
+        outline: ["bg-white", "border-slate-200", "hover:bg-slate-50"],
       },
       glow: {
         true: "shadow-md",

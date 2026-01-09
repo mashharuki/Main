@@ -61,17 +61,13 @@ describe("GlassCard", () => {
   // Glow effect tests (now subtle shadow elevation)
   describe("Glow Effect (Shadow Elevation)", () => {
     it("glow=true applies stronger shadow", () => {
-      const { container } = render(
-        <GlassCard glow={true}>Content</GlassCard>,
-      );
+      const { container } = render(<GlassCard glow={true}>Content</GlassCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.className).toContain("shadow-lg");
     });
 
     it("glow=false uses default shadow", () => {
-      const { container } = render(
-        <GlassCard glow={false}>Content</GlassCard>,
-      );
+      const { container } = render(<GlassCard glow={false}>Content</GlassCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.className).toContain("shadow-sm");
     });
@@ -80,9 +76,7 @@ describe("GlassCard", () => {
   // Hover effect tests
   describe("Hover Effects", () => {
     it("hover=true applies hover classes", () => {
-      const { container } = render(
-        <GlassCard hover={true}>Content</GlassCard>,
-      );
+      const { container } = render(<GlassCard hover={true}>Content</GlassCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.className).toContain("hover:");
     });

@@ -91,18 +91,24 @@ describe("GradientText", () => {
   // Legacy gradient prop compatibility
   describe("Legacy Gradient Prop", () => {
     it("accepts gradient prop without error", () => {
-      expect(() => render(<GradientText gradient="default">Text</GradientText>)).not.toThrow();
+      expect(() =>
+        render(<GradientText gradient="default">Text</GradientText>),
+      ).not.toThrow();
     });
 
     it("accepts gradient prop with any value", () => {
-      expect(() => render(<GradientText gradient="rainbow">Text</GradientText>)).not.toThrow();
+      expect(() =>
+        render(<GradientText gradient="rainbow">Text</GradientText>),
+      ).not.toThrow();
     });
   });
 
   // Animation tests (animate prop is kept for compatibility but ignored)
   describe("Animation (Deprecated)", () => {
     it("animate prop is accepted without error", () => {
-      expect(() => render(<GradientText animate={true}>Text</GradientText>)).not.toThrow();
+      expect(() =>
+        render(<GradientText animate={true}>Text</GradientText>),
+      ).not.toThrow();
     });
 
     it("animate=false does not add animation classes", () => {
