@@ -13,9 +13,6 @@ import {
   Upload,
 } from "lucide-react";
 import { useState } from "react";
-import { CyberChart } from "@/components/design/chart";
-import { GlassCard } from "@/components/design/card";
-import { NeonButton } from "@/components/design/button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -188,7 +185,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
         {/* Statistics Overview - Responsive Grid (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-4 sm:mb-6">
-          <GlassCard
+          <Card
             variant="primary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -207,9 +204,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
             <p className="text-xs text-emerald-600">
               +{uploadHistory[0].tokens} this week
             </p>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="secondary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -226,9 +223,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               320
             </p>
             <p className="text-xs text-blue-600">Today</p>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="accent"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -251,17 +248,17 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
             <p className="text-xs text-emerald-600">
               {selectedEHR ? selectedEHR.name : "Select Provider"}
             </p>
-          </GlassCard>
+          </Card>
         </div>
 
         {/* Charts Section - Responsive Grid (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-          <GlassCard variant="default" className="p-6">
+          <Card variant="default" className="p-6">
             <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-blue-600" />
               Weekly Upload Trend
             </h3>
-            <CyberChart
+            <Chart
               data={uploadTrendData}
               type="area"
               dataKey="records"
@@ -270,14 +267,14 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               glow={true}
               height={250}
             />
-          </GlassCard>
+          </Card>
 
-          <GlassCard variant="default" className="p-6">
+          <Card variant="default" className="p-6">
             <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <Coins className="h-5 w-5 text-emerald-600" />
               Token Earnings
             </h3>
-            <CyberChart
+            <Chart
               data={tokenEarningsData}
               type="bar"
               dataKey="tokens"
@@ -286,10 +283,10 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               glow={true}
               height={250}
             />
-          </GlassCard>
+          </Card>
         </div>
 
-        <GlassCard variant="secondary" className="p-6 mb-6">
+        <Card variant="secondary" className="p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
@@ -347,7 +344,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               </div>
             </div>
           </div>
-        </GlassCard>
+        </Card>
 
         <Tabs defaultValue="upload" className="space-y-6">
           <TabsList className="grid w-full max-w-md grid-cols-2">
@@ -356,7 +353,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
           </TabsList>
 
           <TabsContent value="upload" className="space-y-6">
-            <GlassCard variant="primary" className="p-6">
+            <Card variant="primary" className="p-6">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
                   <Upload className="h-5 w-5 text-blue-600" />
@@ -391,7 +388,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 </div>
 
-                <div className="border-2 border-dashed border-white/20 rounded-lg p-12 text-center hover:border-cyan-400/50 transition-colors cursor-pointer bg-slate-50">
+                <div className="border-2 border-dashed border-slate-200 rounded-lg p-12 text-center hover:border-blue-300 transition-colors cursor-pointer bg-slate-50">
                   <Upload className="h-12 w-12 mx-auto mb-4 text-blue-600" />
                   <p className="text-lg font-medium mb-2 text-slate-900">
                     Drag & Drop Files Here
@@ -399,14 +396,14 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   <p className="text-sm text-slate-600 mb-4">
                     or click to select files (CSV, JSON)
                   </p>
-                  <NeonButton
+                  <Button
                     variant="primary"
                     size="md"
                     onClick={handleFileUpload}
                     disabled={uploadStatus !== "idle"}
                   >
                     Select File
-                  </NeonButton>
+                  </Button>
                 </div>
 
                 {uploadStatus !== "idle" && (
@@ -452,7 +449,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                     {uploadStatus === "processing" && (
                       <div className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 border-2 border-blue-200 border-t-cyan-400 rounded-full animate-spin" />
+                        <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
                         <span className="font-medium text-blue-600">
                           Processing: Masking PII with Midnight ZK...
                         </span>
@@ -491,9 +488,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 )}
               </div>
-            </GlassCard>
+            </Card>
 
-            <GlassCard variant="secondary" className="p-6">
+            <Card variant="secondary" className="p-6">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
                   <Clock className="h-5 w-5 text-emerald-600" />
@@ -537,11 +534,11 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 ))}
               </div>
-            </GlassCard>
+            </Card>
           </TabsContent>
 
           <TabsContent value="integration" className="space-y-6">
-            <GlassCard variant="accent" className="p-6">
+            <Card variant="accent" className="p-6">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-blue-600" />
@@ -557,15 +554,15 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               {!selectedEHR ? (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {EHR_PROVIDERS.map((provider) => (
-                    <GlassCard
+                    <Card
                       key={provider.id}
                       variant="secondary"
-                      className="p-4 flex flex-col h-full hover:border-cyan-400/50 transition-colors group"
+                      className="p-4 flex flex-col h-full hover:border-blue-300 transition-colors group"
                     >
                       <div className="mb-3">
                         <Badge
                           variant="outline"
-                          className="mb-2 border-white/20 text-xs text-slate-600"
+                          className="mb-2 border-slate-200 text-xs text-slate-600"
                         >
                           {provider.categoryJa}
                         </Badge>
@@ -579,7 +576,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                       <div className="flex-grow space-y-2 mb-4">
                         <div className="bg-slate-50 rounded p-2">
-                          <p className="text-[10px] text-cyan-300/50 uppercase tracking-wider">
+                          <p className="text-[10px] text-slate-500 uppercase tracking-wider">
                             Target
                           </p>
                           <p className="text-xs text-gray-300">
@@ -598,7 +595,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       >
                         Connect System
                       </Button>
-                    </GlassCard>
+                    </Card>
                   ))}
                 </div>
               ) : (
@@ -669,7 +666,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-indigo-500/10 border border-blue-200 rounded-lg">
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-2">
                       <Shield className="h-4 w-4 text-blue-600 mt-1 flex-shrink-0" />
                       <p className="text-sm text-slate-600 leading-relaxed">
@@ -684,9 +681,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 </div>
               )}
-            </GlassCard>
+            </Card>
 
-            <GlassCard variant="default" className="p-6">
+            <Card variant="default" className="p-6">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
                   <Clock className="h-5 w-5 text-emerald-600" />
@@ -719,7 +716,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 ))}
               </div>
-            </GlassCard>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>

@@ -27,7 +27,7 @@ export function GradientTextDemo() {
             グラデーションバリアント
           </h2>
           <div className="grid gap-6">
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">
                 Default (Primary → Cyan → Secondary)
               </p>
@@ -36,35 +36,35 @@ export function GradientTextDemo() {
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Primary</p>
               <GradientText as="h3" gradient="primary" className="text-3xl">
                 ゼロ知識証明で守る医療データ
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Secondary</p>
               <GradientText as="h3" gradient="secondary" className="text-3xl">
                 プライバシー保護とデータ活用の両立
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Accent</p>
               <GradientText as="h3" gradient="accent" className="text-3xl">
                 未来の医療を、今ここに
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Rainbow</p>
               <GradientText as="h3" gradient="rainbow" className="text-3xl">
                 革新的なZKテクノロジー
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Sunset</p>
               <GradientText as="h3" gradient="sunset" className="text-3xl">
                 データ主権を患者の手に
@@ -79,14 +79,14 @@ export function GradientTextDemo() {
             アニメーション付きグラデーション
           </h2>
           <div className="grid gap-6">
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Default + Animate</p>
               <GradientText as="h3" animate className="text-3xl">
                 動的なグラデーションエフェクト
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Rainbow + Animate</p>
               <GradientText
                 as="h3"
@@ -98,7 +98,7 @@ export function GradientTextDemo() {
               </GradientText>
             </div>
 
-            <div className="glass p-6 rounded-xl space-y-2">
+            <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-2">
               <p className="text-sm text-slate-500">Sunset + Animate</p>
               <GradientText
                 as="h3"
@@ -115,7 +115,7 @@ export function GradientTextDemo() {
         {/* Different HTML Elements */}
         <section className="space-y-6">
           <h2 className="text-2xl font-bold text-slate-900">異なるHTML要素</h2>
-          <div className="glass p-6 rounded-xl space-y-4">
+          <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl space-y-4">
             <GradientText as="h1" className="text-5xl">
               H1 見出し
             </GradientText>
@@ -138,7 +138,7 @@ export function GradientTextDemo() {
         <section className="space-y-6">
           <h2 className="text-2xl font-bold text-slate-900">実用例</h2>
           <div className="grid gap-6">
-            <div className="glass p-8 rounded-xl text-center space-y-4">
+            <div className="bg-white border border-slate-200 shadow-sm p-8 rounded-xl text-center space-y-4">
               <GradientText as="h2" animate className="text-4xl md:text-5xl">
                 患者データの完全な保護
               </GradientText>
@@ -147,7 +147,7 @@ export function GradientTextDemo() {
               </p>
             </div>
 
-            <div className="glass p-8 rounded-xl space-y-4">
+            <div className="bg-white border border-slate-200 shadow-sm p-8 rounded-xl space-y-4">
               <GradientText as="h3" gradient="secondary" className="text-3xl">
                 主な機能
               </GradientText>
@@ -167,7 +167,7 @@ export function GradientTextDemo() {
               </ul>
             </div>
 
-            <div className="glass p-8 rounded-xl text-center space-y-4">
+            <div className="bg-white border border-slate-200 shadow-sm p-8 rounded-xl text-center space-y-4">
               <p className="text-slate-600 text-lg">今すぐ始めましょう</p>
               <GradientText
                 as="h2"
@@ -182,13 +182,13 @@ export function GradientTextDemo() {
         </section>
 
         {/* Accessibility Note */}
-        <section className="glass p-6 rounded-xl">
+        <section className="bg-white border border-slate-200 shadow-sm p-6 rounded-xl">
           <h3 className="text-xl font-bold text-slate-900 mb-4">
             アクセシビリティ対応
           </h3>
           <p className="text-slate-600">
             このコンポーネントは{" "}
-            <code className="text-cyan-400">prefers-reduced-motion</code>{" "}
+            <code className="text-blue-600">prefers-reduced-motion</code>{" "}
             メディアクエリに対応しており、
             ユーザーがモーション削減を設定している場合、アニメーションは自動的に無効化されます。
           </p>

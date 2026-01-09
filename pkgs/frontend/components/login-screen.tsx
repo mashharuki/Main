@@ -4,8 +4,6 @@ import { Eye, EyeOff } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import type { UserRole } from "@/app/page";
-import { GlassCard } from "@/components/design/card";
-import { NeonButton } from "@/components/design/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -55,7 +53,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
       <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
 
       {/* グラスモーフィズムログインカード - Responsive (要件 8.1, 8.2, 8.3) */}
-      <GlassCard
+      <Card
         variant="default"
         glow={true}
         hover={false}
@@ -97,7 +95,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-cyan-400/50 focus:ring-cyan-400/50 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-blue-300 focus:ring-blue-400 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               />
             </div>
             <div className="space-y-2">
@@ -112,12 +110,12 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-cyan-400/50 focus:ring-cyan-400/50 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                  className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-blue-300 focus:ring-blue-400 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-400 transition-colors touch-manipulation p-2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors touch-manipulation p-2"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -132,7 +130,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 {error}
               </p>
             )}
-            <NeonButton
+            <Button
               type="submit"
               variant="accent"
               size="lg"
@@ -140,7 +138,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               className="w-full touch-manipulation"
             >
               Login
-            </NeonButton>
+            </Button>
           </form>
 
           {/* 区切り線 */}
@@ -161,14 +159,14 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               <Button
                 variant="outline"
                 onClick={() => onLogin("patient")}
-                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-cyan-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-blue-300 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               >
                 Login as Patient
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onLogin("researcher")}
-                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-indigo-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-blue-300 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               >
                 Login as Researcher
               </Button>
@@ -185,7 +183,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           {/* デモ認証情報 - Responsive */}
           <div className="pt-3 sm:pt-4 border-t border-white/20">
             <p className="text-xs text-gray-400 text-center leading-relaxed">
-              <span className="font-semibold text-cyan-400">
+              <span className="font-semibold text-blue-600">
                 Demo Credentials:
               </span>
               <br />
@@ -197,7 +195,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             </p>
           </div>
         </div>
-      </GlassCard>
+      </Card>
     </div>
   );
 }

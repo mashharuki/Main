@@ -1,10 +1,10 @@
 "use client";
 
-import { GlassCard } from "./glass-card";
+import { GlassCard } from "./card";
 
 export function GlassCardDemo() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 p-8">
       <div className="max-w-6xl mx-auto space-y-8">
         <h1 className="text-4xl font-bold text-slate-900 mb-8">
           GlassCard Component Demo
@@ -20,7 +20,7 @@ export function GlassCardDemo() {
               Default Glass Card
             </h3>
             <p className="text-gray-300">
-              This is a default glass card with backdrop-blur-md and bg-white/10
+              This is a default glass card with backdrop-blur-md and bg-slate-100
               transparency.
             </p>
           </GlassCard>

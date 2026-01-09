@@ -5,13 +5,13 @@ import { ParticleBackground } from "./particle-background";
 
 export function ParticleBackgroundDemo() {
   const [particleCount, setParticleCount] = useState(50);
-  const [particleColor, setParticleColor] = useState("#06b6d4");
+  const [particleColor, setParticleColor] = useState("#3b82f6");
   const [particleSize, setParticleSize] = useState(2);
   const [speed, setSpeed] = useState(0.5);
   const [interactive, setInteractive] = useState(true);
 
   return (
-    <div className="relative min-h-screen bg-linear-to-br from-[#0a0e27] via-[#060918] to-[#0a0e27]">
+    <div className="relative min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-50">
       <ParticleBackground
         particleCount={particleCount}
         particleColor={particleColor}
@@ -21,8 +21,8 @@ export function ParticleBackgroundDemo() {
       />
 
       <div className="relative z-10 flex min-h-screen items-center justify-center p-8">
-        <div className="w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-white/10 p-8 backdrop-blur-md">
-          <h1 className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-4xl font-bold text-transparent">
+        <div className="w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-slate-100 p-8 backdrop-blur-md">
+          <h1 className="bg-linear-to-r from-slate-700 via-slate-800 to-slate-900 bg-clip-text text-4xl font-bold text-transparent">
             Particle Background Demo
           </h1>
 
@@ -131,8 +131,8 @@ export function ParticleBackgroundDemo() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/10 p-4">
-            <h3 className="mb-2 font-semibold text-cyan-400">Features:</h3>
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <h3 className="mb-2 font-semibold text-blue-600">Features:</h3>
             <ul className="space-y-1 text-sm text-gray-300">
               <li>✓ Canvas API rendering</li>
               <li>✓ requestAnimationFrame optimization</li>

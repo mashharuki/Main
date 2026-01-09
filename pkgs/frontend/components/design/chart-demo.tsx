@@ -1,7 +1,7 @@
 "use client";
 
-import { CyberChart } from "./cyber-chart";
-import { GlassCard } from "./glass-card";
+import { CyberChart } from "./chart";
+import { GlassCard } from "./card";
 
 /**
  * CyberChart デモコンポーネント
@@ -49,7 +49,7 @@ export function CyberChartDemo() {
       <div className="mx-auto max-w-7xl space-y-8">
         {/* ヘッダー */}
         <div className="space-y-2">
-          <h1 className="bg-linear-to-r from-indigo-500 via-cyan-500 to-emerald-500 bg-clip-text text-4xl font-bold text-transparent">
+          <h1 className="bg-linear-to-r from-slate-700 via-slate-800 to-slate-900 bg-clip-text text-4xl font-bold text-transparent">
             CyberChart デモ
           </h1>
           <p className="text-muted-foreground">
@@ -150,8 +150,8 @@ export function CyberChartDemo() {
             glow={true}
             height={300}
             colors={{
-              primary: "#ec4899", // Pink
-              secondary: "#8b5cf6", // Purple
+              primary: "#3b82f6", // Pink
+              secondary: "#64748b", // Purple
               accent: "#f59e0b", // Amber
             }}
           />

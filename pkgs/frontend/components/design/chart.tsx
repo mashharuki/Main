@@ -374,3 +374,5 @@ export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
 );
 
 CyberChart.displayName = "CyberChart";
+
+export { CyberChart as Chart };

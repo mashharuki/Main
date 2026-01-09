@@ -8,8 +8,8 @@ import {
   GlassModalHeader,
   GlassModalTitle,
   GlassModalTrigger,
-} from "./glass-modal";
-import { NeonButton } from "./neon-button";
+} from "./modal";
+import { NeonButton } from "./button";
 
 export function GlassModalDemo() {
   return (
@@ -34,7 +34,7 @@ export function GlassModalDemo() {
               </GlassModalHeader>
               <div className="py-4">
                 <p className="text-slate-900/80 text-sm">
-                  The modal uses backdrop-blur-md and bg-white/10 for the glass
+                  The modal uses backdrop-blur-md and bg-slate-100 for the glass
                   effect, with a subtle cyan shadow.
                 </p>
               </div>
@@ -185,7 +185,7 @@ export function GlassModalDemo() {
                   id="research-purpose"
                   type="text"
                   placeholder="e.g., Cancer research"
-                  className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-900/40 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                  className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-900/40 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div className="space-y-2">

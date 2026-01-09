@@ -12,9 +12,9 @@ import {
   Zap,
 } from "lucide-react";
 import React, { useEffect, useRef } from "react";
-import { GlassCard } from "@/components/design/card";
-import { GradientText } from "@/components/design/heading";
-import { NeonButton } from "@/components/design/button";
+import { Card } from "@/components/design/card";
+import { Heading } from "@/components/design/heading";
+import { Button } from "@/components/design/button";
 import { ParticleBackground } from "@/components/design/background";
 import { Badge } from "@/components/ui/badge";
 
@@ -96,7 +96,7 @@ export const LandingPage = React.memo(function LandingPage({
               NextMed
             </span>
           </div>
-          <NeonButton
+          <Button
             onClick={onGetStarted}
             variant="primary"
             size="sm"
@@ -104,8 +104,8 @@ export const LandingPage = React.memo(function LandingPage({
             aria-label="Get started with NextMed platform"
           >
             Start
-          </NeonButton>
-          <NeonButton
+          </Button>
+          <Button
             onClick={onGetStarted}
             variant="primary"
             size="md"
@@ -114,7 +114,7 @@ export const LandingPage = React.memo(function LandingPage({
           >
             Get Started
             <ArrowRight className="h-4 w-4 ml-2" aria-hidden="true" />
-          </NeonButton>
+          </Button>
         </div>
       </header>
 
@@ -150,7 +150,7 @@ export const LandingPage = React.memo(function LandingPage({
             researchers gain insights, institutions contribute data.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <NeonButton
+            <Button
               size="lg"
               onClick={onGetStarted}
               variant="primary"
@@ -160,7 +160,7 @@ export const LandingPage = React.memo(function LandingPage({
             >
               Launch Platform
               <ArrowRight className="h-5 w-5 ml-2" aria-hidden="true" />
-            </NeonButton>
+            </Button>
           </div>
         </section>
 
@@ -174,7 +174,7 @@ export const LandingPage = React.memo(function LandingPage({
             Platform Features
           </h2>
 
-          <GlassCard
+          <Card
             variant="primary"
             hover
             className="p-6"
@@ -224,9 +224,9 @@ export const LandingPage = React.memo(function LandingPage({
                 </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="secondary"
             hover
             className="p-6"
@@ -276,9 +276,9 @@ export const LandingPage = React.memo(function LandingPage({
                 </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="accent"
             hover
             className="p-6"
@@ -328,7 +328,7 @@ export const LandingPage = React.memo(function LandingPage({
                 </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
         </section>
 
         {/* Technology Section */}
@@ -337,7 +337,7 @@ export const LandingPage = React.memo(function LandingPage({
           className="opacity-0"
           aria-labelledby="technology-heading"
         >
-          <GlassCard
+          <Card
             variant="default"
             className="p-8 lg:p-10 mb-20 sm:mb-24"
           >
@@ -416,7 +416,7 @@ export const LandingPage = React.memo(function LandingPage({
                 </p>
               </article>
             </div>
-          </GlassCard>
+          </Card>
         </section>
 
         {/* CTA Section */}
@@ -435,7 +435,7 @@ export const LandingPage = React.memo(function LandingPage({
             Join NextMed today and be part of the privacy-preserving medical
             data revolution.
           </p>
-          <NeonButton
+          <Button
             size="lg"
             onClick={onGetStarted}
             variant="accent"
@@ -445,7 +445,7 @@ export const LandingPage = React.memo(function LandingPage({
           >
             Access Platform
             <ArrowRight className="h-5 w-5 ml-2" aria-hidden="true" />
-          </NeonButton>
+          </Button>
         </section>
       </main>
 

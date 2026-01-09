@@ -361,82 +361,79 @@ button:disabled,
 }
 
 /* ============================================================================
-   Glass Utilities - Clean replacements (backwards compatibility)
-   These replace the old glassmorphism effects with clean cards
+   Card Utilities - Clean, professional styling
    ============================================================================ */
 
-.glass {
+.card-surface {
   background: var(--card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 
-.glass-strong {
+.card-surface-emphasis {
   background: var(--card);
   border: 1px solid var(--border-emphasis);
   box-shadow: var(--shadow-md);
 }
 
-.glass-primary {
+.card-surface-primary {
   background: rgb(var(--slate-50));
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 
-.glass-secondary {
+.card-surface-secondary {
   background: rgb(var(--success-50));
   border: 1px solid rgb(var(--success-200));
   box-shadow: var(--shadow-sm);
 }
 
-.glass-accent {
+.card-surface-accent {
   background: rgb(var(--accent-50));
   border: 1px solid rgb(var(--accent-200));
   box-shadow: var(--shadow-sm);
 }
 
 /* ============================================================================
-   Neon Utilities - Clean replacements (backwards compatibility)
-   These provide hover effects without neon glow
+   Hover Utilities - Clean hover effects
    ============================================================================ */
 
-.neon-glow-primary,
-.neon-glow-secondary,
-.neon-glow-accent {
+.hover-shadow-primary,
+.hover-shadow-secondary,
+.hover-shadow-accent {
   box-shadow: var(--shadow-sm);
   transition: box-shadow 200ms ease;
 }
 
-.neon-glow-primary:hover,
-.neon-glow-secondary:hover,
-.neon-glow-accent:hover {
+.hover-shadow-primary:hover,
+.hover-shadow-secondary:hover,
+.hover-shadow-accent:hover {
   box-shadow: var(--shadow-md);
 }
 
-.neon-border-primary {
+.border-emphasis-primary {
   border: 1px solid var(--border-emphasis);
   box-shadow: var(--shadow-xs);
 }
 
-.neon-border-accent {
+.border-emphasis-accent {
   border: 1px solid rgb(var(--accent-300));
   box-shadow: var(--shadow-xs);
 }
 
 /* ============================================================================
-   Gradient Utilities - Clean replacements (backwards compatibility)
+   Gradient Utilities - Subtle gradients
    ============================================================================ */
 
-.cyber-gradient-bg {
+.gradient-bg-subtle {
   background: linear-gradient(135deg, rgb(var(--slate-50)) 0%, rgb(var(--slate-100)) 100%);
 }
 
-.cyber-gradient-text {
+.text-foreground {
   color: var(--foreground);
-  /* Fallback - no gradient text in clean design */
 }
 
-.cyber-mesh-bg {
+.bg-muted-subtle {
   background: var(--background-subtle);
 }
 

@@ -13,7 +13,7 @@ import {
   Wallet,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { GlassCard } from "@/components/design/card";
+import { Card } from "@/components/design/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -308,8 +308,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
 
         {/* Responsive Grid: 1 column mobile, 2 columns tablet+ (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-          {/* Earnings Card with GlassCard - Responsive (要件 3.1, 8.1) */}
-          <GlassCard
+          {/* Earnings Card with Card - Responsive (要件 3.1, 8.1) */}
+          <Card
             variant="accent"
             glow
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
@@ -349,7 +349,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 {!walletConnected ? (
                   <Button
                     onClick={handleWalletConnectClick}
-                    className="w-full sm:flex-1 bg-transparent border-cyan-400/50 hover:bg-cyan-400/10 touch-manipulation"
+                    className="w-full sm:flex-1 bg-transparent border-blue-300 hover:bg-blue-500/10 touch-manipulation"
                     variant="outline"
                   >
                     <Wallet className="h-4 w-4 mr-2" />
@@ -359,7 +359,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   <>
                     <Button
                       onClick={handleWalletDisconnect}
-                      className="w-full sm:flex-1 bg-transparent border-cyan-400/50 hover:bg-cyan-400/10 touch-manipulation"
+                      className="w-full sm:flex-1 bg-transparent border-blue-300 hover:bg-blue-500/10 touch-manipulation"
                       variant="outline"
                       size="sm"
                     >
@@ -375,7 +375,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     </Button>
                     <Button
                       onClick={handleWithdraw}
-                      className="w-full sm:flex-1 bg-cyan-500 hover:bg-cyan-600 touch-manipulation"
+                      className="w-full sm:flex-1 bg-blue-500 hover:bg-blue-600 touch-manipulation"
                       variant="default"
                     >
                       Withdraw
@@ -384,10 +384,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 )}
               </div>
             </div>
-          </GlassCard>
+          </Card>
 
-          {/* Data Consent Card with GlassCard - Responsive (要件 3.1, 8.1) */}
-          <GlassCard
+          {/* Data Consent Card with Card - Responsive (要件 3.1, 8.1) */}
+          <Card
             variant="primary"
             glow
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
@@ -434,11 +434,11 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 </div>
               </div>
             </div>
-          </GlassCard>
+          </Card>
         </div>
 
-        {/* Upload Card with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Upload Card with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="secondary"
           glow
           className="p-6 mb-6"
@@ -456,7 +456,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
             </p>
           </div>
           <div className="space-y-4">
-            <div className="p-4 bg-linear-to-br from-emerald-500/10 to-indigo-500/10 rounded-lg border border-emerald-400/20">
+            <div className="p-4 bg-linear-to-br bg-emerald-50 rounded-lg border border-emerald-400/20">
               <div className="flex items-start gap-3 mb-3">
                 <Coins className="h-5 w-5 text-emerald-600 mt-0.5 shrink-0" />
                 <div>
@@ -557,7 +557,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     </div>
                     <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-indigo-500 transition-all duration-300"
+                        className="h-full bg-blue-600 transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -566,7 +566,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
 
                 {uploadStatus === "processing" && (
                   <div className="flex items-center gap-2 text-sm">
-                    <div className="h-4 w-4 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin" />
+                    <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
                     <span className="font-medium text-blue-600">
                       {isRegistering 
                         ? "Submitting to blockchain via Midnight ZK..." 
@@ -594,7 +594,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                             href={getTxUrl(lastTxHash)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-blue-600 hover:text-cyan-300 transition-colors"
+                            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 transition-colors"
                           >
                             <span className="font-mono text-xs">{formatTxHash(lastTxHash)}</span>
                             <ExternalLink className="h-3 w-3" />
@@ -658,10 +658,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               </div>
             )}
           </div>
-        </GlassCard>
+        </Card>
 
-        {/* Transaction History with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Transaction History with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="secondary"
           glow
           className="p-6 mb-6"
@@ -702,7 +702,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         href={getTxUrl(transaction.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:text-cyan-300 hover:underline transition-colors"
+                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 hover:underline transition-colors"
                         title={`View transaction on Midnight Explorer`}
                       >
                         <span className="font-mono text-xs">
@@ -722,10 +722,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               ))}
             </div>
           </div>
-        </GlassCard>
+        </Card>
 
-        {/* Audit Log with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Audit Log with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="accent"
           glow
           className="p-6"
@@ -747,13 +747,13 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               {auditLog.map((log, index) => (
                 <div
                   key={log.id}
-                  className="relative pl-6 pb-4 border-l-2 border-cyan-400/30 last:pb-0"
+                  className="relative pl-6 pb-4 border-l-2 border-blue-200 last:pb-0"
                   style={smoothTransition(["opacity"], {
                     duration: 300,
                     delay: index * 100,
                   })}
                 >
-                  <div className="absolute left-0 top-0 -translate-x-1/2 w-3 h-3 rounded-full bg-cyan-400" />
+                  <div className="absolute left-0 top-0 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-500" />
                   <div className="space-y-1">
                     <p className="font-medium text-slate-900">{log.purpose}</p>
                     <p className="text-sm text-gray-300">
@@ -766,7 +766,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         href={getTxUrl(log.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:text-cyan-300 hover:underline transition-colors"
+                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 hover:underline transition-colors"
                         title="View access transaction on Midnight Explorer"
                       >
                         <span className="font-mono">
@@ -775,7 +775,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         <ExternalLink className="h-3 w-3" />
                       </a>
                     </div>
-                    <div className="mt-2 p-3 bg-cyan-500/5 border border-cyan-400/20 rounded-md">
+                    <div className="mt-2 p-3 bg-blue-500/5 border border-blue-200 rounded-md">
                       <p className="text-xs text-gray-300 leading-relaxed">
                         <Shield className="h-3 w-3 inline mr-1 text-blue-600" />
                         Your data was used only after your PII (Name, Address)
@@ -787,7 +787,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               ))}
             </div>
           </div>
-        </GlassCard>
+        </Card>
       </main>
     </div>
   );

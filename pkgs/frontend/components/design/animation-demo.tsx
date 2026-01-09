@@ -96,7 +96,7 @@ export function AnimationDemo() {
             </div>
             <div
               style={customFade(fadeState, { duration: 500 })}
-              className="p-4 bg-purple-500/20 rounded-lg"
+              className="p-4 bg-slate-100 rounded-lg"
             >
               <p className="text-slate-900">カスタムフェード（500ms）</p>
             </div>
@@ -147,13 +147,13 @@ export function AnimationDemo() {
                 <Button>パルスボタン</Button>
               </div>
               <Button
-                style={glowAnimation({ color: "#06b6d4", intensity: "medium" })}
+                style={glowAnimation({ color: "#3b82f6", intensity: "medium" })}
                 className="transition-all"
               >
                 グローボタン（シアン）
               </Button>
               <Button
-                style={glowAnimation({ color: "#ec4899", intensity: "high" })}
+                style={glowAnimation({ color: "#3b82f6", intensity: "high" })}
                 className="transition-all"
               >
                 グローボタン（ピンク）
@@ -161,7 +161,7 @@ export function AnimationDemo() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div
-                className="p-4 bg-cyan-500/20 rounded-lg cursor-pointer transition-transform hover:scale-105"
+                className="p-4 bg-blue-100 rounded-lg cursor-pointer transition-transform hover:scale-105"
                 style={hoverTransition()}
               >
                 <p className="text-slate-900 text-center">ホバーでスケール</p>
@@ -170,13 +170,13 @@ export function AnimationDemo() {
                 className="p-4 bg-pink-500/20 rounded-lg cursor-pointer"
                 style={{
                   ...hoverTransition(),
-                  ...glowAnimation({ color: "#ec4899", intensity: "low" }),
+                  ...glowAnimation({ color: "#3b82f6", intensity: "low" }),
                 }}
               >
                 <p className="text-slate-900 text-center">ホバーでグロー</p>
               </div>
               <div
-                className={`p-4 bg-purple-500/20 rounded-lg ${pulseAnimation()}`}
+                className={`p-4 bg-slate-100 rounded-lg ${pulseAnimation()}`}
               >
                 <p className="text-slate-900 text-center">常時パルス</p>
               </div>
@@ -256,12 +256,12 @@ export function AnimationDemo() {
           </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={fadeSlideIn("left")}>
-              <div className="p-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg">
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
                 <p className="text-slate-900">フェード + スライド（左）</p>
               </div>
             </div>
             <div className={scaleFadeIn()}>
-              <div className="p-4 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-lg">
+              <div className="p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg">
                 <p className="text-slate-900">スケール + フェード</p>
               </div>
             </div>

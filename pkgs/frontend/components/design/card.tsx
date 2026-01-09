@@ -136,4 +136,4 @@ const GlassCard = React.memo(
 GlassCard.displayName = "GlassCard";
 
 // Export both old name for compatibility and new semantic name
-export { GlassCard, cardVariants as glassCardVariants };
+export { GlassCard, GlassCard as Card, cardVariants as glassCardVariants };

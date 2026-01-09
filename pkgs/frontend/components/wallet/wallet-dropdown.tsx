@@ -68,8 +68,8 @@ export function WalletDropdown({
         <DropdownMenuLabel className="font-normal">
           <div className="flex items-center gap-3">
             {/* ウォレットアイコン */}
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100">
-              <Wallet className="h-5 w-5 text-indigo-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+              <Wallet className="h-5 w-5 text-blue-600" />
             </div>
 
             {/* ウォレット情報 */}

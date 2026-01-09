@@ -2,7 +2,7 @@
  * ウォレット選択モーダルコンポーネント
  * Supports both Midnight DApp Connector (Lace) and CIP-30 wallets
  *
- * Dark glassmorphism design to match NextMed aesthetic
+ * Clean light design matching NextMed SaaS aesthetic
  */
 
 "use client";
@@ -92,10 +92,10 @@ export function WalletSelectionModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md border-0 bg-transparent p-0 shadow-none">
-        {/* Custom dark glassmorphism container */}
-        <div className="relative rounded-2xl border border-slate-200 bg-gray-900/95 backdrop-blur-xl shadow-2xl overflow-hidden">
-          {/* Gradient accent at top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
+        {/* Clean white modal container */}
+        <div className="relative rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+          {/* Subtle accent at top */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500" />
 
           {/* Close button */}
           <button
@@ -107,8 +107,8 @@ export function WalletSelectionModal({
 
           <DialogHeader className="px-6 pt-6 pb-2">
             <DialogTitle className="flex items-center gap-3 text-xl text-slate-900">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30">
-                <Shield className="h-5 w-5 text-indigo-400" />
+              <div className="p-2 rounded-xl bg-blue-50 border border-blue-100">
+                <Shield className="h-5 w-5 text-blue-600" />
               </div>
               Connect Wallet
             </DialogTitle>
@@ -135,13 +135,13 @@ export function WalletSelectionModal({
                   className={cn(
                     "relative rounded-xl p-4 transition-all duration-200",
                     provider.isMidnight
-                      ? "bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 border border-indigo-500/30 hover:border-indigo-400/50"
-                      : "bg-slate-50 border border-slate-200 hover:border-slate-200 hover:bg-slate-100",
+                      ? "bg-blue-50 border border-blue-200 hover:border-blue-300"
+                      : "bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50",
                   )}
                 >
                   {/* Recommended badge for Midnight */}
                   {provider.badge && (
-                    <div className="absolute -top-2 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-600 text-slate-900 shadow-lg">
+                    <div className="absolute -top-2 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-600 text-white shadow-lg">
                       <span className="flex items-center gap-1">
                         <Zap className="h-2.5 w-2.5" />
                         {provider.badge}
@@ -156,7 +156,7 @@ export function WalletSelectionModal({
                         className={cn(
                           "relative h-12 w-12 rounded-xl overflow-hidden flex items-center justify-center",
                           provider.isMidnight
-                            ? "bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30"
+                            ? "bg-blue-100 border border-blue-200"
                             : "bg-slate-100 border border-slate-200",
                         )}
                       >
@@ -169,7 +169,7 @@ export function WalletSelectionModal({
                         />
                         {provider.isMidnight && (
                           <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
-                            <Sparkles className="h-2.5 w-2.5 text-slate-900" />
+                            <Sparkles className="h-2.5 w-2.5 text-white" />
                           </div>
                         )}
                       </div>
@@ -182,13 +182,13 @@ export function WalletSelectionModal({
                               "font-semibold",
                               provider.isMidnight
                                 ? "text-slate-900"
-                                : "text-gray-200",
+                                : "text-slate-900",
                             )}
                           >
                             {provider.displayName}
                           </h3>
                           {isInstalled && !isConnected && (
-                            <div className="flex items-center gap-1 text-emerald-400">
+                            <div className="flex items-center gap-1 text-emerald-600">
                               <Check className="h-3.5 w-3.5" />
                               <span className="text-[10px] font-medium">
                                 Installed
@@ -196,7 +196,7 @@ export function WalletSelectionModal({
                             </div>
                           )}
                           {isConnected && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-200">
                               Connected
                             </span>
                           )}
@@ -205,8 +205,8 @@ export function WalletSelectionModal({
                           className={cn(
                             "text-xs mt-0.5",
                             provider.isMidnight
-                              ? "text-indigo-300/80"
-                              : "text-gray-500",
+                              ? "text-blue-600"
+                              : "text-slate-500",
                           )}
                         >
                           {provider.description}
@@ -220,7 +220,7 @@ export function WalletSelectionModal({
                         variant="outline"
                         size="sm"
                         disabled
-                        className="bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20"
+                        className="bg-emerald-50 border-emerald-200 text-emerald-600 hover:bg-emerald-100"
                       >
                         <Check className="h-4 w-4" />
                       </Button>
@@ -236,8 +236,8 @@ export function WalletSelectionModal({
                         className={cn(
                           "min-w-[90px] font-medium",
                           provider.isMidnight
-                            ? "bg-blue-600 hover:bg-blue-700 text-slate-900 shadow-lg shadow-blue-600/10"
-                            : "bg-slate-100 hover:bg-slate-100 text-slate-900 border border-slate-200",
+                            ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/10"
+                            : "bg-slate-900 hover:bg-slate-800 text-white",
                         )}
                       >
                         {isAnyConnecting ? (
@@ -268,12 +268,12 @@ export function WalletSelectionModal({
 
           {/* Footer */}
           <div className="px-6 pb-6 pt-2">
-            <div className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-indigo-500/5 to-purple-500/5 border border-indigo-500/20">
-              <div className="p-1.5 rounded-lg bg-indigo-500/20 shrink-0">
-                <Shield className="h-4 w-4 text-indigo-400" />
+            <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100">
+              <div className="p-1.5 rounded-lg bg-blue-100 shrink-0">
+                <Shield className="h-4 w-4 text-blue-600" />
               </div>
-              <div className="text-xs text-slate-500 leading-relaxed">
-                <span className="text-indigo-300 font-medium">
+              <div className="text-xs text-slate-600 leading-relaxed">
+                <span className="text-blue-700 font-medium">
                   Midnight wallets
                 </span>{" "}
                 enable zero-knowledge privacy features. Your medical data stays
