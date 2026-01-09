@@ -21,7 +21,7 @@ export function ParticleBackgroundDemo() {
       />
 
       <div className="relative z-10 flex min-h-screen items-center justify-center p-8">
-        <div className="w-full max-w-2xl space-y-6 rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-md">
+        <div className="w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-white/10 p-8 backdrop-blur-md">
           <h1 className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-4xl font-bold text-transparent">
             Particle Background Demo
           </h1>
@@ -63,14 +63,14 @@ export function ParticleBackgroundDemo() {
                   type="color"
                   value={particleColor}
                   onChange={(e) => setParticleColor(e.target.value)}
-                  className="h-10 w-20 cursor-pointer rounded border border-white/20"
+                  className="h-10 w-20 cursor-pointer rounded border border-slate-200"
                 />
                 <input
                   id="particle-color-text"
                   type="text"
                   value={particleColor}
                   onChange={(e) => setParticleColor(e.target.value)}
-                  className="flex-1 rounded border border-white/20 bg-white/5 px-3 py-2 text-white"
+                  className="flex-1 rounded border border-slate-200 bg-slate-100 px-3 py-2 text-slate-900"
                   aria-label="Particle color hex value"
                 />
               </div>

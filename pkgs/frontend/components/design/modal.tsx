@@ -6,30 +6,35 @@ import { XIcon } from "lucide-react";
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 
-const glassModalVariants = cva(
-  "relative rounded-xl backdrop-blur-md border transition-all duration-300",
+/**
+ * Modal Component
+ * Clean, professional modal with subtle animations
+ * Design: Stripe-inspired minimal aesthetic
+ */
+const modalVariants = cva(
+  "relative rounded-lg border transition-all duration-200",
   {
     variants: {
       variant: {
         default: [
-          "bg-white/10",
-          "border-white/20",
-          "shadow-lg shadow-cyan-500/20",
+          "bg-white",
+          "border-slate-200",
+          "shadow-xl",
         ],
         primary: [
-          "bg-indigo-500/10",
-          "border-indigo-400/30",
-          "shadow-lg shadow-indigo-500/30",
+          "bg-white",
+          "border-slate-200",
+          "shadow-xl",
         ],
         secondary: [
-          "bg-emerald-500/10",
-          "border-emerald-400/30",
-          "shadow-lg shadow-emerald-500/30",
+          "bg-white",
+          "border-slate-200",
+          "shadow-xl",
         ],
         accent: [
-          "bg-cyan-500/10",
-          "border-cyan-400/30",
-          "shadow-lg shadow-cyan-500/30",
+          "bg-white",
+          "border-blue-200",
+          "shadow-xl",
         ],
       },
       glow: {
@@ -76,7 +81,7 @@ function GlassModalOverlay({
     <DialogPrimitive.Overlay
       data-slot="glass-modal-overlay"
       className={cn(
-        "fixed inset-0 z-50 backdrop-blur-sm bg-black/50",
+        "fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-[2px]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className,
@@ -88,7 +93,7 @@ function GlassModalOverlay({
 
 export interface GlassModalContentProps
   extends React.ComponentProps<typeof DialogPrimitive.Content>,
-    VariantProps<typeof glassModalVariants> {
+    VariantProps<typeof modalVariants> {
   showCloseButton?: boolean;
 }
 
@@ -106,13 +111,13 @@ function GlassModalContent({
       <DialogPrimitive.Content
         data-slot="glass-modal-content"
         className={cn(
-          "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 p-6 duration-300 sm:max-w-lg",
+          "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 p-6 duration-200 sm:max-w-lg",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-          "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+          "data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98",
           "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
           "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
-          glassModalVariants({ variant, glow }),
+          modalVariants({ variant, glow }),
           className,
         )}
         {...props}
@@ -122,14 +127,14 @@ function GlassModalContent({
           <DialogPrimitive.Close
             data-slot="glass-modal-close"
             className={cn(
-              "absolute top-4 right-4 rounded-xs opacity-70 transition-all duration-200",
-              "hover:opacity-100 hover:scale-110",
-              "focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-2 focus:outline-hidden",
+              "absolute top-4 right-4 rounded-md p-1 opacity-60 transition-all duration-150",
+              "hover:opacity-100 hover:bg-slate-100",
+              "focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:outline-hidden",
               "disabled:pointer-events-none",
               "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
             )}
           >
-            <XIcon className="text-white/70 hover:text-white" />
+            <XIcon className="text-slate-500 hover:text-slate-700" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}
@@ -145,7 +150,7 @@ function GlassModalHeader({
   return (
     <div
       data-slot="glass-modal-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)}
       {...props}
     />
   );
@@ -174,7 +179,7 @@ function GlassModalTitle({
   return (
     <DialogPrimitive.Title
       data-slot="glass-modal-title"
-      className={cn("text-lg leading-none font-semibold text-white", className)}
+      className={cn("text-lg leading-none font-semibold text-slate-900", className)}
       {...props}
     />
   );
@@ -187,7 +192,7 @@ function GlassModalDescription({
   return (
     <DialogPrimitive.Description
       data-slot="glass-modal-description"
-      className={cn("text-sm text-white/70", className)}
+      className={cn("text-sm text-slate-500", className)}
       {...props}
     />
   );
@@ -204,5 +209,5 @@ export {
   GlassModalPortal,
   GlassModalTitle,
   GlassModalTrigger,
-  glassModalVariants,
+  modalVariants as glassModalVariants,
 };

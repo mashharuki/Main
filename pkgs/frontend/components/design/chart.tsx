@@ -21,10 +21,9 @@ import {
 import { cn } from "@/lib/utils";
 
 /**
- * CyberChart コンポーネント
- *
- * Rechartsをラップしてサイバーメディカルスタイルを適用
- * 要件: 3.2 (データチャートにグラデーション付きチャートを表示)
+ * Chart Component
+ * Clean, professional data visualization
+ * Design: Dune Analytics-inspired minimal charts
  */
 
 export type ChartType = "line" | "bar" | "area" | "pie";
@@ -54,47 +53,38 @@ export interface CyberChartProps {
 }
 
 /**
- * デフォルトカラー設定
+ * Clean color palette (Dune-inspired)
  */
 const DEFAULT_COLORS = {
-  primary: "#6366f1", // Indigo
-  secondary: "#10b981", // Emerald
-  accent: "#06b6d4", // Cyan
+  primary: "#18181b",   // Slate 900
+  secondary: "#3b82f6", // Blue 500
+  accent: "#22c55e",    // Green 500
 };
 
 /**
- * グラデーション定義コンポーネント
+ * Subtle gradients definition
  */
 const ChartGradients: React.FC<{ colors: typeof DEFAULT_COLORS }> = ({
   colors,
 }) => (
   <defs>
     <linearGradient id="primaryGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={colors.primary} stopOpacity={0.8} />
-      <stop offset="100%" stopColor={colors.primary} stopOpacity={0.1} />
+      <stop offset="0%" stopColor={colors.primary} stopOpacity={0.15} />
+      <stop offset="100%" stopColor={colors.primary} stopOpacity={0.02} />
     </linearGradient>
     <linearGradient id="secondaryGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={colors.secondary} stopOpacity={0.8} />
-      <stop offset="100%" stopColor={colors.secondary} stopOpacity={0.1} />
+      <stop offset="0%" stopColor={colors.secondary} stopOpacity={0.15} />
+      <stop offset="100%" stopColor={colors.secondary} stopOpacity={0.02} />
     </linearGradient>
     <linearGradient id="accentGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={colors.accent} stopOpacity={0.8} />
-      <stop offset="100%" stopColor={colors.accent} stopOpacity={0.1} />
+      <stop offset="0%" stopColor={colors.accent} stopOpacity={0.15} />
+      <stop offset="100%" stopColor={colors.accent} stopOpacity={0.02} />
     </linearGradient>
-    {/* グロー効果用のフィルター */}
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-      <feMerge>
-        <feMergeNode in="coloredBlur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
   </defs>
 );
 
 /**
- * カスタムツールチップ
- * React.memo for optimization (要件 10.3)
+ * Clean tooltip styling
  */
 interface CustomTooltipProps {
   active?: boolean;
@@ -114,19 +104,19 @@ const CustomTooltip = React.memo<CustomTooltipProps>(
     }
 
     return (
-      <div className="rounded-lg border border-white/20 bg-background/95 p-3 shadow-lg shadow-cyan-500/20 backdrop-blur-md">
-        <p className="mb-2 text-sm font-semibold text-foreground">{label}</p>
+      <div className="rounded-md border border-slate-200 bg-white p-3 shadow-lg">
+        <p className="mb-2 text-sm font-medium text-slate-900">{label}</p>
         {payload.map((entry, index) => (
           <div
             key={`item-${entry.dataKey || index}`}
             className="flex items-center gap-2"
           >
             <div
-              className="h-3 w-3 rounded-full"
+              className="h-2.5 w-2.5 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-sm text-muted-foreground">{entry.name}:</span>
-            <span className="text-sm font-medium text-foreground">
+            <span className="text-sm text-slate-500">{entry.name}:</span>
+            <span className="text-sm font-medium text-slate-900">
               {entry.value}
             </span>
           </div>
@@ -136,19 +126,28 @@ const CustomTooltip = React.memo<CustomTooltipProps>(
   },
 );
 
+// Chart axis styling
+const AXIS_STYLE = {
+  stroke: "#94a3b8", // Slate 400
+  fontSize: "12px",
+  fontFamily: "inherit",
+};
+
+const GRID_STYLE = {
+  strokeDasharray: "3 3",
+  stroke: "#e2e8f0", // Slate 200
+};
+
 /**
- * LineChart実装
- * React.memo for optimization (要件 10.3)
+ * LineChart implementation
  */
-const CyberLineChart = React.memo<
+const CleanLineChart = React.memo<
   CyberChartProps & { colors: typeof DEFAULT_COLORS }
 >(
   ({
     data,
     dataKey = "value",
     xAxisKey = "name",
-    gradient,
-    glow,
     colors,
     showGrid = true,
     showLegend = false,
@@ -157,26 +156,19 @@ const CyberLineChart = React.memo<
   }) => {
     return (
       <LineChart data={data}>
-        {gradient && <ChartGradients colors={colors} />}
-        {showGrid && (
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-        )}
-        <XAxis
-          dataKey={xAxisKey}
-          stroke="rgba(255,255,255,0.5)"
-          style={{ fontSize: "12px" }}
-        />
-        <YAxis stroke="rgba(255,255,255,0.5)" style={{ fontSize: "12px" }} />
+        <ChartGradients colors={colors} />
+        {showGrid && <CartesianGrid {...GRID_STYLE} />}
+        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Line
           type="monotone"
           dataKey={dataKey}
-          stroke={colors.primary}
+          stroke={colors.secondary}
           strokeWidth={2}
-          dot={{ fill: colors.primary, r: 4 }}
-          activeDot={{ r: 6, fill: colors.accent }}
-          filter={glow ? "url(#glow)" : undefined}
+          dot={{ fill: colors.secondary, r: 3, strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: colors.secondary, strokeWidth: 0 }}
           isAnimationActive={animate}
         />
       </LineChart>
@@ -185,10 +177,9 @@ const CyberLineChart = React.memo<
 );
 
 /**
- * BarChart実装
- * React.memo for optimization (要件 10.3)
+ * BarChart implementation
  */
-const CyberBarChart = React.memo<
+const CleanBarChart = React.memo<
   CyberChartProps & { colors: typeof DEFAULT_COLORS }
 >(
   ({
@@ -196,7 +187,6 @@ const CyberBarChart = React.memo<
     dataKey = "value",
     xAxisKey = "name",
     gradient,
-    glow,
     colors,
     showGrid = true,
     showLegend = false,
@@ -206,22 +196,15 @@ const CyberBarChart = React.memo<
     return (
       <BarChart data={data}>
         {gradient && <ChartGradients colors={colors} />}
-        {showGrid && (
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-        )}
-        <XAxis
-          dataKey={xAxisKey}
-          stroke="rgba(255,255,255,0.5)"
-          style={{ fontSize: "12px" }}
-        />
-        <YAxis stroke="rgba(255,255,255,0.5)" style={{ fontSize: "12px" }} />
+        {showGrid && <CartesianGrid {...GRID_STYLE} />}
+        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Bar
           dataKey={dataKey}
-          fill={gradient ? "url(#primaryGradient)" : colors.primary}
-          radius={[8, 8, 0, 0]}
-          filter={glow ? "url(#glow)" : undefined}
+          fill={colors.secondary}
+          radius={[4, 4, 0, 0]}
           isAnimationActive={animate}
         />
       </BarChart>
@@ -230,18 +213,15 @@ const CyberBarChart = React.memo<
 );
 
 /**
- * AreaChart実装
- * React.memo for optimization (要件 10.3)
+ * AreaChart implementation
  */
-const CyberAreaChart = React.memo<
+const CleanAreaChart = React.memo<
   CyberChartProps & { colors: typeof DEFAULT_COLORS }
 >(
   ({
     data,
     dataKey = "value",
     xAxisKey = "name",
-    gradient,
-    glow,
     colors,
     showGrid = true,
     showLegend = false,
@@ -250,25 +230,18 @@ const CyberAreaChart = React.memo<
   }) => {
     return (
       <AreaChart data={data}>
-        {gradient && <ChartGradients colors={colors} />}
-        {showGrid && (
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-        )}
-        <XAxis
-          dataKey={xAxisKey}
-          stroke="rgba(255,255,255,0.5)"
-          style={{ fontSize: "12px" }}
-        />
-        <YAxis stroke="rgba(255,255,255,0.5)" style={{ fontSize: "12px" }} />
+        <ChartGradients colors={colors} />
+        {showGrid && <CartesianGrid {...GRID_STYLE} />}
+        <XAxis dataKey={xAxisKey} {...AXIS_STYLE} tickLine={false} axisLine={false} />
+        <YAxis {...AXIS_STYLE} tickLine={false} axisLine={false} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Area
           type="monotone"
           dataKey={dataKey}
-          stroke={colors.primary}
+          stroke={colors.secondary}
           strokeWidth={2}
-          fill={gradient ? "url(#primaryGradient)" : colors.primary}
-          filter={glow ? "url(#glow)" : undefined}
+          fill="url(#secondaryGradient)"
           isAnimationActive={animate}
         />
       </AreaChart>
@@ -277,27 +250,24 @@ const CyberAreaChart = React.memo<
 );
 
 /**
- * PieChart実装
- * React.memo for optimization (要件 10.3)
+ * PieChart implementation
  */
-const CyberPieChart = React.memo<
+const CleanPieChart = React.memo<
   CyberChartProps & { colors: typeof DEFAULT_COLORS }
 >(
   ({
     data,
     dataKey = "value",
-    gradient,
-    glow,
     colors,
     showLegend = true,
     showTooltip = true,
     animate = true,
   }) => {
-    const COLORS = [colors.primary, colors.secondary, colors.accent];
+    const COLORS = [colors.primary, colors.secondary, colors.accent, "#94a3b8", "#f59e0b"];
 
     return (
       <PieChart>
-        {gradient && <ChartGradients colors={colors} />}
+        <ChartGradients colors={colors} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Pie
@@ -307,14 +277,13 @@ const CyberPieChart = React.memo<
           cx="50%"
           cy="50%"
           outerRadius={80}
-          filter={glow ? "url(#glow)" : undefined}
           isAnimationActive={animate}
         >
           {data.map((entry, index) => (
             <Cell
               key={`cell-${entry.name || index}`}
               fill={COLORS[index % COLORS.length]}
-              stroke="rgba(255,255,255,0.2)"
+              stroke="white"
               strokeWidth={2}
             />
           ))}
@@ -325,7 +294,7 @@ const CyberPieChart = React.memo<
 );
 
 /**
- * メインCyberChartコンポーネント
+ * Main Chart Component
  */
 export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
   (
@@ -335,7 +304,7 @@ export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
       dataKey = "value",
       xAxisKey = "name",
       gradient = true,
-      glow = true,
+      glow = false, // Ignored in clean design
       height = 300,
       className,
       colors,
@@ -346,7 +315,6 @@ export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
     },
     ref,
   ) => {
-    // prefers-reduced-motion対応
     const [shouldAnimate, setShouldAnimate] = React.useState(true);
 
     React.useEffect(() => {
@@ -361,16 +329,13 @@ export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
       return () => mediaQuery.removeEventListener("change", handleChange);
     }, []);
 
-    // アニメーションを無効化する場合
     const effectiveAnimate = shouldAnimate ? animate : false;
 
-    // カラー設定のマージ
     const effectiveColors = {
       ...DEFAULT_COLORS,
       ...colors,
     };
 
-    // チャートタイプに応じたコンポーネントを選択
     const renderChart = () => {
       const commonProps = {
         data,
@@ -387,14 +352,14 @@ export const CyberChart = React.forwardRef<HTMLDivElement, CyberChartProps>(
 
       switch (type) {
         case "bar":
-          return <CyberBarChart {...commonProps} />;
+          return <CleanBarChart {...commonProps} />;
         case "area":
-          return <CyberAreaChart {...commonProps} />;
+          return <CleanAreaChart {...commonProps} />;
         case "pie":
-          return <CyberPieChart {...commonProps} />;
+          return <CleanPieChart {...commonProps} />;
         case "line":
         default:
-          return <CyberLineChart {...commonProps} />;
+          return <CleanLineChart {...commonProps} />;
       }
     };
 

@@ -53,10 +53,10 @@ export function AnimationDemo() {
       <div className="max-w-7xl mx-auto space-y-8">
         {/* ヘッダー */}
         <div className={fadeSlideIn("top")}>
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">
             アニメーションデモ
           </h1>
-          <p className="text-slate-400">
+          <p className="text-slate-500">
             実装したアニメーションユーティリティの動作確認
           </p>
           {motionReduced && (
@@ -89,7 +89,7 @@ export function AnimationDemo() {
                 fadeState === "in" ? fadeIn() : fadeOut()
               }`}
             >
-              <p className="text-white">
+              <p className="text-slate-900">
                 このボックスがフェード{fadeState === "in" ? "イン" : "アウト"}
                 します
               </p>
@@ -98,7 +98,7 @@ export function AnimationDemo() {
               style={customFade(fadeState, { duration: 500 })}
               className="p-4 bg-purple-500/20 rounded-lg"
             >
-              <p className="text-white">カスタムフェード（500ms）</p>
+              <p className="text-slate-900">カスタムフェード（500ms）</p>
             </div>
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ export function AnimationDemo() {
               key={slideDirection}
               className={`p-4 bg-green-500/20 rounded-lg ${slideIn(slideDirection)}`}
             >
-              <p className="text-white">{slideDirection}からスライドイン</p>
+              <p className="text-slate-900">{slideDirection}からスライドイン</p>
             </div>
           </CardContent>
         </Card>
@@ -164,7 +164,7 @@ export function AnimationDemo() {
                 className="p-4 bg-cyan-500/20 rounded-lg cursor-pointer transition-transform hover:scale-105"
                 style={hoverTransition()}
               >
-                <p className="text-white text-center">ホバーでスケール</p>
+                <p className="text-slate-900 text-center">ホバーでスケール</p>
               </div>
               <div
                 className="p-4 bg-pink-500/20 rounded-lg cursor-pointer"
@@ -173,12 +173,12 @@ export function AnimationDemo() {
                   ...glowAnimation({ color: "#ec4899", intensity: "low" }),
                 }}
               >
-                <p className="text-white text-center">ホバーでグロー</p>
+                <p className="text-slate-900 text-center">ホバーでグロー</p>
               </div>
               <div
                 className={`p-4 bg-purple-500/20 rounded-lg ${pulseAnimation()}`}
               >
-                <p className="text-white text-center">常時パルス</p>
+                <p className="text-slate-900 text-center">常時パルス</p>
               </div>
             </div>
           </CardContent>
@@ -257,12 +257,12 @@ export function AnimationDemo() {
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={fadeSlideIn("left")}>
               <div className="p-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg">
-                <p className="text-white">フェード + スライド（左）</p>
+                <p className="text-slate-900">フェード + スライド（左）</p>
               </div>
             </div>
             <div className={scaleFadeIn()}>
               <div className="p-4 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-lg">
-                <p className="text-white">スケール + フェード</p>
+                <p className="text-slate-900">スケール + フェード</p>
               </div>
             </div>
           </CardContent>
@@ -276,13 +276,13 @@ export function AnimationDemo() {
           onClick={() => setShowModal(false)}
         >
           <div
-            className={`bg-slate-900 border border-slate-700 rounded-lg p-6 max-w-md w-full ${modalAnimation.enter()}`}
+            className={`bg-slate-50 border border-slate-200 rounded-lg p-6 max-w-md w-full ${modalAnimation.enter()}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               モーダルタイトル
             </h2>
-            <p className="text-slate-400 mb-6">
+            <p className="text-slate-500 mb-6">
               このモーダルはスケールアップとフェードインのアニメーションで表示されます。
             </p>
             <div className="flex gap-4">

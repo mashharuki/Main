@@ -93,26 +93,26 @@ export function WalletSelectionModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md border-0 bg-transparent p-0 shadow-none">
         {/* Custom dark glassmorphism container */}
-        <div className="relative rounded-2xl border border-white/10 bg-gray-900/95 backdrop-blur-xl shadow-2xl overflow-hidden">
+        <div className="relative rounded-2xl border border-slate-200 bg-gray-900/95 backdrop-blur-xl shadow-2xl overflow-hidden">
           {/* Gradient accent at top */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
 
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute top-4 right-4 p-1 rounded-full hover:bg-slate-100 transition-colors z-10"
           >
-            <X className="h-5 w-5 text-gray-400 hover:text-white" />
+            <X className="h-5 w-5 text-slate-500 hover:text-slate-900" />
           </button>
 
           <DialogHeader className="px-6 pt-6 pb-2">
-            <DialogTitle className="flex items-center gap-3 text-xl text-white">
+            <DialogTitle className="flex items-center gap-3 text-xl text-slate-900">
               <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30">
                 <Shield className="h-5 w-5 text-indigo-400" />
               </div>
               Connect Wallet
             </DialogTitle>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-slate-500 mt-2">
               Choose a wallet to connect to NextMed
             </p>
           </DialogHeader>
@@ -136,12 +136,12 @@ export function WalletSelectionModal({
                     "relative rounded-xl p-4 transition-all duration-200",
                     provider.isMidnight
                       ? "bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 border border-indigo-500/30 hover:border-indigo-400/50"
-                      : "bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10",
+                      : "bg-slate-50 border border-slate-200 hover:border-slate-200 hover:bg-slate-100",
                   )}
                 >
                   {/* Recommended badge for Midnight */}
                   {provider.badge && (
-                    <div className="absolute -top-2 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg">
+                    <div className="absolute -top-2 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-600 text-slate-900 shadow-lg">
                       <span className="flex items-center gap-1">
                         <Zap className="h-2.5 w-2.5" />
                         {provider.badge}
@@ -157,7 +157,7 @@ export function WalletSelectionModal({
                           "relative h-12 w-12 rounded-xl overflow-hidden flex items-center justify-center",
                           provider.isMidnight
                             ? "bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30"
-                            : "bg-white/10 border border-white/10",
+                            : "bg-slate-100 border border-slate-200",
                         )}
                       >
                         <Image
@@ -168,8 +168,8 @@ export function WalletSelectionModal({
                           className="object-contain"
                         />
                         {provider.isMidnight && (
-                          <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg">
-                            <Sparkles className="h-2.5 w-2.5 text-white" />
+                          <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
+                            <Sparkles className="h-2.5 w-2.5 text-slate-900" />
                           </div>
                         )}
                       </div>
@@ -181,7 +181,7 @@ export function WalletSelectionModal({
                             className={cn(
                               "font-semibold",
                               provider.isMidnight
-                                ? "text-white"
+                                ? "text-slate-900"
                                 : "text-gray-200",
                             )}
                           >
@@ -236,8 +236,8 @@ export function WalletSelectionModal({
                         className={cn(
                           "min-w-[90px] font-medium",
                           provider.isMidnight
-                            ? "bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg shadow-indigo-500/25"
-                            : "bg-white/10 hover:bg-white/20 text-white border border-white/10",
+                            ? "bg-blue-600 hover:bg-blue-700 text-slate-900 shadow-lg shadow-blue-600/10"
+                            : "bg-slate-100 hover:bg-slate-100 text-slate-900 border border-slate-200",
                         )}
                       >
                         {isAnyConnecting ? (
@@ -254,7 +254,7 @@ export function WalletSelectionModal({
                         onClick={() => handleInstall(provider)}
                         variant="outline"
                         size="sm"
-                        className="min-w-[90px] bg-transparent border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+                        className="min-w-[90px] bg-transparent border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                       >
                         <span>Install</span>
                         <ExternalLink className="h-3 w-3 ml-1.5" />
@@ -272,7 +272,7 @@ export function WalletSelectionModal({
               <div className="p-1.5 rounded-lg bg-indigo-500/20 shrink-0">
                 <Shield className="h-4 w-4 text-indigo-400" />
               </div>
-              <div className="text-xs text-gray-400 leading-relaxed">
+              <div className="text-xs text-slate-500 leading-relaxed">
                 <span className="text-indigo-300 font-medium">
                   Midnight wallets
                 </span>{" "}

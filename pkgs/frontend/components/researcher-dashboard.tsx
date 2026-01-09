@@ -18,8 +18,8 @@ import {
   Wallet,
 } from "lucide-react";
 import { useState } from "react";
-import { CyberChart } from "@/components/cyber/cyber-chart";
-import { GlassCard } from "@/components/cyber/glass-card";
+import { CyberChart } from "@/components/design/chart";
+import { GlassCard } from "@/components/design/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -130,7 +130,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    <div className="min-h-screen bg-slate-50">
       <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
@@ -268,10 +268,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
           </DialogHeader>
 
           {selectedEHR && (
-            <div className="p-4 mb-4 bg-emerald-500/10 border border-emerald-400/30 rounded-lg">
+            <div className="p-4 mb-4 bg-emerald-50 border border-emerald-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                   <div>
                     <p className="font-semibold">{selectedEHR.name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -298,7 +298,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 onClick={() => handleConnectEHR(provider.id)}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all hover:scale-[1.02] ${
                   selectedEHR?.id === provider.id
-                    ? "border-emerald-400 bg-emerald-500/10"
+                    ? "border-emerald-400 bg-emerald-50"
                     : "border-border hover:border-primary hover:bg-primary/5"
                 }`}
               >
@@ -340,7 +340,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
       </Dialog>
 
       {/* Responsive Header (要件 8.1, 8.2, 8.3) */}
-      <header className="relative z-10 border-b border-white/10 glass">
+      <header className="relative z-10 border-b border-slate-200 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img
@@ -348,7 +348,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
               alt="NextMed Logo"
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
             />
-            <span className="text-xl sm:text-2xl font-bold bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900">
               NextMed
             </span>
           </div>
@@ -480,7 +480,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                   EHR Data Source
                 </p>
                 {selectedEHR ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                 ) : (
                   <Search className="h-4 w-4 text-yellow-400" />
                 )}
@@ -568,7 +568,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                     <div className="space-y-2">
                       <Label>Age Range</Label>
                       <Select value={ageFilter} onValueChange={setAgeFilter}>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-white/20">
                           <SelectValue placeholder="Select age range" />
                         </SelectTrigger>
                         <SelectContent>
@@ -587,7 +587,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         value={symptomFilter}
                         onValueChange={setSymptomFilter}
                       >
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-white/20">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                         <SelectContent>
@@ -610,7 +610,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                     <div className="space-y-2">
                       <Label>Region</Label>
                       <Select>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-white/20">
                           <SelectValue placeholder="Select region" />
                         </SelectTrigger>
                         <SelectContent>
@@ -639,7 +639,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                     <div className="space-y-2">
                       <Label>Gender</Label>
                       <Select>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-white/20">
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -911,7 +911,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-white/10">
+                        <tr className="border-b border-slate-200">
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">
                             Age Group
                           </th>

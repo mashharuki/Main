@@ -1,6 +1,6 @@
 "use client";
 
-import { NeonButton } from "./neon-button";
+import { NeonButton } from "./button";
 
 /**
  * NeonButton デモコンポーネント
@@ -9,21 +9,21 @@ import { NeonButton } from "./neon-button";
  */
 export function NeonButtonDemo() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+    <div className="min-h-screen bg-slate-50 p-8">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-white">
+          <h1 className="text-4xl font-bold text-slate-900">
             NeonButton Component Demo
           </h1>
-          <p className="text-slate-400 text-lg">
+          <p className="text-slate-500 text-lg">
             ネオングロー効果を持つボタンコンポーネント
           </p>
         </div>
 
         {/* Variants */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Variants</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Variants</h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary">Primary Button</NeonButton>
             <NeonButton variant="secondary">Secondary Button</NeonButton>
@@ -33,7 +33,7 @@ export function NeonButtonDemo() {
 
         {/* Sizes */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Sizes</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Sizes</h2>
           <div className="flex flex-wrap items-center gap-4">
             <NeonButton size="sm" variant="primary">
               Small
@@ -49,7 +49,7 @@ export function NeonButtonDemo() {
 
         {/* Glow Effect */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Glow Effect</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Glow Effect</h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" glow>
               Primary with Glow
@@ -65,7 +65,7 @@ export function NeonButtonDemo() {
 
         {/* Pulse Animation */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Pulse Animation</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Pulse Animation</h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" pulse>
               Pulsing Primary
@@ -81,7 +81,7 @@ export function NeonButtonDemo() {
 
         {/* Combined Effects */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="text-2xl font-semibold text-slate-900">
             Combined Effects (Glow + Pulse)
           </h2>
           <div className="flex flex-wrap gap-4">
@@ -99,7 +99,7 @@ export function NeonButtonDemo() {
 
         {/* Disabled State */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Disabled State</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Disabled State</h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" disabled>
               Disabled Primary
@@ -115,7 +115,7 @@ export function NeonButtonDemo() {
 
         {/* With Icons */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">With Icons</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">With Icons</h2>
           <div className="flex flex-wrap gap-4">
             <NeonButton variant="primary" glow>
               <svg
@@ -176,10 +176,10 @@ export function NeonButtonDemo() {
 
         {/* Usage Example */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">Usage Example</h2>
-          <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-            <pre className="text-sm text-slate-300 overflow-x-auto">
-              <code>{`import { NeonButton } from "@/components/cyber/neon-button";
+          <h2 className="text-2xl font-semibold text-slate-900">Usage Example</h2>
+          <div className="bg-slate-100 rounded-lg p-6 border border-slate-200">
+            <pre className="text-sm text-slate-600 overflow-x-auto">
+              <code>{`import { NeonButton } from "@/components/design/button";
 
 // Basic usage
 <NeonButton variant="primary">
