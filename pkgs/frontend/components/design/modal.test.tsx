@@ -9,7 +9,7 @@ import {
   GlassModalHeader,
   GlassModalTitle,
   GlassModalTrigger,
-} from "./glass-modal";
+} from "./modal";
 
 describe("GlassModal", () => {
   // 基本レンダリングテスト
@@ -65,7 +65,7 @@ describe("GlassModal", () => {
       const content = screen
         .getByText("タイトル")
         .closest("[data-slot='glass-modal-content']");
-      expect(content?.className).toContain("bg-white/10");
+      expect(content?.className).toContain("bg-white");
     });
 
     it("primaryバリアントを適用する", async () => {
@@ -83,7 +83,7 @@ describe("GlassModal", () => {
       const content = screen
         .getByText("タイトル")
         .closest("[data-slot='glass-modal-content']");
-      expect(content?.className).toContain("bg-indigo-500/10");
+      expect(content?.className).toContain("bg-white");
     });
 
     it("secondaryバリアントを適用する", async () => {
@@ -101,7 +101,7 @@ describe("GlassModal", () => {
       const content = screen
         .getByText("タイトル")
         .closest("[data-slot='glass-modal-content']");
-      expect(content?.className).toContain("bg-emerald-500/10");
+      expect(content?.className).toContain("bg-white");
     });
 
     it("accentバリアントを適用する", async () => {
@@ -119,7 +119,7 @@ describe("GlassModal", () => {
       const content = screen
         .getByText("タイトル")
         .closest("[data-slot='glass-modal-content']");
-      expect(content?.className).toContain("bg-cyan-500/10");
+      expect(content?.className).toContain("border-blue-200");
     });
   });
 

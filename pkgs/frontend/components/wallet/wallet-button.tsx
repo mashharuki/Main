@@ -65,10 +65,10 @@ export function WalletButton({ className }: WalletButtonProps) {
         className={cn(
           "relative gap-2",
           isMidnightConnected
-            ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+            ? "bg-blue-600 hover:bg-blue-700 text-white"
             : isAnyConnected
-              ? "bg-gray-700 hover:bg-gray-800"
-              : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700",
+              ? "bg-slate-900 hover:bg-slate-800 text-white"
+              : "bg-slate-900 hover:bg-slate-800 text-white",
           className,
         )}
       >
@@ -118,7 +118,7 @@ export function WalletButton({ className }: WalletButtonProps) {
           >
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-indigo-500" />
+                <Sparkles className="h-4 w-4 text-blue-600" />
                 <span className="font-semibold">Midnight Wallet</span>
               </div>
               <div className="text-sm text-muted-foreground break-all">

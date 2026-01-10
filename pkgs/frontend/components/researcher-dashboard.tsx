@@ -18,8 +18,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useState } from "react";
-import { CyberChart } from "@/components/cyber/cyber-chart";
-import { GlassCard } from "@/components/cyber/glass-card";
+import { Chart } from "@/components/design/chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -118,7 +117,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
 
   const genderDistributionData = [
     { name: "Male", value: 185, color: "#3b82f6" },
-    { name: "Female", value: 157, color: "#8b5cf6" },
+    { name: "Female", value: 157, color: "#64748b" },
   ];
 
   const regionComparisonData = [
@@ -130,7 +129,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    <div className="min-h-screen bg-slate-50">
       <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
@@ -268,10 +267,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
           </DialogHeader>
 
           {selectedEHR && (
-            <div className="p-4 mb-4 bg-emerald-500/10 border border-emerald-400/30 rounded-lg">
+            <div className="p-4 mb-4 bg-emerald-50 border border-emerald-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                   <div>
                     <p className="font-semibold">{selectedEHR.name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -298,7 +297,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 onClick={() => handleConnectEHR(provider.id)}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all hover:scale-[1.02] ${
                   selectedEHR?.id === provider.id
-                    ? "border-emerald-400 bg-emerald-500/10"
+                    ? "border-emerald-400 bg-emerald-50"
                     : "border-border hover:border-primary hover:bg-primary/5"
                 }`}
               >
@@ -340,7 +339,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
       </Dialog>
 
       {/* Responsive Header (要件 8.1, 8.2, 8.3) */}
-      <header className="relative z-10 border-b border-white/10 glass">
+      <header className="relative z-10 border-b border-slate-200 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img
@@ -348,7 +347,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
               alt="NextMed Logo"
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
             />
-            <span className="text-xl sm:text-2xl font-bold bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900">
               NextMed
             </span>
           </div>
@@ -417,7 +416,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
 
         {/* Responsive Stats Grid (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-4 sm:mb-6">
-          <GlassCard
+          <Card
             variant="primary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -430,9 +429,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 <Database className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
             </div>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="secondary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -448,9 +447,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 London (2,400 records)
               </p>
             </div>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="accent"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
@@ -466,10 +465,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 Hypertension (1,500 records)
               </p>
             </div>
-          </GlassCard>
+          </Card>
 
           {/* EHR Status Card */}
-          <GlassCard
+          <Card
             variant="default"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform cursor-pointer hover:border-primary/50"
             onClick={() => setShowEHRSelector(true)}
@@ -480,7 +479,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                   EHR Data Source
                 </p>
                 {selectedEHR ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                 ) : (
                   <Search className="h-4 w-4 text-yellow-400" />
                 )}
@@ -494,10 +493,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 {selectedEHR ? selectedEHR.name : "Click to choose EHR"}
               </p>
             </div>
-          </GlassCard>
+          </Card>
         </div>
 
-        <GlassCard className="mb-6 p-6">
+        <Card className="mb-6 p-6">
           <div className="mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">
               <Search className="h-5 w-5 text-primary" />
@@ -563,12 +562,12 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
               </TabsContent>
 
               <TabsContent value="filters" className="space-y-4">
-                <GlassCard variant="default" className="p-4">
+                <Card variant="default" className="p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <Label>Age Range</Label>
                       <Select value={ageFilter} onValueChange={setAgeFilter}>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-slate-200">
                           <SelectValue placeholder="Select age range" />
                         </SelectTrigger>
                         <SelectContent>
@@ -587,7 +586,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         value={symptomFilter}
                         onValueChange={setSymptomFilter}
                       >
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-slate-200">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                         <SelectContent>
@@ -610,7 +609,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                     <div className="space-y-2">
                       <Label>Region</Label>
                       <Select>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-slate-200">
                           <SelectValue placeholder="Select region" />
                         </SelectTrigger>
                         <SelectContent>
@@ -639,7 +638,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                     <div className="space-y-2">
                       <Label>Gender</Label>
                       <Select>
-                        <SelectTrigger className="backdrop-blur-sm bg-white/5 border-white/20">
+                        <SelectTrigger className="backdrop-blur-sm bg-slate-50 border-slate-200">
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -651,7 +650,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </Select>
                     </div>
                   </div>
-                </GlassCard>
+                </Card>
 
                 <Button
                   onClick={handleExecuteAnalysis}
@@ -708,11 +707,11 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
               </TabsContent>
             </Tabs>
           </div>
-        </GlassCard>
+        </Card>
 
         {showResults && (
           <div className="space-y-6">
-            <GlassCard glow className="p-6">
+            <Card glow className="p-6">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-2xl font-bold flex items-center gap-2">
@@ -745,7 +744,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-4">
-                  <GlassCard variant="primary" className="p-6">
+                  <Card variant="primary" className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">
@@ -755,9 +754,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </div>
                       <Database className="h-8 w-8 text-primary/20" />
                     </div>
-                  </GlassCard>
+                  </Card>
 
-                  <GlassCard variant="secondary" className="p-6">
+                  <Card variant="secondary" className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">
@@ -767,9 +766,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </div>
                       <Activity className="h-8 w-8 text-secondary/20" />
                     </div>
-                  </GlassCard>
+                  </Card>
 
-                  <GlassCard variant="accent" className="p-6">
+                  <Card variant="accent" className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">
@@ -779,9 +778,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </div>
                       <BarChart3 className="h-8 w-8 text-accent/20" />
                     </div>
-                  </GlassCard>
+                  </Card>
 
-                  <GlassCard variant="default" className="p-6">
+                  <Card variant="default" className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">
@@ -791,12 +790,12 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </div>
                       <TrendingUp className="h-8 w-8 text-success/20" />
                     </div>
-                  </GlassCard>
+                  </Card>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
                   {/* Age Distribution Bar Chart */}
-                  <GlassCard className="p-6">
+                  <Card className="p-6">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold mb-1">
                         Hypertension Rate by Age Group
@@ -805,7 +804,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         Distribution across different age ranges
                       </p>
                     </div>
-                    <CyberChart
+                    <Chart
                       data={ageDistributionData.map((d) => ({
                         name: d.ageGroup,
                         value: d.rate,
@@ -817,10 +816,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       glow={true}
                       height={250}
                     />
-                  </GlassCard>
+                  </Card>
 
                   {/* Trend Line Chart */}
-                  <GlassCard className="p-6">
+                  <Card className="p-6">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold mb-1">
                         6-Month Trend
@@ -829,7 +828,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         Hypertension rate over time
                       </p>
                     </div>
-                    <CyberChart
+                    <Chart
                       data={trendData.map((d) => ({
                         name: d.month,
                         value: d.rate,
@@ -846,10 +845,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         accent: "#10b981",
                       }}
                     />
-                  </GlassCard>
+                  </Card>
 
                   {/* Gender Distribution Pie Chart */}
-                  <GlassCard className="p-6">
+                  <Card className="p-6">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold mb-1">
                         Gender Distribution
@@ -858,7 +857,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         Cases by gender
                       </p>
                     </div>
-                    <CyberChart
+                    <Chart
                       data={genderDistributionData}
                       type="pie"
                       dataKey="value"
@@ -867,10 +866,10 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       height={250}
                       showLegend={true}
                     />
-                  </GlassCard>
+                  </Card>
 
                   {/* Regional Comparison */}
-                  <GlassCard className="p-6">
+                  <Card className="p-6">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold mb-1">
                         Regional Comparison
@@ -879,7 +878,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                         Top 5 regions by rate
                       </p>
                     </div>
-                    <CyberChart
+                    <Chart
                       data={regionComparisonData.map((d) => ({
                         name: d.region,
                         value: d.rate,
@@ -891,15 +890,15 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       glow={true}
                       height={250}
                       colors={{
-                        primary: "#06b6d4",
-                        secondary: "#06b6d4",
-                        accent: "#06b6d4",
+                        primary: "#3b82f6",
+                        secondary: "#3b82f6",
+                        accent: "#3b82f6",
                       }}
                     />
-                  </GlassCard>
+                  </Card>
                 </div>
 
-                <GlassCard className="p-6">
+                <Card className="p-6">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold mb-1">
                       Detailed Statistics
@@ -911,7 +910,7 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-white/10">
+                        <tr className="border-b border-slate-200">
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">
                             Age Group
                           </th>
@@ -949,9 +948,9 @@ export function ResearcherDashboard({ onLogout }: ResearcherDashboardProps) {
                       </tbody>
                     </table>
                   </div>
-                </GlassCard>
+                </Card>
               </div>
-            </GlassCard>
+            </Card>
           </div>
         )}
       </main>

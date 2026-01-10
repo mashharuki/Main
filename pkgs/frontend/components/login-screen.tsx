@@ -4,8 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import type { UserRole } from "@/app/page";
-import { GlassCard } from "@/components/cyber/glass-card";
-import { NeonButton } from "@/components/cyber/neon-button";
+import { Card } from "@/components/design/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,13 +51,10 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/background_logo.jpg')" }}
       />
-      <div className="absolute inset-0 bg-linear-to-br from-indigo-950/80 via-slate-900/80 to-cyan-950/80" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,var(--tw-gradient-stops))] from-cyan-500/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-emerald-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
 
       {/* グラスモーフィズムログインカード - Responsive (要件 8.1, 8.2, 8.3) */}
-      <GlassCard
+      <Card
         variant="default"
         glow={true}
         hover={false}
@@ -74,15 +70,15 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                   alt="NextMed Logo"
                   className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-cover"
                 />
-                <span className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                <span className="text-2xl sm:text-3xl font-bold text-slate-900">
                   NextMed
                 </span>
               </div>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
               Welcome Back
             </h2>
-            <p className="text-xs sm:text-sm text-gray-300 px-2">
+            <p className="text-xs sm:text-sm text-slate-600 px-2">
               Sign in to access your confidential medical data platform
             </p>
           </div>
@@ -90,7 +86,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           {/* ログインフォーム - Responsive (要件 8.1, 8.5) */}
           <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-200 text-sm">
+              <Label htmlFor="email" className="text-slate-700 text-sm">
                 Email Address
               </Label>
               <Input
@@ -100,11 +96,11 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-cyan-400/50 focus:ring-cyan-400/50 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-blue-300 focus:ring-blue-400 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-200 text-sm">
+              <Label htmlFor="password" className="text-slate-700 text-sm">
                 Password
               </Label>
               <div className="relative">
@@ -115,12 +111,12 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-cyan-400/50 focus:ring-cyan-400/50 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                  className="bg-white/5 border-white/20 text-slate-900 placeholder:text-gray-400 focus:border-blue-300 focus:ring-blue-400 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-400 transition-colors touch-manipulation p-2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors touch-manipulation p-2"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -135,15 +131,14 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 {error}
               </p>
             )}
-            <NeonButton
+            <Button
               type="submit"
-              variant="accent"
+              variant="default"
               size="lg"
-              glow={true}
               className="w-full touch-manipulation"
             >
               Login
-            </NeonButton>
+            </Button>
           </form>
 
           {/* 区切り線 */}
@@ -164,21 +159,21 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               <Button
                 variant="outline"
                 onClick={() => onLogin("patient")}
-                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-cyan-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-blue-300 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               >
                 Login as Patient
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onLogin("researcher")}
-                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-indigo-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-blue-300 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               >
                 Login as Researcher
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onLogin("institution")}
-                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-emerald-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                className="w-full bg-white/5 border-white/20 text-slate-900 hover:bg-white/10 hover:border-emerald-400/50 transition-all h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               >
                 Login as Company & Clinic
               </Button>
@@ -188,7 +183,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           {/* デモ認証情報 - Responsive */}
           <div className="pt-3 sm:pt-4 border-t border-white/20">
             <p className="text-xs text-gray-400 text-center leading-relaxed">
-              <span className="font-semibold text-cyan-400">
+              <span className="font-semibold text-blue-600">
                 Demo Credentials:
               </span>
               <br />
@@ -200,7 +195,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             </p>
           </div>
         </div>
-      </GlassCard>
+      </Card>
     </div>
   );
 }

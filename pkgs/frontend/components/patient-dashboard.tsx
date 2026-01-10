@@ -13,7 +13,7 @@ import {
   Wallet,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { GlassCard } from "@/components/cyber/glass-card";
+import { Card } from "@/components/design/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -38,9 +38,14 @@ export const PatientDashboard = React.memo(function PatientDashboard({
 }: PatientDashboardProps) {
   // Use shared Midnight wallet context
   const midnightWallet = useMidnightWalletContext();
-  
+
   // Use Patient Registry contract hook
-  const { register: registerPatient, isSubmitting: isRegistering, error: registrationError, clearError } = usePatientRegistry();
+  const {
+    register: registerPatient,
+    isSubmitting: isRegistering,
+    error: registrationError,
+    clearError,
+  } = usePatientRegistry();
 
   const [dataConsent, setDataConsent] = useState(true);
   const [uploadStatus, setUploadStatus] = useState<
@@ -204,7 +209,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
         setUploadStatus("error");
       }
     },
-    [walletConnected, registerPatient, clearError]
+    [walletConnected, registerPatient, clearError],
   );
 
   const handleFileSelect = React.useCallback(
@@ -258,28 +263,28 @@ export const PatientDashboard = React.memo(function PatientDashboard({
   }, [totalEarnings, displayedEarnings]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    <div className="min-h-screen bg-white">
       {/* Wallet Selection Modal - uses proper Midnight wallets */}
       <WalletSelectionModal
         isOpen={showWalletModal}
         onClose={() => setShowWalletModal(false)}
       />
 
-      {/* Header with glassmorphism - Responsive (要件 3.4, 8.1, 8.2, 8.3) */}
-      <header className="relative z-10 border-b border-white/10 glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
+      {/* Header - Clean design */}
+      <header className="relative z-10 border-b border-slate-200 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img
               src="/logo.jpg"
               alt="NextMed Logo"
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
             />
-            <span className="text-xl sm:text-2xl font-bold bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-semibold text-slate-900">
               NextMed
             </span>
           </div>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <span className="hidden md:inline text-sm text-muted-foreground">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <span className="hidden md:inline text-sm text-slate-500">
               Patient Portal
             </span>
             <WalletButton />
@@ -297,19 +302,19 @@ export const PatientDashboard = React.memo(function PatientDashboard({
       </header>
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-6xl">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-balance">
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-slate-900">
             My Data Wallet
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
+          <p className="text-slate-600 text-sm sm:text-base lg:text-lg">
             Manage your medical data sharing and track your earnings
           </p>
         </div>
 
         {/* Responsive Grid: 1 column mobile, 2 columns tablet+ (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-          {/* Earnings Card with GlassCard - Responsive (要件 3.1, 8.1) */}
-          <GlassCard
+          {/* Earnings Card with Card - Responsive (要件 3.1, 8.1) */}
+          <Card
             variant="accent"
             glow
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
@@ -317,12 +322,12 @@ export const PatientDashboard = React.memo(function PatientDashboard({
           >
             <div className="space-y-2 mb-4">
               <div className="flex items-center gap-2">
-                <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400" />
-                <h3 className="text-base sm:text-lg font-semibold text-white">
+                <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                   Total Earnings
                 </h3>
               </div>
-              <p className="text-xs sm:text-sm text-gray-300">
+              <p className="text-xs sm:text-sm text-slate-600">
                 Your rewards for contributing to medical research
               </p>
             </div>
@@ -333,23 +338,23 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 style={smoothTransition(["opacity"], { duration: 500 })}
               >
                 <span
-                  className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-cyan-400 ${isAnimating ? "opacity-80" : "opacity-100"}`}
+                  className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 ${isAnimating ? "opacity-80" : "opacity-100"}`}
                 >
                   {displayedEarnings}
                 </span>
-                <span className="text-lg sm:text-xl lg:text-2xl text-gray-300">
+                <span className="text-lg sm:text-xl lg:text-2xl text-slate-500">
                   NEXT Tokens
                 </span>
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
-                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400" />
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600" />
                 <span>+{transactions[0].amount} tokens this week</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-2 pt-2">
                 {!walletConnected ? (
                   <Button
                     onClick={handleWalletConnectClick}
-                    className="w-full sm:flex-1 bg-transparent border-cyan-400/50 hover:bg-cyan-400/10 touch-manipulation"
+                    className="w-full sm:flex-1 bg-transparent border-blue-300 hover:bg-blue-500/10 touch-manipulation"
                     variant="outline"
                   >
                     <Wallet className="h-4 w-4 mr-2" />
@@ -359,7 +364,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   <>
                     <Button
                       onClick={handleWalletDisconnect}
-                      className="w-full sm:flex-1 bg-transparent border-cyan-400/50 hover:bg-cyan-400/10 touch-manipulation"
+                      className="w-full sm:flex-1 bg-transparent border-blue-300 hover:bg-blue-500/10 touch-manipulation"
                       variant="outline"
                       size="sm"
                     >
@@ -375,7 +380,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     </Button>
                     <Button
                       onClick={handleWithdraw}
-                      className="w-full sm:flex-1 bg-cyan-500 hover:bg-cyan-600 touch-manipulation"
+                      className="w-full sm:flex-1 bg-blue-500 hover:bg-blue-600 touch-manipulation"
                       variant="default"
                     >
                       Withdraw
@@ -384,10 +389,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 )}
               </div>
             </div>
-          </GlassCard>
+          </Card>
 
-          {/* Data Consent Card with GlassCard - Responsive (要件 3.1, 8.1) */}
-          <GlassCard
+          {/* Data Consent Card with Card - Responsive (要件 3.1, 8.1) */}
+          <Card
             variant="primary"
             glow
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
@@ -395,8 +400,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
           >
             <div className="space-y-2 mb-4">
               <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-400" />
-                <h3 className="text-base sm:text-lg font-semibold text-white">
+                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                   Data Consent
                 </h3>
               </div>
@@ -405,9 +410,9 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               </p>
             </div>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
                 <div className="space-y-1">
-                  <p className="font-medium text-white">
+                  <p className="font-medium text-slate-900">
                     Allow anonymized data usage
                   </p>
                   <p className="text-sm text-gray-300">
@@ -421,24 +426,24 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                   <span className="text-gray-300">
                     Your name and address are never revealed
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                   <span className="text-gray-300">
                     Protected by Midnight's ZK technology
                   </span>
                 </div>
               </div>
             </div>
-          </GlassCard>
+          </Card>
         </div>
 
-        {/* Upload Card with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Upload Card with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="secondary"
           glow
           className="p-6 mb-6"
@@ -446,8 +451,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
         >
           <div className="space-y-2 mb-4">
             <div className="flex items-center gap-2">
-              <Upload className="h-5 w-5 text-emerald-400" />
-              <h3 className="text-lg font-semibold text-white">
+              <Upload className="h-5 w-5 text-emerald-600" />
+              <h3 className="text-lg font-semibold text-slate-900">
                 Upload Your Medical Data
               </h3>
             </div>
@@ -456,11 +461,11 @@ export const PatientDashboard = React.memo(function PatientDashboard({
             </p>
           </div>
           <div className="space-y-4">
-            <div className="p-4 bg-linear-to-br from-emerald-500/10 to-indigo-500/10 rounded-lg border border-emerald-400/20">
+            <div className="p-4 bg-linear-to-br bg-emerald-50 rounded-lg border border-emerald-400/20">
               <div className="flex items-start gap-3 mb-3">
-                <Coins className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0" />
+                <Coins className="h-5 w-5 text-emerald-600 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-semibold text-emerald-400 mb-1">
+                  <p className="font-semibold text-emerald-600 mb-1">
                     Earn Tokens by Uploading
                   </p>
                   <p className="text-sm text-gray-300 leading-relaxed">
@@ -472,15 +477,15 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               </div>
               <div className="grid grid-cols-3 gap-3 text-center pt-3 border-t border-emerald-400/20">
                 <div>
-                  <p className="text-lg font-bold text-emerald-400">10-30</p>
+                  <p className="text-lg font-bold text-emerald-600">10-30</p>
                   <p className="text-xs text-gray-400">Tokens per upload</p>
                 </div>
                 <div>
-                  <p className="text-lg font-bold text-indigo-400">100%</p>
+                  <p className="text-lg font-bold text-blue-600">100%</p>
                   <p className="text-xs text-gray-400">Privacy protected</p>
                 </div>
                 <div>
-                  <p className="text-lg font-bold text-cyan-400">Instant</p>
+                  <p className="text-lg font-bold text-blue-600">Instant</p>
                   <p className="text-xs text-gray-400">Processing</p>
                 </div>
               </div>
@@ -489,7 +494,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
             <div
               role="button"
               tabIndex={0}
-              className="w-full border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-emerald-400/50 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+              className="w-full border-2 border-dashed border-slate-200 rounded-lg p-8 text-center hover:border-emerald-400/50 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
               onClick={handleUploadClick}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -506,7 +511,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                 onChange={handleFileSelect}
               />
               <Upload className="h-10 w-10 mx-auto mb-3 text-gray-400" />
-              <p className="font-medium mb-2 text-white">
+              <p className="font-medium mb-2 text-slate-900">
                 Drag & Drop Your Medical Files
               </p>
               <p className="text-sm text-gray-300 mb-4">
@@ -524,22 +529,22 @@ export const PatientDashboard = React.memo(function PatientDashboard({
             {/* Data update transitions (要件 3.5: データ更新時のトランジション) */}
             {uploadStatus !== "idle" && (
               <div
-                className="space-y-3 p-4 bg-white/5 rounded-lg border border-white/10"
+                className="space-y-3 p-4 bg-slate-50 rounded-lg border border-slate-200"
                 style={smoothTransition(["opacity", "transform"], {
                   duration: 500,
                 })}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-indigo-400" />
-                    <span className="text-sm font-medium text-white">
+                    <FileText className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-medium text-slate-900">
                       {selectedFile?.name || "my_lab_results_2025.pdf"}
                     </span>
                   </div>
                   {uploadStatus === "complete" && (
                     <Badge
                       variant="secondary"
-                      className="bg-emerald-500/10 text-emerald-400 border-emerald-400/20"
+                      className="bg-emerald-500/10 text-emerald-600 border-emerald-400/20"
                     >
                       <CheckCircle2 className="h-3 w-3 mr-1" />
                       Complete
@@ -551,13 +556,13 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-300">Uploading...</span>
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-slate-900">
                         {uploadProgress}%
                       </span>
                     </div>
-                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-indigo-500 transition-all duration-300"
+                        className="h-full bg-blue-600 transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -566,10 +571,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
 
                 {uploadStatus === "processing" && (
                   <div className="flex items-center gap-2 text-sm">
-                    <div className="h-4 w-4 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin" />
-                    <span className="font-medium text-indigo-400">
-                      {isRegistering 
-                        ? "Submitting to blockchain via Midnight ZK..." 
+                    <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
+                    <span className="font-medium text-blue-600">
+                      {isRegistering
+                        ? "Submitting to blockchain via Midnight ZK..."
                         : "Preparing ZK proof..."}
                     </span>
                   </div>
@@ -580,23 +585,28 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     className="space-y-3"
                     style={smoothTransition(["opacity"], { duration: 500 })}
                   >
-                    <div className="flex items-center gap-2 text-sm text-emerald-400">
+                    <div className="flex items-center gap-2 text-sm text-emerald-600">
                       <CheckCircle2 className="h-4 w-4" />
                       <span className="font-medium">
-                        Registration complete! Your data is now on the blockchain.
+                        Registration complete! Your data is now on the
+                        blockchain.
                       </span>
                     </div>
                     {lastTxHash && (
                       <div className="p-3 bg-emerald-500/5 border border-emerald-400/20 rounded-lg">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400">Transaction Hash:</span>
+                          <span className="text-xs text-gray-400">
+                            Transaction Hash:
+                          </span>
                           <a
                             href={getTxUrl(lastTxHash)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 transition-colors"
+                            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 transition-colors"
                           >
-                            <span className="font-mono text-xs">{formatTxHash(lastTxHash)}</span>
+                            <span className="font-mono text-xs">
+                              {formatTxHash(lastTxHash)}
+                            </span>
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         </div>
@@ -604,12 +614,12 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                     )}
                     <div className="p-4 bg-emerald-500/10 border border-emerald-400/20 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-medium text-slate-900">
                           Potential Earnings
                         </span>
                         <div className="flex items-center gap-1">
-                          <Coins className="h-4 w-4 text-emerald-400" />
-                          <span className="text-lg font-bold text-emerald-400">
+                          <Coins className="h-4 w-4 text-emerald-600" />
+                          <span className="text-lg font-bold text-emerald-600">
                             +{potentialEarnings} NEXT
                           </span>
                         </div>
@@ -630,16 +640,16 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   >
                     <div className="flex items-center gap-2 text-sm text-red-400">
                       <Shield className="h-4 w-4" />
-                      <span className="font-medium">
-                        Registration failed
-                      </span>
+                      <span className="font-medium">Registration failed</span>
                     </div>
                     <div className="p-3 bg-red-500/10 border border-red-400/20 rounded-lg">
                       <p className="text-sm text-red-300 mb-2">
-                        {registrationError || "An error occurred during blockchain registration."}
+                        {registrationError ||
+                          "An error occurred during blockchain registration."}
                       </p>
                       <p className="text-xs text-gray-400">
-                        Make sure the proof server is running and you have sufficient testnet funds.
+                        Make sure the proof server is running and you have
+                        sufficient testnet funds.
                       </p>
                     </div>
                     <Button
@@ -658,10 +668,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               </div>
             )}
           </div>
-        </GlassCard>
+        </Card>
 
-        {/* Transaction History with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Transaction History with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="secondary"
           glow
           className="p-6 mb-6"
@@ -669,8 +679,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
         >
           <div className="space-y-2 mb-4">
             <div className="flex items-center gap-2">
-              <History className="h-5 w-5 text-emerald-400" />
-              <h3 className="text-lg font-semibold text-white">
+              <History className="h-5 w-5 text-emerald-600" />
+              <h3 className="text-lg font-semibold text-slate-900">
                 Transaction History
               </h3>
             </div>
@@ -683,14 +693,14 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               {transactions.map((transaction, index) => (
                 <div
                   key={transaction.id}
-                  className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors border border-white/10"
+                  className="flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200"
                   style={smoothTransition(["background-color", "transform"], {
                     duration: 300,
                     delay: index * 50,
                   })}
                 >
                   <div className="space-y-1">
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-slate-900">
                       {transaction.purpose}
                     </p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-300">
@@ -702,7 +712,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         href={getTxUrl(transaction.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 hover:underline transition-colors"
+                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 hover:underline transition-colors"
                         title={`View transaction on Midnight Explorer`}
                       >
                         <span className="font-mono text-xs">
@@ -714,7 +724,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                   </div>
                   <Badge
                     variant="secondary"
-                    className="text-emerald-400 bg-emerald-500/10 border-emerald-400/20"
+                    className="text-emerald-600 bg-emerald-500/10 border-emerald-400/20"
                   >
                     +{transaction.amount} NEXT
                   </Badge>
@@ -722,10 +732,10 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               ))}
             </div>
           </div>
-        </GlassCard>
+        </Card>
 
-        {/* Audit Log with GlassCard (要件 3.1: グラスモーフィズムカードレイアウト) */}
-        <GlassCard
+        {/* Audit Log with Card (要件 3.1: グラスモーフィズムカードレイアウト) */}
+        <Card
           variant="accent"
           glow
           className="p-6"
@@ -733,8 +743,8 @@ export const PatientDashboard = React.memo(function PatientDashboard({
         >
           <div className="space-y-2 mb-4">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-cyan-400" />
-              <h3 className="text-lg font-semibold text-white">
+              <Shield className="h-5 w-5 text-blue-600" />
+              <h3 className="text-lg font-semibold text-slate-900">
                 Consent & Audit Log
               </h3>
             </div>
@@ -747,15 +757,15 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               {auditLog.map((log, index) => (
                 <div
                   key={log.id}
-                  className="relative pl-6 pb-4 border-l-2 border-cyan-400/30 last:pb-0"
+                  className="relative pl-6 pb-4 border-l-2 border-blue-200 last:pb-0"
                   style={smoothTransition(["opacity"], {
                     duration: 300,
                     delay: index * 100,
                   })}
                 >
-                  <div className="absolute left-0 top-0 -translate-x-1/2 w-3 h-3 rounded-full bg-cyan-400" />
+                  <div className="absolute left-0 top-0 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-500" />
                   <div className="space-y-1">
-                    <p className="font-medium text-white">{log.purpose}</p>
+                    <p className="font-medium text-slate-900">{log.purpose}</p>
                     <p className="text-sm text-gray-300">
                       Accessed by {log.researcher}
                     </p>
@@ -766,7 +776,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         href={getTxUrl(log.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 hover:underline transition-colors"
+                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-500 hover:underline transition-colors"
                         title="View access transaction on Midnight Explorer"
                       >
                         <span className="font-mono">
@@ -775,9 +785,9 @@ export const PatientDashboard = React.memo(function PatientDashboard({
                         <ExternalLink className="h-3 w-3" />
                       </a>
                     </div>
-                    <div className="mt-2 p-3 bg-cyan-500/5 border border-cyan-400/20 rounded-md">
+                    <div className="mt-2 p-3 bg-blue-500/5 border border-blue-200 rounded-md">
                       <p className="text-xs text-gray-300 leading-relaxed">
-                        <Shield className="h-3 w-3 inline mr-1 text-cyan-400" />
+                        <Shield className="h-3 w-3 inline mr-1 text-blue-600" />
                         Your data was used only after your PII (Name, Address)
                         was protected and masked by Midnight's ZK technology.
                       </p>
@@ -787,7 +797,7 @@ export const PatientDashboard = React.memo(function PatientDashboard({
               ))}
             </div>
           </div>
-        </GlassCard>
+        </Card>
       </main>
     </div>
   );

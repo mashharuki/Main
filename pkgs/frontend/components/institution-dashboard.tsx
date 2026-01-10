@@ -13,9 +13,8 @@ import {
   Upload,
 } from "lucide-react";
 import { useState } from "react";
-import { CyberChart } from "@/components/cyber/cyber-chart";
-import { GlassCard } from "@/components/cyber/glass-card";
-import { NeonButton } from "@/components/cyber/neon-button";
+import { Card } from "@/components/design/card";
+import { Chart } from "@/components/design/chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -143,9 +142,9 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#060918] to-[#0f1629]">
+    <div className="min-h-screen bg-slate-50">
       {/* Responsive Header (要件 8.1, 8.2, 8.3) */}
-      <header className="relative z-10 border-b border-white/10 glass">
+      <header className="relative z-10 border-b border-slate-200 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img
@@ -153,7 +152,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               alt="NextMed Logo"
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
             />
-            <span className="text-xl sm:text-2xl font-bold bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900">
               NextMed
             </span>
           </div>
@@ -177,10 +176,10 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-6xl">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-balance bg-linear-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-balance text-slate-900">
             Company & Clinic Dashboard
           </h1>
-          <p className="text-cyan-300/70 text-sm sm:text-base lg:text-lg">
+          <p className="text-slate-600 text-sm sm:text-base lg:text-lg">
             Securely upload and integrate medical records with ZK privacy
             protection
           </p>
@@ -188,80 +187,78 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
         {/* Statistics Overview - Responsive Grid (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-4 sm:mb-6">
-          <GlassCard
+          <Card
             variant="primary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
               </div>
-              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </div>
-            <p className="text-xs sm:text-sm text-cyan-300/70 mb-1">
+            <p className="text-xs sm:text-sm text-slate-600 mb-1">
               Total NEXT Tokens
             </p>
-            <p className="text-2xl sm:text-3xl font-bold text-white mb-1">
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
               {totalTokens}
             </p>
-            <p className="text-xs text-emerald-400">
+            <p className="text-xs text-emerald-600">
               +{uploadHistory[0].tokens} this week
             </p>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="secondary"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
               </div>
-              <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400" />
+              <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </div>
-            <p className="text-xs sm:text-sm text-cyan-300/70 mb-1">
+            <p className="text-xs sm:text-sm text-slate-600 mb-1">
               Records Processed
             </p>
-            <p className="text-2xl sm:text-3xl font-bold text-white mb-1">
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
               320
             </p>
-            <p className="text-xs text-cyan-400">Today</p>
-          </GlassCard>
+            <p className="text-xs text-blue-600">Today</p>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="accent"
             className="p-4 sm:p-6 touch-manipulation active:scale-[0.98] transition-transform"
           >
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
               </div>
               {selectedEHR ? (
-                <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+                <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
               ) : (
                 <Search className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
               )}
             </div>
-            <p className="text-xs sm:text-sm text-cyan-300/70 mb-1">
-              EHR Status
-            </p>
-            <p className="text-lg sm:text-xl font-bold text-white mb-1">
+            <p className="text-xs sm:text-sm text-slate-600 mb-1">EHR Status</p>
+            <p className="text-lg sm:text-xl font-bold text-slate-900 mb-1">
               {selectedEHR ? "Connected" : "Not Connected"}
             </p>
-            <p className="text-xs text-emerald-400">
+            <p className="text-xs text-emerald-600">
               {selectedEHR ? selectedEHR.name : "Select Provider"}
             </p>
-          </GlassCard>
+          </Card>
         </div>
 
         {/* Charts Section - Responsive Grid (要件 8.1, 8.2, 8.3) */}
         <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-          <GlassCard variant="default" className="p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-cyan-400" />
+          <Card variant="default" className="p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
               Weekly Upload Trend
             </h3>
-            <CyberChart
+            <Chart
               data={uploadTrendData}
               type="area"
               dataKey="records"
@@ -270,14 +267,14 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               glow={true}
               height={250}
             />
-          </GlassCard>
+          </Card>
 
-          <GlassCard variant="default" className="p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <Coins className="h-5 w-5 text-emerald-400" />
+          <Card variant="default" className="p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <Coins className="h-5 w-5 text-emerald-600" />
               Token Earnings
             </h3>
-            <CyberChart
+            <Chart
               data={tokenEarningsData}
               type="bar"
               dataKey="tokens"
@@ -286,17 +283,17 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               glow={true}
               height={250}
             />
-          </GlassCard>
+          </Card>
         </div>
 
-        <GlassCard variant="secondary" className="p-6 mb-6">
+        <Card variant="secondary" className="p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <Coins className="h-6 w-6 text-emerald-400" />
+              <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
+                <Coins className="h-6 w-6 text-emerald-600" />
                 Contribution Rewards
               </h3>
-              <p className="text-sm text-cyan-300/70 mt-1">
+              <p className="text-sm text-slate-600 mt-1">
                 Earn NEXT tokens for contributing medical data to the NextMed
                 network
               </p>
@@ -304,50 +301,50 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-3">
-              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
-                <p className="text-sm font-medium text-white mb-3">
+              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <p className="text-sm font-medium text-slate-900 mb-3">
                   How NEXT Tokens Work
                 </p>
-                <ul className="space-y-2 text-sm text-cyan-300/70">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                     <span>Earn 1 NEXT token per medical record uploaded</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                     <span>Bonus tokens for high-quality, complete data</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                     <span>Use tokens for platform benefits and services</span>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="p-4 bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 rounded-lg border border-emerald-400/30">
+            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-white">
+                <span className="text-sm font-medium text-slate-900">
                   Recent Earnings
                 </span>
-                <Coins className="h-5 w-5 text-emerald-400" />
+                <Coins className="h-5 w-5 text-emerald-600" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-cyan-300/70">This Week</span>
-                  <span className="text-lg font-bold text-emerald-400">
+                  <span className="text-xs text-slate-600">This Week</span>
+                  <span className="text-lg font-bold text-emerald-600">
                     +{uploadHistory[0].tokens} NEXT
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-cyan-300/70">This Month</span>
-                  <span className="text-lg font-bold text-cyan-400">
+                  <span className="text-xs text-slate-600">This Month</span>
+                  <span className="text-lg font-bold text-blue-600">
                     +{uploadHistory.reduce((sum, h) => sum + h.tokens, 0)} NEXT
                   </span>
                 </div>
               </div>
             </div>
           </div>
-        </GlassCard>
+        </Card>
 
         <Tabs defaultValue="upload" className="space-y-6">
           <TabsList className="grid w-full max-w-md grid-cols-2">
@@ -356,72 +353,72 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
           </TabsList>
 
           <TabsContent value="upload" className="space-y-6">
-            <GlassCard variant="primary" className="p-6">
+            <Card variant="primary" className="p-6">
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-2 mb-2">
-                  <Upload className="h-5 w-5 text-cyan-400" />
+                <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
+                  <Upload className="h-5 w-5 text-blue-600" />
                   Data Uploader
                 </h3>
-                <p className="text-sm text-cyan-300/70">
+                <p className="text-sm text-slate-600">
                   Upload medical records for secure processing and anonymization
                 </p>
               </div>
               <div className="space-y-4">
-                <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-emerald-500/10 rounded-lg border border-indigo-400/30 mb-4">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                        <Coins className="h-5 w-5 text-emerald-400" />
+                      <div className="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center">
+                        <Coins className="h-5 w-5 text-emerald-600" />
                       </div>
                       <div>
-                        <p className="font-semibold text-white">
+                        <p className="font-semibold text-slate-900">
                           Earn NEXT Tokens with Every Upload
                         </p>
-                        <p className="text-sm text-cyan-300/70">
+                        <p className="text-sm text-slate-600">
                           ~1 NEXT per record • Instant processing
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-emerald-400">
+                      <p className="text-2xl font-bold text-emerald-600">
                         +150
                       </p>
-                      <p className="text-xs text-cyan-300/70">estimated NEXT</p>
+                      <p className="text-xs text-slate-600">estimated NEXT</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="border-2 border-dashed border-white/20 rounded-lg p-12 text-center hover:border-cyan-400/50 transition-colors cursor-pointer bg-white/5">
-                  <Upload className="h-12 w-12 mx-auto mb-4 text-cyan-400" />
-                  <p className="text-lg font-medium mb-2 text-white">
+                <div className="border-2 border-dashed border-slate-200 rounded-lg p-12 text-center hover:border-blue-300 transition-colors cursor-pointer bg-slate-50">
+                  <Upload className="h-12 w-12 mx-auto mb-4 text-blue-600" />
+                  <p className="text-lg font-medium mb-2 text-slate-900">
                     Drag & Drop Files Here
                   </p>
-                  <p className="text-sm text-cyan-300/70 mb-4">
+                  <p className="text-sm text-slate-600 mb-4">
                     or click to select files (CSV, JSON)
                   </p>
-                  <NeonButton
+                  <Button
                     variant="primary"
                     size="md"
                     onClick={handleFileUpload}
                     disabled={uploadStatus !== "idle"}
                   >
                     Select File
-                  </NeonButton>
+                  </Button>
                 </div>
 
                 {uploadStatus !== "idle" && (
-                  <div className="space-y-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                  <div className="space-y-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-cyan-400" />
-                        <span className="text-sm font-medium text-white">
+                        <FileText className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm font-medium text-slate-900">
                           patient_records_demo.csv
                         </span>
                       </div>
                       {uploadStatus === "complete" && (
                         <Badge
                           variant="secondary"
-                          className="bg-emerald-500/20 text-emerald-400 border-emerald-400/30"
+                          className="bg-emerald-50 text-emerald-600 border-emerald-200"
                         >
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Complete
@@ -433,16 +430,14 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       <>
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-cyan-300/70">
-                              Uploading...
-                            </span>
-                            <span className="font-medium text-white">
+                            <span className="text-slate-600">Uploading...</span>
+                            <span className="font-medium text-slate-900">
                               {uploadProgress}%
                             </span>
                           </div>
-                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 transition-all duration-300"
+                              className="h-full bg-blue-600 transition-all duration-300"
                               style={{ width: `${uploadProgress}%` }}
                             />
                           </div>
@@ -452,8 +447,8 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                     {uploadStatus === "processing" && (
                       <div className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin" />
-                        <span className="font-medium text-cyan-400">
+                        <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
+                        <span className="font-medium text-blue-600">
                           Processing: Masking PII with Midnight ZK...
                         </span>
                       </div>
@@ -461,26 +456,26 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                     {uploadStatus === "complete" && (
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm text-emerald-400">
+                        <div className="flex items-center gap-2 text-sm text-emerald-600">
                           <CheckCircle2 className="h-4 w-4" />
                           <span className="font-medium">
                             Complete. 150 records securely processed
                           </span>
                         </div>
-                        <div className="p-4 bg-emerald-500/10 border border-emerald-400/30 rounded-lg">
+                        <div className="p-4 bg-emerald-500/10 border border-emerald-200 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-white">
+                            <span className="text-sm font-medium text-slate-900">
                               NEXT Tokens Earned
                             </span>
                             <div className="flex items-center gap-1">
-                              <Coins className="h-4 w-4 text-emerald-400" />
-                              <span className="text-xl font-bold text-emerald-400">
+                              <Coins className="h-4 w-4 text-emerald-600" />
+                              <span className="text-xl font-bold text-emerald-600">
                                 +{earnedTokens} NEXT
                               </span>
                             </div>
                           </div>
-                          <p className="text-xs text-cyan-300/70 leading-relaxed">
-                            <Shield className="h-3 w-3 inline mr-1 text-emerald-400" />
+                          <p className="text-xs text-slate-600 leading-relaxed">
+                            <Shield className="h-3 w-3 inline mr-1 text-emerald-600" />
                             All PII has been masked using Midnight's ZK
                             technology. Records are now available for
                             confidential analysis.
@@ -491,15 +486,15 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 )}
               </div>
-            </GlassCard>
+            </Card>
 
-            <GlassCard variant="secondary" className="p-6">
+            <Card variant="secondary" className="p-6">
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-emerald-400" />
+                <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
+                  <Clock className="h-5 w-5 text-emerald-600" />
                   Upload History
                 </h3>
-                <p className="text-sm text-cyan-300/70">
+                <p className="text-sm text-slate-600">
                   Recent file uploads and processing status
                 </p>
               </div>
@@ -507,28 +502,28 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                 {uploadHistory.map((upload) => (
                   <div
                     key={upload.id}
-                    className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors"
+                    className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-cyan-400" />
+                      <FileText className="h-5 w-5 text-blue-600" />
                       <div>
-                        <p className="font-medium text-sm text-white">
+                        <p className="font-medium text-sm text-slate-900">
                           {upload.filename}
                         </p>
-                        <p className="text-xs text-cyan-300/70">
+                        <p className="text-xs text-slate-600">
                           {upload.date} • {upload.records} records
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <p className="text-sm font-semibold text-emerald-400">
+                        <p className="text-sm font-semibold text-emerald-600">
                           +{upload.tokens} NEXT
                         </p>
                       </div>
                       <Badge
                         variant="secondary"
-                        className="bg-emerald-500/20 text-emerald-400 border-emerald-400/30"
+                        className="bg-emerald-50 text-emerald-600 border-emerald-200"
                       >
                         <CheckCircle2 className="h-3 w-3 mr-1" />
                         Complete
@@ -537,17 +532,17 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 ))}
               </div>
-            </GlassCard>
+            </Card>
           </TabsContent>
 
           <TabsContent value="integration" className="space-y-6">
-            <GlassCard variant="accent" className="p-6">
+            <Card variant="accent" className="p-6">
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-2 mb-2">
-                  <Activity className="h-5 w-5 text-cyan-400" />
+                <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
+                  <Activity className="h-5 w-5 text-blue-600" />
                   EHR System Integration
                 </h3>
-                <p className="text-sm text-cyan-300/70">
+                <p className="text-sm text-slate-600">
                   {selectedEHR
                     ? "Managed connection with your Electronic Health Records system"
                     : "Select your EHR provider to begin integration"}
@@ -557,29 +552,29 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
               {!selectedEHR ? (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {EHR_PROVIDERS.map((provider) => (
-                    <GlassCard
+                    <Card
                       key={provider.id}
                       variant="secondary"
-                      className="p-4 flex flex-col h-full hover:border-cyan-400/50 transition-colors group"
+                      className="p-4 flex flex-col h-full hover:border-blue-300 transition-colors group"
                     >
                       <div className="mb-3">
                         <Badge
                           variant="outline"
-                          className="mb-2 border-white/20 text-xs text-cyan-300/70"
+                          className="mb-2 border-slate-200 text-xs text-slate-600"
                         >
                           {provider.categoryJa}
                         </Badge>
-                        <h4 className="font-bold text-white text-lg group-hover:text-cyan-400 transition-colors">
+                        <h4 className="font-bold text-slate-900 text-lg group-hover:text-blue-600 transition-colors">
                           {provider.name}
                         </h4>
-                        <p className="text-xs text-emerald-400 font-medium">
+                        <p className="text-xs text-emerald-600 font-medium">
                           {provider.vendorJa}
                         </p>
                       </div>
 
                       <div className="flex-grow space-y-2 mb-4">
-                        <div className="bg-white/5 rounded p-2">
-                          <p className="text-[10px] text-cyan-300/50 uppercase tracking-wider">
+                        <div className="bg-slate-50 rounded p-2">
+                          <p className="text-[10px] text-slate-500 uppercase tracking-wider">
                             Target
                           </p>
                           <p className="text-xs text-gray-300">
@@ -593,27 +588,27 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
 
                       <Button
                         onClick={() => handleConnect(provider.id)}
-                        className="w-full mt-auto bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/50"
+                        className="w-full mt-auto bg-blue-50 hover:bg-blue-200 text-blue-600 border border-blue-200"
                         size="sm"
                       >
                         Connect System
                       </Button>
-                    </GlassCard>
+                    </Card>
                   ))}
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="p-6 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 rounded-lg border border-cyan-400/30">
+                  <div className="p-6 bg-blue-50 rounded-lg border border-blue-200">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                          <Activity className="h-6 w-6 text-cyan-400" />
+                        <div className="h-12 w-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                          <Activity className="h-6 w-6 text-blue-600" />
                         </div>
                         <div>
-                          <p className="font-semibold text-lg text-white">
+                          <p className="font-semibold text-lg text-slate-900">
                             {selectedEHR.name}
                           </p>
-                          <p className="text-sm text-cyan-300/70">
+                          <p className="text-sm text-slate-600">
                             {selectedEHR.vendorJa} / {selectedEHR.vendor}
                           </p>
                         </div>
@@ -621,7 +616,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       <div className="flex flex-col items-end gap-2">
                         <Badge
                           variant="secondary"
-                          className="bg-emerald-500/20 text-emerald-400 border-emerald-400/30"
+                          className="bg-emerald-50 text-emerald-600 border-emerald-200"
                         >
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Connected
@@ -629,7 +624,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-6 text-xs text-gray-400 hover:text-white"
+                          className="h-6 text-xs text-gray-400 hover:text-slate-900"
                           onClick={() => setSelectedEHR(null)}
                         >
                           Disconnect
@@ -637,43 +632,41 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200">
                       <div>
-                        <p className="text-sm text-cyan-300/70 mb-1">
+                        <p className="text-sm text-slate-600 mb-1">
                           Connection Status
                         </p>
-                        <p className="font-semibold text-emerald-400">
+                        <p className="font-semibold text-emerald-600">
                           Active & Synchronizing
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-cyan-300/70 mb-1">
-                          Last Sync
-                        </p>
-                        <p className="font-semibold text-white">Just now</p>
+                        <p className="text-sm text-slate-600 mb-1">Last Sync</p>
+                        <p className="font-semibold text-slate-900">Just now</p>
                       </div>
                       <div>
-                        <p className="text-sm text-cyan-300/70 mb-1">
+                        <p className="text-sm text-slate-600 mb-1">
                           Records Processed Today
                         </p>
-                        <p className="text-2xl font-bold text-cyan-400">320</p>
+                        <p className="text-2xl font-bold text-blue-600">320</p>
                       </div>
                       <div>
-                        <p className="text-sm text-cyan-300/70 mb-1">
+                        <p className="text-sm text-slate-600 mb-1">
                           NEXT Tokens Earned Today
                         </p>
-                        <p className="text-2xl font-bold text-emerald-400">
+                        <p className="text-2xl font-bold text-emerald-600">
                           +320
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-indigo-500/10 border border-indigo-400/30 rounded-lg">
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-2">
-                      <Shield className="h-4 w-4 text-indigo-400 mt-1 flex-shrink-0" />
-                      <p className="text-sm text-cyan-300/70 leading-relaxed">
-                        <strong className="text-white">
+                      <Shield className="h-4 w-4 text-blue-600 mt-1 flex-shrink-0" />
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        <strong className="text-slate-900">
                           Security Assurance:
                         </strong>{" "}
                         Data from {selectedEHR.name} is only integrated after
@@ -684,15 +677,15 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 </div>
               )}
-            </GlassCard>
+            </Card>
 
-            <GlassCard variant="default" className="p-6">
+            <Card variant="default" className="p-6">
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-emerald-400" />
+                <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mb-2">
+                  <Clock className="h-5 w-5 text-emerald-600" />
                   Real-Time Masking Log
                 </h3>
-                <p className="text-sm text-cyan-300/70">
+                <p className="text-sm text-slate-600">
                   Live feed of automated data processing
                 </p>
               </div>
@@ -700,18 +693,18 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                 {syncLogs.map((log) => (
                   <div
                     key={`${log.time}-${log.action}`}
-                    className="flex items-start gap-3 p-3 bg-white/5 rounded border border-white/10 hover:bg-white/10 transition-colors"
+                    className="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition-colors"
                   >
-                    <span className="text-cyan-300/70 shrink-0">
+                    <span className="text-slate-600 shrink-0">
                       [{log.time}]
                     </span>
                     <span
                       className={
                         log.status === "success"
-                          ? "text-emerald-400"
+                          ? "text-emerald-600"
                           : log.status === "processing"
-                            ? "text-cyan-400 font-semibold"
-                            : "text-white"
+                            ? "text-blue-600 font-semibold"
+                            : "text-slate-900"
                       }
                     >
                       {log.action}
@@ -719,7 +712,7 @@ export function InstitutionDashboard({ onLogout }: InstitutionDashboardProps) {
                   </div>
                 ))}
               </div>
-            </GlassCard>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>

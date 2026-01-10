@@ -12,17 +12,16 @@ import {
   Zap,
 } from "lucide-react";
 import React, { useEffect, useRef } from "react";
-import { GlassCard } from "@/components/cyber/glass-card";
-import { GradientText } from "@/components/cyber/gradient-text";
-import { NeonButton } from "@/components/cyber/neon-button";
-import { ParticleBackground } from "@/components/cyber/particle-background";
+import { ParticleBackground } from "@/components/design/background";
+import { Button } from "@/components/design/button";
+import { Card } from "@/components/design/card";
+import { Heading } from "@/components/design/heading";
 import { Badge } from "@/components/ui/badge";
 
 interface LandingPageProps {
   onGetStarted: () => void;
 }
 
-// React.memo for optimization (要件 10.3)
 export const LandingPage = React.memo(function LandingPage({
   onGetStarted,
 }: LandingPageProps) {
@@ -31,10 +30,8 @@ export const LandingPage = React.memo(function LandingPage({
   const techRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  // useMemo for observer options (要件 10.4)
   const observerOptions = React.useMemo(() => ({ threshold: 0.1 }), []);
 
-  // useCallback for observer callback (要件 10.4)
   const handleIntersection = React.useCallback(
     (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -42,8 +39,8 @@ export const LandingPage = React.memo(function LandingPage({
           entry.target.classList.add(
             "animate-in",
             "fade-in",
-            "slide-in-from-bottom",
-            "duration-700",
+            "slide-in-from-bottom-4",
+            "duration-500",
           );
         }
       });
@@ -51,7 +48,6 @@ export const LandingPage = React.memo(function LandingPage({
     [],
   );
 
-  // Scroll animation observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       handleIntersection,
@@ -75,412 +71,380 @@ export const LandingPage = React.memo(function LandingPage({
   }, [handleIntersection, observerOptions]);
 
   return (
-    <div className="relative min-h-screen bg-[rgb(var(--bg-dark))] overflow-hidden">
-      {/* Particle Background */}
-      <ParticleBackground
-        particleCount={80}
-        particleColor="#06b6d4"
-        particleSize={2}
-        speed={0.5}
-        interactive={true}
-      />
+    <div className="relative min-h-screen bg-white overflow-hidden">
+      {/* Subtle gradient background */}
+      <ParticleBackground />
 
-      {/* Animated Gradient Mesh Background */}
-      <div className="fixed inset-0 z-0 cyber-mesh-bg opacity-30" />
-
-      {/* スキップリンク（要件 9.2: キーボードナビゲーション） */}
+      {/* Skip link for accessibility */}
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
 
-      {/* Hero Section - Responsive Header (要件 8.1, 8.2, 8.3) */}
+      {/* Clean Header */}
       <header
-        className="relative z-10 border-b border-white/10 glass"
+        className="relative z-10 border-b border-slate-200 bg-white/80 backdrop-blur-sm"
         role="banner"
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <img
               src="/logo.jpg"
               alt="NextMed Logo"
-              className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
+              className="h-9 w-9 rounded-lg object-cover"
             />
-            <GradientText
-              as="span"
-              className="text-xl sm:text-2xl font-bold"
-              gradient="default"
-            >
+            <span className="text-xl font-semibold text-slate-900 tracking-tight">
               NextMed
-            </GradientText>
+            </span>
           </div>
-          <NeonButton
+          <Button
             onClick={onGetStarted}
-            variant="accent"
+            variant="primary"
             size="sm"
-            glow
             className="sm:hidden"
             aria-label="Get started with NextMed platform"
           >
             Start
-          </NeonButton>
-          <NeonButton
+          </Button>
+          <Button
             onClick={onGetStarted}
-            variant="accent"
+            variant="primary"
             size="md"
-            glow
             className="hidden sm:inline-flex"
             aria-label="Get started with NextMed platform"
           >
             Get Started
             <ArrowRight className="h-4 w-4 ml-2" aria-hidden="true" />
-          </NeonButton>
+          </Button>
         </div>
       </header>
 
       <main
         id="main-content"
-        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-6xl"
+        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 max-w-5xl"
         role="main"
       >
-        {/* Hero - Responsive Typography (要件 8.1: モバイル最適化) */}
+        {/* Hero Section */}
         <section
           ref={heroRef}
-          className="text-center mb-12 sm:mb-16 space-y-4 sm:space-y-6 opacity-0"
+          className="text-center mb-20 sm:mb-24 space-y-6 opacity-0"
           aria-labelledby="hero-heading"
         >
-          <Badge
-            variant="secondary"
-            className="mb-2 sm:mb-4 glass-accent border-accent/30 text-xs sm:text-sm"
-            role="status"
-          >
+          <Badge variant="secondary" className="mb-4" role="status">
             Powered by Midnight ZK Technology
           </Badge>
           <h1
             id="hero-heading"
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-balance leading-tight px-2"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight text-balance leading-[1.1]"
           >
-            <GradientText as="span" gradient="default" animate>
-              Medical Data Platform
-            </GradientText>
+            Medical Data Platform
             <br />
-            <span className="text-white">Without Compromising Privacy</span>
+            <span className="text-slate-500">Without Compromising Privacy</span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-slate-300 max-w-2xl mx-auto text-balance leading-relaxed px-4">
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
             NextMed uses zero-knowledge proofs to enable medical research while
             keeping patient data completely confidential. Patients earn rewards,
             researchers gain insights, institutions contribute data.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-2 sm:pt-4 px-4">
-            <NeonButton
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <Button
               size="lg"
               onClick={onGetStarted}
               variant="primary"
               glow
-              pulse
-              className="w-full sm:w-auto touch-manipulation"
+              className="w-full sm:w-auto"
               aria-label="Launch NextMed platform"
             >
               Launch Platform
               <ArrowRight className="h-5 w-5 ml-2" aria-hidden="true" />
-            </NeonButton>
+            </Button>
           </div>
         </section>
 
-        {/* Features Grid - Responsive Layout (要件 8.1, 8.2, 8.3: モバイル1列、タブレット2列、デスクトップ3列) */}
+        {/* Features Grid */}
         <section
           ref={featuresRef}
-          className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-16 opacity-0"
+          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-20 sm:mb-24 opacity-0"
           aria-labelledby="features-heading"
         >
           <h2 id="features-heading" className="sr-only">
             Platform Features
           </h2>
 
-          <GlassCard
+          <Card
             variant="primary"
             hover
-            className="p-4 sm:p-6 touch-manipulation active:scale-95 transition-transform"
+            className="p-6"
             aria-labelledby="patient-feature-heading"
           >
             <div
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-3 sm:mb-4 neon-glow-primary"
+              className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center mb-4"
               aria-hidden="true"
             >
-              <Users className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400" />
+              <Users className="h-5 w-5 text-slate-700" />
             </div>
             <h3
               id="patient-feature-heading"
-              className="text-lg sm:text-xl font-bold mb-2 text-white"
+              className="text-lg font-semibold mb-2 text-slate-900"
             >
               For Patients
             </h3>
-            <p className="text-sm text-slate-300 mb-3 sm:mb-4">
+            <p className="text-sm text-slate-600 mb-4">
               Control your data and earn rewards
             </p>
             <ul className="space-y-3" role="list">
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Manage consent for data usage
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Earn tokens when data is used
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Full audit trail of data access
-                </p>
+                </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="secondary"
             hover
-            className="p-4 sm:p-6 touch-manipulation active:scale-95 transition-transform"
+            className="p-6"
             aria-labelledby="researcher-feature-heading"
           >
             <div
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-3 sm:mb-4 neon-glow-secondary"
+              className="h-10 w-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-4"
               aria-hidden="true"
             >
-              <FlaskConical className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
+              <FlaskConical className="h-5 w-5 text-emerald-700" />
             </div>
             <h3
               id="researcher-feature-heading"
-              className="text-lg sm:text-xl font-bold mb-2 text-white"
+              className="text-lg font-semibold mb-2 text-slate-900"
             >
               For Researchers
             </h3>
-            <p className="text-sm text-slate-300 mb-3 sm:mb-4">
+            <p className="text-sm text-slate-600 mb-4">
               Analyze data without seeing PII
             </p>
             <ul className="space-y-3" role="list">
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Query anonymized medical records
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   AI-powered analysis tools
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   SQL and natural language queries
-                </p>
+                </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
 
-          <GlassCard
+          <Card
             variant="accent"
             hover
-            className="p-4 sm:p-6 touch-manipulation active:scale-95 transition-transform"
+            className="p-6"
             aria-labelledby="company-feature-heading"
           >
             <div
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-3 sm:mb-4 neon-glow-accent"
+              className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4"
               aria-hidden="true"
             >
-              <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
+              <Building2 className="h-5 w-5 text-blue-700" />
             </div>
             <h3
               id="company-feature-heading"
-              className="text-lg sm:text-xl font-bold mb-2 text-white"
+              className="text-lg font-semibold mb-2 text-slate-900"
             >
               For Companies
             </h3>
-            <p className="text-sm text-slate-300 mb-3 sm:mb-4">
+            <p className="text-sm text-slate-600 mb-4">
               Contribute data securely
             </p>
             <ul className="space-y-3" role="list">
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Upload encrypted medical records
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Earn points for contributions
-                </p>
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0"
+                  className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-slate-300">
+                <span className="text-sm text-slate-600">
                   Seamless EHR integration
-                </p>
+                </span>
               </li>
             </ul>
-          </GlassCard>
+          </Card>
         </section>
 
-        {/* Technology Section - Responsive Grid (要件 8.1, 8.2, 8.3) */}
+        {/* Technology Section */}
         <section
           ref={techRef}
           className="opacity-0"
           aria-labelledby="technology-heading"
         >
-          <GlassCard
-            variant="default"
-            className="p-4 sm:p-6 lg:p-8 mb-12 sm:mb-16"
-          >
-            <div className="text-center mb-6 sm:mb-8">
+          <Card variant="default" className="p-8 lg:p-10 mb-20 sm:mb-24">
+            <div className="text-center mb-10">
               <h2
                 id="technology-heading"
-                className="text-2xl sm:text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2"
               >
-                <GradientText gradient="default">
-                  Zero-Knowledge Privacy Protection
-                </GradientText>
+                Zero-Knowledge Privacy Protection
               </h2>
-              <p className="text-sm sm:text-base text-slate-300">
+              <p className="text-slate-600">
                 Built on Midnight's cutting-edge ZK technology
               </p>
             </div>
             <div
-              className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+              className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
               role="list"
             >
-              <article className="text-center space-y-2 touch-manipulation active:scale-95 transition-transform">
+              <article className="text-center space-y-3">
                 <div
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto neon-glow-primary"
+                  className="h-14 w-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto"
                   aria-hidden="true"
                 >
-                  <Lock className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-400" />
+                  <Lock className="h-6 w-6 text-slate-700" />
                 </div>
-                <h3 className="font-semibold text-sm sm:text-base text-white">
+                <h3 className="font-semibold text-slate-900">
                   Encrypted Storage
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-300">
+                <p className="text-sm text-slate-600">
                   All data encrypted at rest and in transit
                 </p>
               </article>
 
-              <article className="text-center space-y-2 touch-manipulation active:scale-95 transition-transform">
+              <article className="text-center space-y-3">
                 <div
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto neon-glow-secondary"
+                  className="h-14 w-14 rounded-full bg-emerald-50 flex items-center justify-center mx-auto"
                   aria-hidden="true"
                 >
-                  <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400" />
+                  <Shield className="h-6 w-6 text-emerald-700" />
                 </div>
-                <h3 className="font-semibold text-sm sm:text-base text-white">
-                  ZK Proofs
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300">
+                <h3 className="font-semibold text-slate-900">ZK Proofs</h3>
+                <p className="text-sm text-slate-600">
                   Verify data without revealing content
                 </p>
               </article>
 
-              <article className="text-center space-y-2 touch-manipulation active:scale-95 transition-transform">
+              <article className="text-center space-y-3">
                 <div
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto neon-glow-accent"
+                  className="h-14 w-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto"
                   aria-hidden="true"
                 >
-                  <Database className="h-6 w-6 sm:h-8 sm:w-8 text-cyan-400" />
+                  <Database className="h-6 w-6 text-blue-700" />
                 </div>
-                <h3 className="font-semibold text-sm sm:text-base text-white">
+                <h3 className="font-semibold text-slate-900">
                   Confidential Computing
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-300">
+                <p className="text-sm text-slate-600">
                   Analysis in secure enclaves
                 </p>
               </article>
 
-              <article className="text-center space-y-2 touch-manipulation active:scale-95 transition-transform">
+              <article className="text-center space-y-3">
                 <div
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto neon-glow-secondary"
+                  className="h-14 w-14 rounded-full bg-amber-50 flex items-center justify-center mx-auto"
                   aria-hidden="true"
                 >
-                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400" />
+                  <Zap className="h-6 w-6 text-amber-700" />
                 </div>
-                <h3 className="font-semibold text-sm sm:text-base text-white">
+                <h3 className="font-semibold text-slate-900">
                   Fast & Scalable
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-300">
+                <p className="text-sm text-slate-600">
                   Real-time queries on millions of records
                 </p>
               </article>
             </div>
-          </GlassCard>
+          </Card>
         </section>
 
-        {/* CTA Section - Responsive (要件 8.1) */}
+        {/* CTA Section */}
         <section
           ref={ctaRef}
-          className="text-center space-y-4 sm:space-y-6 py-8 sm:py-12 px-4 opacity-0"
+          className="text-center space-y-6 py-12 opacity-0"
           aria-labelledby="cta-heading"
         >
           <h2
             id="cta-heading"
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-balance"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900"
           >
-            <GradientText gradient="default" animate>
-              Ready to Transform Medical Research?
-            </GradientText>
+            Ready to Transform Medical Research?
           </h2>
-          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto text-balance">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Join NextMed today and be part of the privacy-preserving medical
             data revolution.
           </p>
-          <NeonButton
+          <Button
             size="lg"
             onClick={onGetStarted}
             variant="accent"
             glow
-            pulse
-            className="w-full sm:w-auto touch-manipulation"
+            className="w-full sm:w-auto"
             aria-label="Access NextMed platform"
           >
             Access Platform
             <ArrowRight className="h-5 w-5 ml-2" aria-hidden="true" />
-          </NeonButton>
+          </Button>
         </section>
       </main>
 
       <footer
-        className="relative z-10 border-t border-white/10 py-6 sm:py-8 mt-12 sm:mt-16 glass"
+        className="relative z-10 border-t border-slate-200 py-8 mt-16 bg-slate-50"
         role="contentinfo"
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs sm:text-sm text-slate-300">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
           <p>© 2025 NextMed. Powered by Midnight ZK Technology.</p>
         </div>
       </footer>

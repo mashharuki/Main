@@ -1,38 +1,38 @@
 "use client";
 
-import { GlassCard } from "./glass-card";
+import { GlassCard } from "./card";
 
 export function GlassCardDemo() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 p-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        <h1 className="text-4xl font-bold text-white mb-8">
+        <h1 className="text-4xl font-bold text-slate-900 mb-8">
           GlassCard Component Demo
         </h1>
 
         {/* Default variant */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Default Variant
           </h2>
           <GlassCard className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Default Glass Card
             </h3>
             <p className="text-gray-300">
-              This is a default glass card with backdrop-blur-md and bg-white/10
-              transparency.
+              This is a default glass card with backdrop-blur-md and
+              bg-slate-100 transparency.
             </p>
           </GlassCard>
         </div>
 
         {/* Primary variant */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Primary Variant
           </h2>
           <GlassCard variant="primary" className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Primary Glass Card
             </h3>
             <p className="text-gray-300">
@@ -43,11 +43,11 @@ export function GlassCardDemo() {
 
         {/* Secondary variant */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Secondary Variant
           </h2>
           <GlassCard variant="secondary" className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Secondary Glass Card
             </h3>
             <p className="text-gray-300">
@@ -58,11 +58,11 @@ export function GlassCardDemo() {
 
         {/* Accent variant */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Accent Variant
           </h2>
           <GlassCard variant="accent" className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Accent Glass Card
             </h3>
             <p className="text-gray-300">
@@ -73,11 +73,11 @@ export function GlassCardDemo() {
 
         {/* With glow effect */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             With Glow Effect
           </h2>
           <GlassCard variant="accent" glow className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Glass Card with Glow
             </h3>
             <p className="text-gray-300">
@@ -88,11 +88,11 @@ export function GlassCardDemo() {
 
         {/* Without hover effect */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Without Hover Effect
           </h2>
           <GlassCard variant="primary" hover={false} className="p-6">
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Static Glass Card
             </h3>
             <p className="text-gray-300">
@@ -103,40 +103,40 @@ export function GlassCardDemo() {
 
         {/* Grid layout example */}
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Grid Layout Example
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <GlassCard variant="default" className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 1</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 1</h3>
               <p className="text-gray-300 text-sm">
                 Default variant with hover effect
               </p>
             </GlassCard>
             <GlassCard variant="primary" className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 2</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 2</h3>
               <p className="text-gray-300 text-sm">
                 Primary variant with indigo glow
               </p>
             </GlassCard>
             <GlassCard variant="secondary" className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 3</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 3</h3>
               <p className="text-gray-300 text-sm">
                 Secondary variant with emerald glow
               </p>
             </GlassCard>
             <GlassCard variant="accent" glow className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 4</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 4</h3>
               <p className="text-gray-300 text-sm">
                 Accent variant with enhanced glow
               </p>
             </GlassCard>
             <GlassCard variant="primary" glow className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 5</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 5</h3>
               <p className="text-gray-300 text-sm">Primary with glow effect</p>
             </GlassCard>
             <GlassCard variant="secondary" glow className="p-6">
-              <h3 className="text-lg font-bold text-white mb-2">Card 6</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Card 6</h3>
               <p className="text-gray-300 text-sm">
                 Secondary with glow effect
               </p>

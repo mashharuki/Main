@@ -1,5 +1,6 @@
 "use client";
 
+import { NeonButton } from "./button";
 import {
   GlassModal,
   GlassModalContent,
@@ -8,14 +9,13 @@ import {
   GlassModalHeader,
   GlassModalTitle,
   GlassModalTrigger,
-} from "./glass-modal";
-import { NeonButton } from "./neon-button";
+} from "./modal";
 
 export function GlassModalDemo() {
   return (
     <div className="flex flex-col gap-8 p-8">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-4">
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">
           Glass Modal Variants
         </h2>
         <div className="flex flex-wrap gap-4">
@@ -33,8 +33,8 @@ export function GlassModalDemo() {
                 </GlassModalDescription>
               </GlassModalHeader>
               <div className="py-4">
-                <p className="text-white/80 text-sm">
-                  The modal uses backdrop-blur-md and bg-white/10 for the glass
+                <p className="text-slate-900/80 text-sm">
+                  The modal uses backdrop-blur-md and bg-slate-100 for the glass
                   effect, with a subtle cyan shadow.
                 </p>
               </div>
@@ -62,7 +62,7 @@ export function GlassModalDemo() {
                 </GlassModalDescription>
               </GlassModalHeader>
               <div className="py-4">
-                <p className="text-white/80 text-sm">
+                <p className="text-slate-900/80 text-sm">
                   Perfect for important actions or primary workflows.
                 </p>
               </div>
@@ -90,7 +90,7 @@ export function GlassModalDemo() {
                 </GlassModalDescription>
               </GlassModalHeader>
               <div className="py-4">
-                <p className="text-white/80 text-sm">
+                <p className="text-slate-900/80 text-sm">
                   Great for success messages or health-related content.
                 </p>
               </div>
@@ -115,7 +115,7 @@ export function GlassModalDemo() {
                 </GlassModalDescription>
               </GlassModalHeader>
               <div className="py-4">
-                <p className="text-white/80 text-sm">
+                <p className="text-slate-900/80 text-sm">
                   Ideal for highlighting special features or futuristic
                   elements.
                 </p>
@@ -143,7 +143,7 @@ export function GlassModalDemo() {
                 </GlassModalDescription>
               </GlassModalHeader>
               <div className="py-4">
-                <p className="text-white/80 text-sm">
+                <p className="text-slate-900/80 text-sm">
                   The glow property adds shadow-2xl for a more dramatic effect.
                 </p>
               </div>
@@ -158,7 +158,7 @@ export function GlassModalDemo() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-white mb-4">
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">
           Modal with Form Example
         </h2>
         <GlassModal>
@@ -177,7 +177,7 @@ export function GlassModalDemo() {
               <div className="space-y-2">
                 <label
                   htmlFor="research-purpose"
-                  className="text-sm font-medium text-white"
+                  className="text-sm font-medium text-slate-900"
                 >
                   Research Purpose
                 </label>
@@ -185,32 +185,32 @@ export function GlassModalDemo() {
                   id="research-purpose"
                   type="text"
                   placeholder="e.g., Cancer research"
-                  className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                  className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-900/40 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div className="space-y-2">
-                <div className="text-sm font-medium text-white mb-2">
+                <div className="text-sm font-medium text-slate-900 mb-2">
                   Data Categories
                 </div>
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm text-white/80">
+                  <label className="flex items-center gap-2 text-sm text-slate-900/80">
                     <input
                       type="checkbox"
-                      className="rounded border-white/20 bg-white/5"
+                      className="rounded border-slate-200 bg-slate-100"
                     />
                     Medical History
                   </label>
-                  <label className="flex items-center gap-2 text-sm text-white/80">
+                  <label className="flex items-center gap-2 text-sm text-slate-900/80">
                     <input
                       type="checkbox"
-                      className="rounded border-white/20 bg-white/5"
+                      className="rounded border-slate-200 bg-slate-100"
                     />
                     Lab Results
                   </label>
-                  <label className="flex items-center gap-2 text-sm text-white/80">
+                  <label className="flex items-center gap-2 text-sm text-slate-900/80">
                     <input
                       type="checkbox"
-                      className="rounded border-white/20 bg-white/5"
+                      className="rounded border-slate-200 bg-slate-100"
                     />
                     Genetic Data
                   </label>

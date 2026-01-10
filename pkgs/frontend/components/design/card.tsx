@@ -4,38 +4,53 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-const glassCardVariants = cva(
-  "relative rounded-xl backdrop-blur-md border transition-all duration-300",
+/**
+ * Card Component
+ * Clean, professional card with subtle elevation on hover
+ * Design: Notion/Stripe-inspired minimal aesthetic
+ */
+const cardVariants = cva(
+  "relative rounded-lg border transition-all duration-200",
   {
     variants: {
       variant: {
         default: [
-          "bg-white/10",
-          "border-white/20",
-          "shadow-lg shadow-cyan-500/20",
+          "bg-white",
+          "border-slate-200",
+          "shadow-sm",
+          "hover:shadow-md",
+          "hover:border-slate-300",
         ],
         primary: [
-          "bg-indigo-500/10",
-          "border-indigo-400/30",
-          "shadow-lg shadow-indigo-500/30",
+          "bg-slate-50",
+          "border-slate-200",
+          "shadow-sm",
+          "hover:shadow-md",
+          "hover:border-slate-300",
         ],
         secondary: [
-          "bg-emerald-500/10",
-          "border-emerald-400/30",
-          "shadow-lg shadow-emerald-500/30",
+          "bg-emerald-50/50",
+          "border-emerald-200",
+          "shadow-sm",
+          "hover:shadow-md",
+          "hover:border-emerald-300",
         ],
         accent: [
-          "bg-cyan-500/10",
-          "border-cyan-400/30",
-          "shadow-lg shadow-cyan-500/30",
+          "bg-blue-50/50",
+          "border-blue-200",
+          "shadow-sm",
+          "hover:shadow-md",
+          "hover:border-blue-300",
         ],
+        muted: ["bg-slate-50", "border-transparent", "hover:bg-slate-100"],
+        outline: ["bg-white", "border-slate-200", "hover:bg-slate-50"],
       },
       glow: {
-        true: "shadow-2xl",
+        true: "shadow-md",
         false: "",
       },
       hover: {
-        true: "hover:scale-105 hover:shadow-xl cursor-pointer",
+        true: "hover:shadow-lg cursor-pointer",
         false: "",
       },
     },
@@ -49,21 +64,10 @@ const glassCardVariants = cva(
 
 export interface GlassCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof glassCardVariants> {
+    VariantProps<typeof cardVariants> {
   children: React.ReactNode;
-  /**
-   * カードをインタラクティブにする（クリック可能）
-   * 要件 9.2: キーボードナビゲーションサポート
-   */
   interactive?: boolean;
-  /**
-   * アクセシビリティラベル
-   * 要件 9.5: ARIAラベル
-   */
   "aria-label"?: string;
-  /**
-   * アクセシビリティ説明
-   */
   "aria-describedby"?: string;
 }
 
@@ -83,8 +87,6 @@ const GlassCard = React.memo(
       },
       ref,
     ) => {
-      // キーボードナビゲーション対応（要件 9.2）
-      // useCallback for optimization (要件 10.4)
       const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLDivElement>) => {
           if (interactive && (e.key === "Enter" || e.key === " ")) {
@@ -96,7 +98,6 @@ const GlassCard = React.memo(
         [interactive, onClick, onKeyDown],
       );
 
-      // useMemo for interactive props (要件 10.4)
       const interactiveProps = React.useMemo(
         () =>
           interactive
@@ -111,8 +112,7 @@ const GlassCard = React.memo(
       return (
         <div
           ref={ref}
-          className={cn(glassCardVariants({ variant, glow, hover }), className)}
-          // インタラクティブな場合はtabindexとroleを追加（要件 9.2）
+          className={cn(cardVariants({ variant, glow, hover }), className)}
           {...interactiveProps}
           onClick={onClick}
           onKeyDown={handleKeyDown}
@@ -127,4 +127,5 @@ const GlassCard = React.memo(
 
 GlassCard.displayName = "GlassCard";
 
-export { GlassCard, glassCardVariants };
+// Export both old name for compatibility and new semantic name
+export { GlassCard, GlassCard as Card, cardVariants as glassCardVariants };

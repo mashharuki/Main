@@ -43,7 +43,7 @@ export function LoadingSpinner({
   return (
     <div className={cn("flex items-center justify-center gap-2", className)}>
       <Loader2
-        className={cn("animate-spin text-cyan-400", sizeClasses[size])}
+        className={cn("animate-spin text-blue-600", sizeClasses[size])}
         aria-hidden="true"
       />
       <span className="sr-only">{label}</span>
@@ -74,16 +74,16 @@ export function LoadingCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-6 animate-pulse",
+        "rounded-xl border border-slate-200 bg-slate-50 backdrop-blur-md p-6 animate-pulse",
         className,
       )}
     >
       {showHeader && (
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 rounded-lg bg-white/10" />
+          <div className="h-10 w-10 rounded-lg bg-slate-100" />
           <div className="space-y-2 flex-1">
-            <div className="h-4 w-32 rounded bg-white/10" />
-            <div className="h-3 w-48 rounded bg-white/5" />
+            <div className="h-4 w-32 rounded bg-slate-100" />
+            <div className="h-3 w-48 rounded bg-slate-50" />
           </div>
         </div>
       )}
@@ -91,7 +91,7 @@ export function LoadingCard({
         {Array.from({ length: rows }).map((_, i) => (
           <div
             key={i}
-            className="h-4 rounded bg-white/10"
+            className="h-4 rounded bg-slate-100"
             style={{ width: `${100 - i * 15}%` }}
           />
         ))}
@@ -122,13 +122,13 @@ export function LoadingTransaction({
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10 animate-pulse"
+          className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200 animate-pulse"
         >
           <div className="space-y-2">
-            <div className="h-4 w-40 rounded bg-white/10" />
-            <div className="h-3 w-56 rounded bg-white/5" />
+            <div className="h-4 w-40 rounded bg-slate-100" />
+            <div className="h-3 w-56 rounded bg-slate-50" />
           </div>
-          <div className="h-6 w-20 rounded-full bg-white/10" />
+          <div className="h-6 w-20 rounded-full bg-slate-100" />
         </div>
       ))}
     </div>
@@ -159,13 +159,13 @@ export function LoadingStats({ count = 3, className }: LoadingStatsProps) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-6 animate-pulse"
+          className="rounded-xl border border-slate-200 bg-slate-50 backdrop-blur-md p-6 animate-pulse"
         >
           <div className="space-y-3">
-            <div className="h-3 w-24 rounded bg-white/10" />
+            <div className="h-3 w-24 rounded bg-slate-100" />
             <div className="flex items-baseline gap-2">
-              <div className="h-8 w-16 rounded bg-white/10" />
-              <div className="h-5 w-5 rounded bg-white/5" />
+              <div className="h-8 w-16 rounded bg-slate-100" />
+              <div className="h-5 w-5 rounded bg-slate-50" />
             </div>
           </div>
         </div>

@@ -152,7 +152,7 @@ export function AsyncBoundary({
       loadingFallback ?? (
         <div className="flex items-center justify-center py-12">
           <div className="flex flex-col items-center gap-3">
-            <div className="h-10 w-10 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin" />
+            <div className="h-10 w-10 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
             <p className="text-sm text-gray-400">Loading...</p>
           </div>
         </div>
@@ -212,7 +212,7 @@ export function SuspenseFallback({
       className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 ${className}`}
     >
       <div className="text-center">
-        <div className="h-12 w-12 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4" />
+        <div className="h-12 w-12 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4" />
         <p className="text-gray-400">{message}</p>
       </div>
     </div>
