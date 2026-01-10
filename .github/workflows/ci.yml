@@ -40,7 +40,7 @@ jobs:
           export PATH="$HOME/.cargo/bin:$PATH"
           compact update 0.25.0
           # Install version 0.21.0 specifically (required by contract package)
-          compactup toolchain add 0.21.0 --target x86_64-unknown-linux-musl
+          compact toolchain add 0.21.0 --target x86_64-unknown-linux-musl
           pnpm contract compact
         shell: bash
 
