@@ -45,8 +45,8 @@ jobs:
       - name: Build frontend
         run: pnpm frontend build
 
-      # - name: Build CLI
-      #   run: pnpm contract build && pnpm cli build
+      - name: Build CLI
+        run: pnpm contract build && pnpm cli build
 
       # - name: Check Format
       #   run: pnpm exec biome format pkgs/cli pkgs/contract pkgs/frontend --diagnostic-level=error
@@ -69,5 +69,5 @@ jobs:
         # cli: NO 'test' script. Has 'test-api'.
         # We explicitly run test-api for CLI if needed, or rely on implementation plan logic.
         run: |
-            pnpm -r run test
-            # Optional: pnpm --filter cli run test-api
+            pnpm contract test
+            pnpm frontend test
