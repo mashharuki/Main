@@ -34,7 +34,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Contract (Pre-requisite)
-        run: pnpm --filter contract run build
+        run: yarn contract compact
 
       # - name: Check Format
       #   run: pnpm exec biome format pkgs/cli pkgs/contract pkgs/frontend --diagnostic-level=error
