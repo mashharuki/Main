@@ -19,6 +19,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -LsSf https://github.com/midnightntwrk/compact/releases/latest/download/compact-installer.sh | sh
           source $HOME/.cargo/env
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          compactup toolchain add 0.21.0 --target x86_64-unknown-linux-musl
         shell: bash
 
       - name: Install pnpm
